@@ -11,11 +11,17 @@ import {
   FaSearch,
   FaBrain,
   FaCreativeCommonsSamplingPlus,
+  FaCommentAlt,
 } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
-import { AiFillPicture } from "react-icons/ai";
+import { AiFillLike, AiFillPicture } from "react-icons/ai";
 import { GiPositionMarker } from "react-icons/gi";
 import { useState } from "react";
+import { FcLike } from "react-icons/fc";
+import { BiRepost } from "react-icons/bi";
+import { FaEye, FaBookmark } from "react-icons/fa";
+import { CiBookmark } from "react-icons/ci";
+import { PiDownloadFill } from "react-icons/pi";
 
 {
   /**
@@ -33,6 +39,9 @@ import { useState } from "react";
 
 export default function Home() {
   const [navigationPagerForYou, setNavigationPagerForYou] = useState(true);
+  const [likeColor, setLikeColor] = useState(false);
+  const [bookMark, setBookMark] = useState(false);
+  const [repost, setRepost] = useState(false);
 
   return (
     <>
@@ -41,40 +50,40 @@ export default function Home() {
        * Present in both sidebar (desktop) and footer (mobile).
        */}
 
-      <aside className="hidden sm:flex flex-col sm:col-span-3 bg-gray-950 border-r-2 border-blue-950 justify-start">
+      <aside className="hidden sm:flex flex-col sm:col-span-3 bg-gray-950 border-r-2 border-blue-950">
         <Logo />
         <ul className="list">
           <li className="list-row">
-            <button className="flex items-center space-x-4 btn btn-soft btn-info rounded-xl px-2">
+            <button className="flex col-span-full items-center space-x-4 btn btn-soft btn-info rounded-xl px-2">
               <div className="indicator">
                 <span className="indicator-item status status-success"></span>
                 <MdHome className="h-7 w-7"></MdHome>
               </div>
-              <div>Home</div>
+              <div className="text-xs">Home</div>
             </button>
           </li>
           <li className="list-row">
-            <button className="flex items-center space-x-4 btn btn-soft btn-info rounded-xl px-2">
+            <button className="flex col-span-full items-center space-x-4 btn btn-soft btn-info rounded-xl px-2">
               <FaSearch className="h-7 w-7" />
-              <div>Explore</div>
+              <div className="text-xs">Explore</div>
             </button>
           </li>
           <li className="list-row">
-            <button className="flex items-center space-x-4 btn btn-soft btn-info rounded-xl px-2">
+            <button className="flex col-span-full items-center space-x-1.3 btn btn-soft btn-info rounded-xl px-2">
               <MdNotificationsActive className="h-7 w-7" />
-              <div>Notifications</div>
+              <div className="text-xs md:ms-2">Notifications</div>
             </button>
           </li>
           <li className="list-row">
-            <button className="flex items-center space-x-4 btn btn-soft btn-info rounded-xl px-2">
+            <button className="flex col-span-full items-center space-x-4 btn btn-soft btn-info rounded-xl px-2">
               <LuMessageSquare className="h-7 w-7" />
-              <div>Message</div>
+              <div className="text-xs">Message</div>
             </button>
           </li>
           <li className="list-row">
-            <button className="flex items-center space-x-4 btn btn-soft btn-info rounded-xl px-2">
+            <button className="flex col-span-full items-center space-x-4 btn btn-soft btn-info rounded-xl px-2">
               <FaBrain className="h-7 w-7" />
-              <div>AI Chatbot</div>
+              <div className="text-xs">AI Chatbot</div>
             </button>
           </li>
         </ul>
@@ -105,16 +114,16 @@ export default function Home() {
                 ✕
               </button>
             </form>
-            <div className="grid grid-cols-5 justify-center items-center">
+            <div className="grid grid-cols-5 justify-center items-baseline">
               <div className="avatar avatar-placeholder m-4 col-span-1">
                 <div className="bg-gray-400 text-neutral-content w-12 rounded-full">
                   <span>D</span>
                 </div>
               </div>
-              <input
-                type="text"
+              <textarea
                 placeholder="Type here"
-                className="input input-ghost input-lg col-span-4"
+                className="textarea textarea-ghost col-span-4"
+                name="Post-Desktop"
               />
               <div className="divider col-span-5"></div>
               <div className="col-span-2 flex justify-evenly">
@@ -198,6 +207,58 @@ export default function Home() {
             voluptates quam. Cum suscipit molestias officiis nemo quasi
             cupiditate saepe autem quaerat dolores.
           </p>
+          <div className="divider"></div>
+          <div className="flex justify-evenly items-baseline mb-5">
+            <div
+              className="tooltip tooltip-info flex flex-row items-center"
+              data-tip="Like"
+            >
+              <AiFillLike
+                className={likeColor ? "text-blue-600" : "text-white"}
+                onClick={() => setLikeColor((prev) => !prev)}
+              />
+            </div>
+            <div
+              className="tooltip tooltip-success flex flex-col items-center"
+              data-tip="Repost"
+            >
+              <BiRepost
+                className={repost ? "text-green-600" : "text-white"}
+                onClick={() => setRepost((prev) => !prev)}
+              />
+            </div>
+            <div
+              className="tooltip tooltip-info flex flex-col items-center"
+              data-tip="Comment"
+            >
+              <FaCommentAlt />
+            </div>
+            <div
+              className="tooltip tooltip-info flex flex-col items-center"
+              data-tip="Views"
+            >
+              <FaEye />
+            </div>
+            <div
+              className="tooltip tooltip-error flex flex-col items-center"
+              data-tip="Bookmark"
+            >
+              {bookMark ? (
+                <FaBookmark
+                  onClick={() => setBookMark((prev) => !prev)}
+                  className="text-red-600"
+                />
+              ) : (
+                <CiBookmark onClick={() => setBookMark((prev) => !prev)} />
+              )}
+            </div>
+            <div
+              className="tooltip tooltip-info flex flex-col items-center"
+              data-tip="Download"
+            >
+              <PiDownloadFill />
+            </div>
+          </div>
         </article>
       </main>
 
@@ -206,6 +267,7 @@ export default function Home() {
           type="text"
           placeholder="Search..."
           className="input input-md rounded-3xl"
+          name="Search"
         />
         {/* Premium subscription section */}
         <section className="bg-gray-800 rounded-3xl  p-3 border border-gray-600">
@@ -242,7 +304,7 @@ export default function Home() {
            */}
           <dialog
             id="PostModalMobile"
-            className="modal flex justify-center items-start pt-5"
+            className="modal flex justify-center items-start pt-5 -translate-x-5"
           >
             <div className="modal-box">
               <form method="dialog">
@@ -251,23 +313,24 @@ export default function Home() {
                   ✕
                 </button>
               </form>
-              <div className="grid grid-cols-5 justify-center items-center m-4">
-                <div className="avatar avatar-placeholder m-4 col-span-1">
-                  <div className="bg-gray-400 text-neutral-content w-12 rounded-full">
-                    <span>D</span>
+              <div className="grid grid-cols-10 justify-center items-baseline m-4">
+                <div className="avatar avatar-placeholder m-4 col-span-3">
+                  <div className="bg-gray-400 text-neutral-content w-24 rounded-full">
+                    <span className="text-base">D</span>
                   </div>
                 </div>
-                <input
-                  type="text"
+                <textarea
                   placeholder="Type here"
-                  className="input input-ghost input-lg col-span-4"
+                  className="textarea textarea-ghost col-span-7"
+                  name="Post"
                 />
-                <div className="divider col-span-5"></div>
-                <div className="col-span-2 flex justify-evenly">
+                <div className="divider col-span-10"></div>
+                <div className="col-span-10 flex justify-between">
                   <AiFillPicture className="w-6 h-6 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
                   <MdGif className="w-6 h-6 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
                   <MdEmojiEmotions className="w-6 h-6 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
                   <GiPositionMarker className="w-6 h-6 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
+                  <FaBrain className="w-6 h-6 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
                 </div>
               </div>
             </div>
