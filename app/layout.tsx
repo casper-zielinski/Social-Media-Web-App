@@ -1,8 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
 // const inter = Inter({ subsets: ["latin"], });   ==> Font Style for Body
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="w-100">
-        <div className="grid grid-cols-12">{children}</div>
+        <div className="grid grid-cols-12 relative">{children}</div>
       </body>
     </html>
   );

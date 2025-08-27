@@ -1,0 +1,20 @@
+import React from "react";
+
+const LogInPopUp = () => {
+  return (
+    <div className="grid grid-cols-12 p-4 md:p-3 lg:p-2 gap-4">
+      <div className="col-span-12 sm:col-span-6 flex flex-col lg:flex-row space-y-3 lg:space-y-0 lg:space-x-3 text-start">
+        <p className="font-bold text-cyan-200">
+          Don't miss out on Chating with your Brain
+        </p>
+        <p>People on ChatAI are the first to know</p>
+      </div>
+      <div className="col-span-12 sm:col-span-6 flex space-x-4 sm:justify-end">
+        <button className="btn btn-soft btn-info btn-sm sm:btn-md">Log In</button>
+        <button className="btn btn-info btn-sm sm:btn-md">Sign Up</button>
+      </div>
+    </div>
+  );
+};
+
+export default LogInPopUp;
