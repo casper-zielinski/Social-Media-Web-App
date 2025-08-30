@@ -4,7 +4,7 @@ const initialState = {
   loggedIn: false,
 };
 
-const modalSlice = createSlice({
+const loginSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
@@ -17,6 +17,6 @@ const modalSlice = createSlice({
   },
 });
 
-export const { logIn, logOut } = modalSlice.actions;
+export const { logIn, logOut } = loginSlice.actions;
 
-export default modalSlice.reducer;
+export default loginSlice.reducer;

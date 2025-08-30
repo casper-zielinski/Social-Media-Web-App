@@ -1,7 +1,11 @@
 "use client";
 
 import Logo from "./Logo";
-import { MdHome, MdNotificationsActive } from "react-icons/md";
+import {
+  MdHome,
+  MdLocalPostOffice,
+  MdNotificationsActive,
+} from "react-icons/md";
 import {
   FaSearch,
   FaBrain,
@@ -42,7 +46,7 @@ export default function Home() {
        * Present in both sidebar (desktop) and footer (mobile).
        */}
 
-      <aside className="hidden sm:flex flex-col sm:col-span-3 bg-gray-950 border-r-2 border-blue-950">
+      <aside className="flex-col col-span-2 sm:col-span-3 bg-gray-950 border-r-2 border-blue-950">
         <Logo />
         <ul className="list">
           <li className="list-row">
@@ -62,7 +66,7 @@ export default function Home() {
                 <span className="indicator-item status status-success"></span>
                 <MdHome className="h-7 w-7"></MdHome>
               </div>
-              <div className="text-xs">Home</div>
+              <div className="hidden sm:block sm:text-xs">Home</div>
             </button>
           </li>
           <li className="list-row">
@@ -79,7 +83,7 @@ export default function Home() {
               }
             >
               <FaSearch className="h-7 w-7" />
-              <div className="text-xs">Explore</div>
+              <div className="hidden sm:block sm:text-xs">Explore</div>
             </button>
           </li>
           <li className="list-row">
@@ -96,7 +100,9 @@ export default function Home() {
               }
             >
               <MdNotificationsActive className="h-7 w-7" />
-              <div className="text-xs md:ms-2">Notifications</div>
+              <div className="hidden sm:block sm:text-xs md:ms-2">
+                Notifications
+              </div>
             </button>
           </li>
           <li className="list-row">
@@ -113,7 +119,7 @@ export default function Home() {
               }
             >
               <LuMessageSquare className="h-7 w-7" />
-              <div className="text-xs">Message</div>
+              <div className="hidden sm:block sm:text-xs">Message</div>
             </button>
           </li>
           <li className="list-row">
@@ -130,40 +136,43 @@ export default function Home() {
               }
             >
               <FaBrain className="h-7 w-7" />
-              <div className="text-xs">AI Chatbot</div>
+              <div className="hidden sm:block sm:text-xs">AI Chatbot</div>
             </button>
           </li>
-        </ul>
-
-        {/* "Post" button in sidebar (desktop) */}
-        <button
-          className="btn btn-info w-1/2 m-3"
-          onClick={() =>
-            loggedIn
-              ? (
-                  document.getElementById("PostModal") as HTMLDialogElement
-                )?.showModal()
-              : (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                )?.showModal()
-          }
-        >
-          Post
-        </button>
-
-        <div className="flex items-center">
-          <div className="avatar avatar-placeholder m-4">
-            <div className="bg-gray-400 text-neutral-content w-12 rounded-full">
-              <span>D</span>
+          <li className="list-row">
+            {/* "Post" button in sidebar (desktop) */}
+            <button
+              className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-2"
+              onClick={() =>
+                loggedIn
+                  ? (
+                      document.getElementById("PostModal") as HTMLDialogElement
+                    )?.showModal()
+                  : (
+                      document.getElementById(
+                        "LoginOrSignUpModal"
+                      ) as HTMLDialogElement
+                    )?.showModal()
+              }
+            >
+              <MdLocalPostOffice className="w-7 h-7" />
+              <div className="hidden sm:flex">Post</div>
+            </button>
+          </li>
+          <li className="list-row">
+            <div className="flex items-center">
+              <div className="avatar avatar-placeholder m-4">
+                <div className="bg-gray-400 text-neutral-content w-12 rounded-full">
+                  <span>D</span>
+                </div>
+              </div>
+              <div className="hidden md:block">
+                <p className="font-bold">Avatar</p>
+                <p className="text-xs text-gray-400">Avatar@gmail.com</p>
+              </div>
             </div>
-          </div>
-          <div>
-            <p className="font-bold">Avatar</p>
-            <p className="text-xs text-gray-400">Avatar@gmail.com</p>
-          </div>
-        </div>
+          </li>
+        </ul>
       </aside>
 
       {/* Main content section displaying the feed based on navigationPagerForYou state */}

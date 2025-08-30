@@ -24,7 +24,7 @@ const PopUpModals = () => {
 
             <label className="label">Email</label>
             <input
-              className="input validator"
+              className="input validator w-11/12 md:w-9/12"
               type="email"
               required
               placeholder="mail@site.com"
@@ -34,7 +34,7 @@ const PopUpModals = () => {
             </div>
 
             <label className="label">Password</label>
-            <div className="join w-9/12">
+            <div className="join w-11/12 md:w-9/12">
               <input
                 type={showPassword ? "text" : "password"}
                 className="input validator join-item"
@@ -63,8 +63,27 @@ const PopUpModals = () => {
             </p>
 
             <button className="btn btn-info mt-4">Login</button>
+            <div className="w-1/2">
+              <div className="divider">OR</div>
+            </div>
+            <button
+              className="btn btn-info btn-soft mt-4"
+              onClick={() => {
+                (
+                  document.getElementById("LoginDialog") as HTMLDialogElement
+                ).close();
+                (
+                  document.getElementById("SignUpDialog") as HTMLDialogElement
+                ).show();
+              }}
+            >
+              Sign Up
+            </button>
           </fieldset>
         </div>
+        <form method="dialog" className="modal-backdrop cursor-none">
+          <button>close</button>
+        </form>
       </dialog>
 
       {/* Sign Up Dialog*/}
@@ -86,11 +105,15 @@ const PopUpModals = () => {
             </legend>
 
             <label className="label">Name</label>
-            <input type="text" className="input" placeholder="Name" />
+            <input
+              type="text"
+              className="input w-11/12 md:w-9/12"
+              placeholder="Name"
+            />
 
             <label className="label">Email</label>
             <input
-              className="input validator"
+              className="input validator w-11/12 md:w-9/12"
               type="email"
               required
               placeholder="mail@site.com"
@@ -100,7 +123,7 @@ const PopUpModals = () => {
             </div>
 
             <label className="label">Password</label>
-            <div className="join w-8/12">
+            <div className="join w-11/12 md:w-9/12">
               <input
                 type={showPassword ? "text" : "password"}
                 className="input validator join-item"
@@ -128,9 +151,28 @@ const PopUpModals = () => {
               At least one uppercase letter
             </p>
 
-            <button className="btn btn-info mt-4">Login</button>
+            <button className="btn btn-info mt-4">Sign Up</button>
+            <div className="w-1/2">
+              <div className="divider">OR</div>
+            </div>
+            <button
+              className="btn btn-info btn-soft mt-4"
+              onClick={() => {
+                (
+                  document.getElementById("SignUpDialog") as HTMLDialogElement
+                ).close();
+                (
+                  document.getElementById("LoginDialog") as HTMLDialogElement
+                ).show();
+              }}
+            >
+              Log in
+            </button>
           </fieldset>
         </div>
+        <form method="dialog" className="modal-backdrop cursor-none">
+          <button>close</button>
+        </form>
       </dialog>
 
       {/* Login or Sign Up Dialog */}
@@ -182,6 +224,9 @@ const PopUpModals = () => {
             </div>
           </div>
         </div>
+        <form method="dialog" className="modal-backdrop cursor-none">
+          <button>close</button>
+        </form>
       </dialog>
       {/* Post Modal for creating and sending Posts*/}
       <dialog
@@ -216,6 +261,9 @@ const PopUpModals = () => {
             </div>
           </div>
         </div>
+        <form method="dialog" className="modal-backdrop cursor-none">
+          <button>close</button>
+        </form>
       </dialog>
     </>
   );

@@ -1,4 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@plugin "daisyui"
+@plugin "daisyui" {
+  exclude: rootscrollgutter;
+}
+
+body {
+      margin: 0;
+      padding: 0;
+}
+
+.modal-backdrop button {
+      cursor: auto !important;
+}

@@ -17,7 +17,7 @@ const main = ({ logedIn }: mainProps) => {
   const [bookMark, setBookMark] = useState(false);
   const [repost, setRepost] = useState(false);
   return (
-    <main className="col-span-12 sm:col-span-6 bg-gray-950 min-h-screen">
+    <main className="col-span-10 sm:col-span-6 bg-gray-950 min-h-screen">
       {/**
        * Main feed section.
        * Displays either "For you" or "Following" posts depending on navigationPagerForYou.
