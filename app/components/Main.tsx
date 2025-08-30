@@ -6,6 +6,7 @@ import { CiBookmark } from "react-icons/ci";
 import { PiDownloadFill } from "react-icons/pi";
 import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
+import { IoMdPersonAdd } from "react-icons/io";
 
 interface mainProps {
   logedIn: boolean;
@@ -17,7 +18,7 @@ const main = ({ logedIn }: mainProps) => {
   const [bookMark, setBookMark] = useState(false);
   const [repost, setRepost] = useState(false);
   return (
-    <main className="col-span-10 sm:col-span-6 bg-gray-950 min-h-screen">
+    <main className="col-span-9 sm:col-span-6 lg:col-span-8 bg-gray-950 min-h-screen">
       {/**
        * Main feed section.
        * Displays either "For you" or "Following" posts depending on navigationPagerForYou.
@@ -54,16 +55,16 @@ const main = ({ logedIn }: mainProps) => {
       {/* All the Posts with the follow Button*/}
       <article className="border-y-2 border-blue-950">
         <div className="grid items-center grid-cols-12">
-          <div className="avatar avatar-placeholder col-span-2 m-4">
+          <div className="avatar avatar-placeholder col-span-3 sm:col-span-2 m-3">
             <div className="bg-gray-400 text-neutral-content w-12 rounded-full">
               <span>D</span>
             </div>
           </div>
-          <div className="col-span-2">
+          <div className="col-span-3">
             <p className="font-bold">Avatar</p>
             <p className="text-xs text-gray-400">Avatar@gmail.com</p>
           </div>
-          <div className="col-span-8 flex justify-end me-3 mt-3">
+          <div className="col-span-6 flex justify-end me-3 mt-3">
             <button
               className="btn btn-info col-span-8"
               onClick={() =>
@@ -76,7 +77,7 @@ const main = ({ logedIn }: mainProps) => {
                     )?.showModal()
               }
             >
-              Follow
+              <IoMdPersonAdd className="w-4 h-4"/>
             </button>
           </div>
         </div>

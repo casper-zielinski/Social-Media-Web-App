@@ -11,7 +11,7 @@ const PopUpModals = () => {
       {/* Login Dialog */}
       <dialog id="LoginDialog" className="modal" data-theme="dark">
         <div className="modal-box w-4/5 sm:w-3/5 max-w-md">
-          <form method="dialog">
+          <form method="dialog" name="Close Login Dialog">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
@@ -81,7 +81,11 @@ const PopUpModals = () => {
             </button>
           </fieldset>
         </div>
-        <form method="dialog" className="modal-backdrop cursor-none">
+        <form
+          method="dialog"
+          className="modal-backdrop cursor-none"
+          name="Close Login Dialog From Background"
+        >
           <button>close</button>
         </form>
       </dialog>
@@ -93,7 +97,7 @@ const PopUpModals = () => {
         data-theme="dark"
       >
         <div className="modal-box">
-          <form method="dialog">
+          <form method="dialog" name="Close Sign Up Dialog">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
@@ -170,7 +174,11 @@ const PopUpModals = () => {
             </button>
           </fieldset>
         </div>
-        <form method="dialog" className="modal-backdrop cursor-none">
+        <form
+          method="dialog"
+          className="modal-backdrop cursor-none"
+          name="Close Sign Up Dialog from Background"
+        >
           <button>close</button>
         </form>
       </dialog>
@@ -178,7 +186,7 @@ const PopUpModals = () => {
       {/* Login or Sign Up Dialog */}
       <dialog id="LoginOrSignUpModal" className="modal" data-theme="dark">
         <div className="modal-box w-3/5 max-w-md">
-          <form method="dialog">
+          <form method="dialog" name="Login or Sign Up Dialog Closer">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
@@ -224,7 +232,11 @@ const PopUpModals = () => {
             </div>
           </div>
         </div>
-        <form method="dialog" className="modal-backdrop cursor-none">
+        <form
+          method="dialog"
+          className="modal-backdrop cursor-none"
+          name="Login or Sign Up Dialog Closer from Backgound"
+        >
           <button>close</button>
         </form>
       </dialog>
@@ -235,7 +247,7 @@ const PopUpModals = () => {
         data-theme="dark"
       >
         <div className="modal-box">
-          <form method="dialog">
+          <form method="dialog" name="Closing Post Modal">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
@@ -261,7 +273,11 @@ const PopUpModals = () => {
             </div>
           </div>
         </div>
-        <form method="dialog" className="modal-backdrop cursor-none">
+        <form
+          method="dialog"
+          className="modal-backdrop cursor-none"
+          name="Closing Post Modal from Backgound"
+        >
           <button>close</button>
         </form>
       </dialog>
