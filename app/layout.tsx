@@ -1,12 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { useState } from "react";
+import StoreProvider from "@/redux/StoreProvider";
 
 // const inter = Inter({ subsets: ["latin"], });   ==> Font Style for Body
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
-}
+};
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,10 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="w-100">
-        <div className="grid grid-cols-12 relative">{children}</div>
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body className="relative w-full overflow-x-hidden min-h-screen p-0 m-0">
+          <div className="grid grid-cols-12">{children}</div>
+        </body>
+      </html>
+    </StoreProvider>
   );
 }
