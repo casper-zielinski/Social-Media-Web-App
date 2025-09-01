@@ -20,10 +20,10 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className="relative w-full min-h-screen p-0 m-0">
-          <div className="grid grid-cols-12">{children}</div>
+        <body className=" bg-gray-950 min-w-[320px] min-h-full p-0 m-0">
+          {children}
         </body>
       </html>
     </StoreProvider>
   );
-}  
+}

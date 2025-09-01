@@ -1,12 +1,8 @@
 import React from "react";
 
-interface LeftAsideProps {
-  loggedIn: boolean;
-}
-
 /* Left Side Bar, only for bigger Phones and bigger, search bar and Subscribtion Tab*/
 
-const LeftAside = ({ loggedIn }: LeftAsideProps) => {
+const LeftAside = () => {
   return (
     <aside className="hidden sm:flex sm:flex-col sm:col-span-3 lg:col-span-2 bg-gray-950 border-l-2 border-blue-950 space-y-3.5 p-3">
       <input

@@ -1,11 +1,52 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { AiFillPicture } from "react-icons/ai";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { GiPositionMarker } from "react-icons/gi";
 import { MdGif, MdEmojiEmotions } from "react-icons/md";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "@/firebase";
+import { signInUser } from "@/redux/slices/userSlice";
+import { AppDispatch } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { logIn } from "@/redux/slices/loginSlice";
 
 const PopUpModals = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch: AppDispatch = useDispatch();
+
+  async function handleSignUp(email: string, password: string) {
+    const userCredentials = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+  }
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (!currentUser) return;
+
+      dispatch(
+        signInUser({
+          name: "",
+          username: "",
+          email: currentUser.email,
+          uid: currentUser.uid,
+        })
+      );
+      dispatch(logIn())
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <>
       {/* Login Dialog */}
@@ -121,6 +162,8 @@ const PopUpModals = () => {
               type="email"
               required
               placeholder="mail@site.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
             />
             <div className="validator-hint hidden">
               Enter valid email address
@@ -136,6 +179,8 @@ const PopUpModals = () => {
                 minLength={8}
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
               <button
                 className="btn btn-info btn-outline rounded-e"
@@ -155,7 +200,12 @@ const PopUpModals = () => {
               At least one uppercase letter
             </p>
 
-            <button className="btn btn-info mt-4">Sign Up</button>
+            <button
+              className="btn btn-info mt-4"
+              onClick={() => handleSignUp(email, password)}
+            >
+              Sign Up
+            </button>
             <div className="w-1/2">
               <div className="divider">OR</div>
             </div>

@@ -5,7 +5,7 @@ const initialState = {
 };
 
 const loginSlice = createSlice({
-  name: "modal",
+  name: "login",
   initialState,
   reducers: {
     logIn: (state) => {

@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import {
   MdHome,
@@ -7,19 +9,20 @@ import {
 import Logo from "../Logo";
 import { FaSearch, FaBrain } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
-
-interface RightAsideProps {
-  loggedIn: boolean;
-}
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 /* 
       Right Side Bar with Buttons for Navigation like Home, Search, AI-Tools etc. 
       both visible on Mobile and on Desktop, but without Text on Mobile (only Button Icons)
 */
 
-const RightAside = ({ loggedIn }: RightAsideProps) => {
+const RightAside = () => {
+  const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
+  const useremail = useSelector((state: RootState) => state.user.email);
+
   return (
-    <aside className="col-span-4 lg:col-span-2 bg-gray-950 border-r-2 border-blue-950">
+    <aside className="col-span-3 lg:col-span-2 bg-gray-950 border-r-2 border-blue-950">
       <Logo />
       <ul className="list">
         <li className="list-row justify-center">
@@ -146,13 +149,13 @@ const RightAside = ({ loggedIn }: RightAsideProps) => {
             </div>
             <div className="hidden md:block">
               <p className="font-bold">Avatar</p>
-              <p className="text-xs text-gray-400">Avatar@gmail.com</p>
+              <p className="text-xs text-gray-400">{useremail}</p>
             </div>
           </div>
         </li>
         <li className="list-row md:hidden">
           <div className="col-span-full">
-            <p className="text-xs text-gray-400">Avatar@gmail.com</p>
+            <p className="text-xs text-gray-400">{useremail}</p>
           </div>
         </li>
       </ul>

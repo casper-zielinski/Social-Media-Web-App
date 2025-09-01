@@ -1,9 +1,5 @@
-"use client";
-
 import Main from "./components/Main";
 import PopUpModals from "./components/PopUpModals";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import RightAside from "./components/RightAside";
 import LeftAside from "./components/LeftAside";
 import Footer from "./components/Footer";
@@ -23,10 +19,9 @@ import Footer from "./components/Footer";
 }
 
 export default function Home() {
-  const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
 
   return (
-    <>
+    <div className="grid grid-cols-12 w-full">
       {/* Modals for Login & Posting */}
       <PopUpModals />
 
@@ -34,16 +29,16 @@ export default function Home() {
       Right Side Bar with Buttons for Navigation like Home, Search, AI-Tools etc. 
       both visible on Mobile and on Desktop, but without Text on Mobile (only Button Icons)
       */}
-      <RightAside loggedIn={loggedIn} />
+      <RightAside />
 
       {/* Main content section displaying the feed based on navigationPagerForYou state */}
-      <Main logedIn={loggedIn} />
+      <Main />
 
       {/* Left Side Bar, only for bigger Phones and bigger, search bar and Subscribtion Tab*/}
-      <LeftAside loggedIn={loggedIn} />
+      <LeftAside />
 
       {/* The Footer Interface for Smart Phones or, if User not Logged In, Shows Login or Sign Up Prop*/}
-      <Footer loggedIn={loggedIn} />
-    </>
+      <Footer />
+    </div>
   );
 }

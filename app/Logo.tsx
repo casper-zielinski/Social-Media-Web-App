@@ -10,8 +10,8 @@ function Logo() {
         </linearGradient>
 
         <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#4facfe" stop-opacity="1" />
-          <stop offset="100%" stop-color="#00f2fe" stop-opacity="1" />
+          <stop offset="0%" stopColor="#4facfe" stopOpacity="1" />
+          <stop offset="100%" stopColor="#00f2fe" stopOpacity="1" />
         </linearGradient>
 
         <filter id="glow">
@@ -42,35 +42,35 @@ function Logo() {
         <path
           d="M 7 7 Q 8 8 10 10"
           stroke="url(#iconGradient)"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           fill="none"
           opacity="0.6"
         />
         <path
           d="M 12 10 Q 13 9 15 8"
           stroke="url(#iconGradient)"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           fill="none"
           opacity="0.6"
         />
         <path
           d="M 10 13 Q 9 14 8 15"
           stroke="url(#iconGradient)"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           fill="none"
           opacity="0.6"
         />
         <path
           d="M 12 12 Q 13 14 14 16"
           stroke="url(#iconGradient)"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           fill="none"
           opacity="0.6"
         />
         <path
           d="M 10 10 Q 12 11 14 16"
           stroke="url(#iconGradient)"
-          stroke-width="1"
+          strokeWidth="1"
           fill="none"
           opacity="0.4"
         />
@@ -78,10 +78,10 @@ function Logo() {
         <path
           d="M 16 4 L 18 6 L 22 2"
           stroke="#00f2fe"
-          stroke-width="2"
+          strokeWidth="2"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
       <circle
@@ -90,7 +90,7 @@ function Logo() {
         r="18"
         fill="none"
         stroke="url(#iconGradient)"
-        stroke-width="0.5"
+        strokeWidth="0.5"
         opacity="0.3"
       >
         <animate

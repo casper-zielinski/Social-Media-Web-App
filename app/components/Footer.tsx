@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   FaCreativeCommonsSamplingPlus,
@@ -7,22 +9,22 @@ import {
 import { LuMessageSquare } from "react-icons/lu";
 import { MdHome, MdNotificationsActive } from "react-icons/md";
 import SignUpOrLoginProp from "../components/SignUpLoginProp";
-
-interface FooterProps {
-  loggedIn: boolean;
-}
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 /* The Footer Interface for Smart Phones or, if User not Logged In, Shows Login or Sign Up Prop*/
 
-const Footer = ({ loggedIn }: FooterProps) => {
+const Footer = () => {
+  const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
+
   return (
     <footer
       className={`${
-        loggedIn ? "" : "bg-blue-500"
-      } absolute bottom-0 footer footer-horizontal z-10 footer-center border-t-2 border-blue-950 col-span-full text-base-content`}
+        loggedIn ? "bg-gray-950" : "bg-blue-500"
+      } fixed bottom-0 footer footer-horizontal z-10 footer-center border-t-2 border-blue-950 col-span-12 text-base-content`}
     >
       {loggedIn ? (
-        <div className="flex m-5  space-x-5 col-span-1 sm:hidden">
+        <div className="flex m-5 space-x-5 sm:hidden">
           {/**
            * Opens the post creation modal dialog for mobile users.
            * @button

@@ -1,5 +1,6 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { FcLike } from "react-icons/fc";
+"use client";
+
+import React, { useState } from "react";
 import { BiRepost } from "react-icons/bi";
 import { FaEye, FaBookmark } from "react-icons/fa";
 import { CiBookmark } from "react-icons/ci";
@@ -7,16 +8,17 @@ import { PiDownloadFill } from "react-icons/pi";
 import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
 import { IoMdPersonAdd } from "react-icons/io";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
-interface mainProps {
-  logedIn: boolean;
-}
-
-const main = ({ logedIn }: mainProps) => {
+const main = () => {
   const [navigationPagerForYou, setNavigationPagerForYou] = useState(true);
   const [likeColor, setLikeColor] = useState(false);
   const [bookMark, setBookMark] = useState(false);
   const [repost, setRepost] = useState(false);
+  const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
+  const useremail = useSelector((state: RootState) => state.user.email);
+
   return (
     <main className="col-span-9 sm:col-span-6 lg:col-span-8 bg-gray-950 min-h-screen">
       {/**
@@ -54,17 +56,21 @@ const main = ({ logedIn }: mainProps) => {
       </header>
       {/* All the Posts with the follow Button*/}
       <article className="border-y-2 border-blue-950">
-        <div className="grid items-center grid-cols-12">
-          <div className="avatar avatar-placeholder col-span-3 sm:col-span-2 m-3">
+        <div className="flex items-center">
+          <div className="avatar avatar-placeholder m-3">
             <div className="bg-gray-400 text-neutral-content w-12 rounded-full">
               <span>D</span>
             </div>
           </div>
-          <div className="col-span-3">
+          <div>
             <p className="font-bold">Avatar</p>
-            <p className="text-xs text-gray-400">Avatar@gmail.com</p>
+            <p className="text-xs text-gray-400">
+              {useremail.length > 20
+                ? useremail.substring(0, 16) + "..."
+                : useremail}
+            </p>
           </div>
-          <div className="col-span-6 flex justify-end me-3 mt-3">
+          <div className="flex justify-end ml-auto mr-2 mt-3">
             <button
               className="btn btn-info col-span-8"
               onClick={() =>
@@ -77,7 +83,7 @@ const main = ({ logedIn }: mainProps) => {
                     )?.showModal()
               }
             >
-              <IoMdPersonAdd className="w-4 h-4"/>
+              <IoMdPersonAdd className="w-4 h-4" />
             </button>
           </div>
         </div>
