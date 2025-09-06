@@ -18,8 +18,7 @@ import Footer from "./components/Footer";
    */
 }
 
-export default function Home() {
-
+export default function page() {
   return (
     <div className="grid grid-cols-12 w-full">
       {/* Modals for Login & Posting */}

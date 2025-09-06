@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import {
@@ -6,11 +6,11 @@ import {
   MdLocalPostOffice,
   MdNotificationsActive,
 } from "react-icons/md";
-import Logo from "../Logo";
 import { FaSearch, FaBrain } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import Logo from "./Logo";
 
 /* 
       Right Side Bar with Buttons for Navigation like Home, Search, AI-Tools etc. 
@@ -22,7 +22,7 @@ const RightAside = () => {
   const useremail = useSelector((state: RootState) => state.user.email);
 
   return (
-    <aside className="col-span-3 lg:col-span-2 bg-gray-950 border-r-2 border-blue-950">
+    <aside className="col-span-3 bg-gray-950 border-r-2 border-blue-950">
       <Logo />
       <ul className="list">
         <li className="list-row justify-center">
@@ -138,7 +138,7 @@ const RightAside = () => {
         <li className="list-row  justify-center">
           <div className="flex col-span-full space-x-4 items-center">
             <div
-              className="tooltip tooltip-right tooltip-info"
+              className="tooltip tooltip-right lg:tooltip-top tooltip-info"
               data-tip={"Avatar"}
             >
               <div className="avatar avatar-placeholder">

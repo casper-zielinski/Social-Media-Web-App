@@ -20,7 +20,7 @@ const main = () => {
   const useremail = useSelector((state: RootState) => state.user.email);
 
   return (
-    <main className="col-span-9 sm:col-span-6 lg:col-span-8 bg-gray-950 min-h-screen">
+    <main className="col-span-9 sm:col-span-6 bg-gray-950 min-h-screen">
       {/**
        * Main feed section.
        * Displays either "For you" or "Following" posts depending on navigationPagerForYou.
@@ -28,20 +28,20 @@ const main = () => {
 
       <header className="border-b-2 border-blue-950 grid grid-cols-2 text-center">
         <div
-          className={`hover:bg-gray-800 p-3 ${
+          className={`hover:bg-gray-800 p-3 cursor-pointer ${
             navigationPagerForYou ? "font-bold" : "text-gray-500"
           }`}
           onClick={() => setNavigationPagerForYou(true)}
         >
-          For you
+          <p>For you</p>
         </div>
         <div
-          className={`hover:bg-gray-800 p-3 ${
+          className={`hover:bg-gray-800 p-3 cursor-pointer ${
             navigationPagerForYou ? "text-gray-500" : "font-bold"
           }`}
           onClick={() => setNavigationPagerForYou(false)}
         >
-          Following
+          <p>Following</p>
         </div>
         <div
           className={`items-end w-1/2 h-1 translate-x-1/2 rounded ${

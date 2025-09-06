@@ -1,10 +1,12 @@
+import Image from "next/image";
 import React from "react";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 /* Left Side Bar, only for bigger Phones and bigger, search bar and Subscribtion Tab*/
 
 const LeftAside = () => {
   return (
-    <aside className="hidden sm:flex sm:flex-col sm:col-span-3 lg:col-span-2 bg-gray-950 border-l-2 border-blue-950 space-y-3.5 p-3">
+    <aside className="hidden sm:flex sm:flex-col sm:col-span-3 lg:col-span-3 bg-gray-950 border-l-2 border-blue-950 space-y-3.5 p-3">
       <input
         type="text"
         placeholder="Search..."
@@ -19,6 +21,101 @@ const LeftAside = () => {
           revenue.
         </p>
         <button className="btn btn-outline btn-info mt-3">Subscribe</button>
+      </section>
+
+      {/*What's happening Section */}
+      <section className="bg-gray-800 rounded-3xl p-3 border border-gray-600 w-95/100">
+        <h3 className="text-lg font-bold mb-4">What's happening</h3>
+        <div className="mb-3">
+          <div className="flex items-center">
+            <p className="text-sm text-gray-500">Trending in Austria</p>
+            <p className="ms-auto">
+              <HiDotsHorizontal className="hover:font-bold" />
+            </p>
+          </div>
+          <p className="text-sm font-bold">#React</p>
+          <p className="text-sm text-gray-500">220k Clicks</p>
+        </div>
+        <div className="mb-3">
+          <div className="flex items-center">
+            <p className="text-sm text-gray-500">Trending in Austria</p>
+            <p className="ms-auto">
+              <HiDotsHorizontal className="hover:font-bold" />
+            </p>
+          </div>
+          <p className="text-sm font-bold">#React</p>
+          <p className="text-sm text-gray-500">220k Clicks</p>
+        </div>
+        <div className="mb-3">
+          <div className="flex items-center">
+            <p className="text-sm text-gray-500">Trending in Austria</p>
+            <p className="ms-auto">
+              <HiDotsHorizontal className="hover:font-bold" />
+            </p>
+          </div>
+          <p className="text-sm font-bold">#React</p>
+          <p className="text-sm text-gray-500">220k Clicks</p>
+        </div>
+      </section>
+
+      {/* Who to follow Section*/}
+      <section className="bg-gray-800 p-3.5 grid grid-cols-6 gap-2 rounded-3xl border border-gray-600">
+        <div className="col-span-full lg:col-span-4 flex justify-self-start space-x-2 text-xs lg:text-base">
+          <Image
+            src={"/profilepic.jpg"}
+            alt="demo picture"
+            width={36}
+            height={36}
+            className="rounded"
+          />
+          <div className="text-xs text-start lg:text-base min-w-0">
+            <p className="font-bold break-words whitespace-normal">Dua Lipa</p>
+            <p className="text-gray-500 break-words whitespace-normal">
+              D.lipa@gmail.com
+            </p>
+          </div>
+        </div>
+        <div className="col-span-full lg:col-span-2 flex justify-self-center items-center lg:justify-self-end my-2 lg:m-0">
+          <button className="btn btn-accent btn-sm ml-auto">Follow</button>
+        </div>
+
+        <div className="col-span-full lg:col-span-4 flex justify-self-start space-x-2 text-xs lg:text-base">
+          <Image
+            src={"/profilepic.jpg"}
+            alt="demo picture"
+            width={36}
+            height={36}
+            className="rounded"
+          />
+          <div className="text-xs text-start lg:text-base min-w-0">
+            <p className="font-bold break-words whitespace-normal">Dua Lipa</p>
+            <p className="text-gray-500 break-words whitespace-normal">
+              D.lipa@gmail.com
+            </p>
+          </div>
+        </div>
+        <div className="col-span-full lg:col-span-2 flex justify-self-center items-center lg:justify-self-end my-2 lg:m-0">
+          <button className="btn btn-accent btn-sm ml-auto">Follow</button>
+        </div>
+
+        <div className="col-span-full lg:col-span-4 flex justify-self-start space-x-2 text-xs lg:text-base">
+          <Image
+            src={"/profilepic.jpg"}
+            alt="demo picture"
+            width={36}
+            height={36}
+            className="rounded"
+          />
+          <div className="text-xs text-start lg:text-base min-w-0">
+            <p className="font-bold break-words whitespace-normal">Dua Lipa</p>
+            <p className="text-gray-500 break-words whitespace-normal">
+              D.lipa@gmail.com
+            </p>
+          </div>
+        </div>
+        <div className="col-span-full lg:col-span-2 flex justify-self-center items-center lg:justify-self-end my-2 lg:m-0">
+          <button className="btn btn-accent btn-sm ml-auto">Follow</button>
+        </div>
       </section>
     </aside>
   );
