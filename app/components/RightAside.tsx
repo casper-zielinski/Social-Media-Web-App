@@ -11,6 +11,9 @@ import { LuMessageSquare } from "react-icons/lu";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import Logo from "./Logo";
+import TruncateText from "./TruncateText";
+import { CiSettings } from "react-icons/ci";
+import { useRouter } from "next/navigation";
 
 /* 
       Right Side Bar with Buttons for Navigation like Home, Search, AI-Tools etc. 
@@ -20,6 +23,7 @@ import Logo from "./Logo";
 const RightAside = () => {
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   const useremail = useSelector((state: RootState) => state.user.email);
+  const router = useRouter();
 
   return (
     <aside className="col-span-3 bg-gray-950 border-r-2 border-blue-950">
@@ -30,7 +34,7 @@ const RightAside = () => {
             className="flex col-span-full items-center space-x-4 btn btn-soft btn-info rounded-xl"
             onClick={() =>
               loggedIn
-                ? ""
+                ? router.push("/")
                 : (
                     document.getElementById(
                       "LoginOrSignUpModal"
@@ -116,6 +120,23 @@ const RightAside = () => {
           </button>
         </li>
         <li className="list-row justify-center">
+          <button
+            className="flex col-span-full items-center space-x-4 btn btn-soft btn-info rounded-xl px-0.5"
+            onClick={() =>
+              loggedIn
+                ? router.push("/settings")
+                : (
+                    document.getElementById(
+                      "LoginOrSignUpModal"
+                    ) as HTMLDialogElement
+                  )?.showModal()
+            }
+          >
+            <CiSettings className="h-5 w-5" />
+            <div className="hidden sm:block sm:text-xs">Settings</div>
+          </button>
+        </li>
+        <li className="list-row justify-center">
           {/* "Post" button in sidebar (desktop) */}
           <button
             className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-1"
@@ -135,8 +156,8 @@ const RightAside = () => {
             <div className="hidden sm:flex">Post</div>
           </button>
         </li>
-        <li className="list-row  justify-center">
-          <div className="flex col-span-full space-x-4 items-center">
+        <li className="list-row p-2 justify-center">
+          <div className="flex flex-col space-y-2 sm:flex-row col-span-full space-x-4 items-center">
             <div
               className="tooltip tooltip-right lg:tooltip-top tooltip-info"
               data-tip={"Avatar"}
@@ -147,15 +168,15 @@ const RightAside = () => {
                 </div>
               </div>
             </div>
-            <div className="hidden md:block">
+            <div>
               <p className="font-bold">Avatar</p>
-              <p className="text-xs text-gray-400">{useremail}</p>
+              <TruncateText
+                maxLength={15}
+                text={useremail}
+                widthToShowFull={600}
+                className="text-gray-500 text-xs"
+              />
             </div>
-          </div>
-        </li>
-        <li className="list-row md:hidden">
-          <div className="col-span-full">
-            <p className="text-xs text-gray-400">{useremail}</p>
           </div>
         </li>
       </ul>

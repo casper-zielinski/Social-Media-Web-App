@@ -5,7 +5,6 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 
 const SignUpLoginProp = () => {
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>

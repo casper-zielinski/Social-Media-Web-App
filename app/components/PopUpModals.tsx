@@ -10,7 +10,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "@/firebase";
-import { signInUser } from "@/redux/slices/userSlice";
+import { signInUser, signOutUser } from "@/redux/slices/userSlice";
 import { AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { logIn } from "@/redux/slices/loginSlice";
@@ -41,7 +41,7 @@ const PopUpModals = () => {
           uid: currentUser.uid,
         })
       );
-      dispatch(logIn())
+      dispatch(logIn());
     });
 
     return unsubscribe;
@@ -293,10 +293,10 @@ const PopUpModals = () => {
       {/* Post Modal for creating and sending Posts*/}
       <dialog
         id="PostModal"
-        className="modal flex justify-center items-start pt-5"
+        className="modal modal-middle pb-96"
         data-theme="dark"
       >
-        <div className="modal-box">
+        <div className="modal-box w-10/12">
           <form method="dialog" name="Closing Post Modal">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">

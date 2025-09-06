@@ -10,8 +10,9 @@ import { FaCommentAlt } from "react-icons/fa";
 import { IoMdPersonAdd } from "react-icons/io";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import TruncateText from "./TruncateText";
 
-const main = () => {
+const Main = () => {
   const [navigationPagerForYou, setNavigationPagerForYou] = useState(true);
   const [likeColor, setLikeColor] = useState(false);
   const [bookMark, setBookMark] = useState(false);
@@ -64,11 +65,12 @@ const main = () => {
           </div>
           <div>
             <p className="font-bold">Avatar</p>
-            <p className="text-xs text-gray-400">
-              {useremail.length > 20
-                ? useremail.substring(0, 16) + "..."
-                : useremail}
-            </p>
+            <TruncateText
+              maxLength={15}
+              text={useremail}
+              widthToShowFull={600}
+              className="text-gray-500 text-xs break-words whitespace-normal"
+            />
           </div>
           <div className="flex justify-end ml-auto mr-2 mt-3">
             <button
@@ -206,4 +208,4 @@ const main = () => {
   );
 };
 
-export default main;
+export default Main;
