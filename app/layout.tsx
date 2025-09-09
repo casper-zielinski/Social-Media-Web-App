@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import StoreProvider from "@/redux/StoreProvider";
-import RightAside from "./components/RightAside";
-import Footer from "./components/Footer";
+import RightAside from "./components/layout/RightAside";
+import Footer from "./components/layout/Footer";
 import PopUpModals from "./components/PopUpModals";
 
 export const viewport: Viewport = {

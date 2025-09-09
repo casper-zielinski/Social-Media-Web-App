@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
 import { MdHome, MdNotificationsActive } from "react-icons/md";
-import SignUpOrLoginProp from "../components/SignUpLoginProp";
+import SignUpOrLoginProp from "../SignUpLoginProp";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 

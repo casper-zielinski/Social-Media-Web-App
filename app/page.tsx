@@ -1,6 +1,6 @@
-import Main from "./components/Main";
+import Main from "./components/layout/Main";
 import PopUpModals from "./components/PopUpModals";
-import LeftAside from "./components/LeftAside";
+import LeftAside from "./components/layout/LeftAside";
 
 {
   /**

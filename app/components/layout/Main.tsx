@@ -10,7 +10,8 @@ import { FaCommentAlt } from "react-icons/fa";
 import { IoMdPersonAdd } from "react-icons/io";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import TruncateText from "./TruncateText";
+import TruncateText from "../TruncateText";
+import Profile from "../Profile";
 
 const Main = () => {
   const [navigationPagerForYou, setNavigationPagerForYou] = useState(true);
@@ -58,19 +59,8 @@ const Main = () => {
       {/* All the Posts with the follow Button*/}
       <article className="border-y-2 border-blue-950">
         <div className="flex items-center">
-          <div className="avatar avatar-placeholder m-3">
-            <div className="bg-gray-400 text-neutral-content w-12 rounded-full">
-              <span>D</span>
-            </div>
-          </div>
-          <div>
-            <p className="font-bold">Avatar</p>
-            <TruncateText
-              maxLength={15}
-              text={useremail}
-              widthToShowFull={600}
-              className="text-gray-500 text-xs break-words whitespace-normal"
-            />
+          <div className="m-2">
+            <Profile classname="flex flex-row col-span-full space-x-2 sm:space-x-3 items-center justify-center sm:justify-start" />
           </div>
           <div className="flex justify-end ml-auto mr-2 mt-3">
             <button
