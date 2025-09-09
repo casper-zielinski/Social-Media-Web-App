@@ -12,27 +12,17 @@ import {
   MdLocalPostOffice,
 } from "react-icons/md";
 import { useSelector } from "react-redux";
-import TruncateText from "./TruncateText";
 
 const RightAsideListItems = () => {
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   const router = useRouter();
-  
 
   return (
     <>
       <li className="list-row justify-center">
         <button
           className="flex col-span-full items-center justify-center space-x-4 btn btn-soft btn-info rounded-xl"
-          onClick={() =>
-            loggedIn
-              ? router.push("/")
-              : (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                )?.showModal()
-          }
+          onClick={() => router.push("/")}
         >
           <div className="indicator">
             <span className="indicator-item status status-success"></span>
@@ -150,7 +140,6 @@ const RightAsideListItems = () => {
           <div className="hidden sm:flex">Post</div>
         </button>
       </li>
-     
     </>
   );
 };
