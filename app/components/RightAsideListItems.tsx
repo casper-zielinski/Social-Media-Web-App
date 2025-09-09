@@ -21,7 +21,6 @@ const RightAsideListItems = () => {
 
   return (
     <>
-      {" "}
       <li className="list-row justify-center">
         <button
           className="flex col-span-full items-center justify-center space-x-4 btn btn-soft btn-info rounded-xl"

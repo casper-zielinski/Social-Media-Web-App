@@ -16,16 +16,20 @@ const Main = () => {
         <MainHeader />
       </header>
       {/* All the Posts with the follow Button*/}
-      <article className="border-y-2 border-blue-950">
-        <div className="flex items-center">
-          <div className="m-2">
-            <Profile classname="flex flex-row col-span-full space-x-2 sm:space-x-3 items-center justify-center sm:justify-start" />
+      <article className="border-y-2 border-blue-950 overflow-hidden">
+        <div className="flex items-center w-full">
+          <div className="m-2 flex-1 min-w-0">
+            <Profile
+              classname="flex flex-row space-x-2 sm:space-x-3 items-center min-w-0 flex-shrink"
+              tooltipDirectionAvatar="tooltip-right lg:tooltip-bottom"
+              tooltipDirectionEmail="tooltip-bottom"
+            />
           </div>
-          <div className="flex justify-end ml-auto mr-2 mt-3">
+          <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">
             <FollowButton />
           </div>
         </div>
-        <p className="m-2">
+        <p className="m-2 break-words">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
           corporis neque alias delectus temporibus, commodi libero inventore
           voluptates quam. Cum suscipit molestias officiis nemo quasi cupiditate

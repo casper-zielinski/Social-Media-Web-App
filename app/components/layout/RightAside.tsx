@@ -1,9 +1,5 @@
 import React from "react";
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
 import Logo from "../Logo";
-import TruncateText from "../TruncateText";
-import { useRouter } from "next/navigation";
 import RightAsideListItems from "../RightAsideListItems";
 import Profile from "../Profile";
 
@@ -19,7 +15,11 @@ const RightAside = () => {
       <ul className="list">
         <RightAsideListItems />
         <li className="list-row p-2 justify-center">
-          <Profile classname="flex flex-col space-y-2 sm:flex-row col-span-full sm:space-x-4 items-center justify-center sm:justify-start sm:pl-5" />
+          <Profile
+            classname="flex flex-col space-y-2 sm:flex-row col-span-full sm:space-x-4 items-center justify-center sm:justify-start sm:pl-5"
+            tooltipDirectionAvatar="tooltip-right md:tooltip-top"
+            tooltipDirectionEmail="tooltip-right"
+          />
         </li>
       </ul>
     </aside>

@@ -27,6 +27,8 @@ const PopUpModals = () => {
       email,
       password
     );
+
+    (document.getElementById("SignUpDialog") as HTMLDialogElement).close();
   }
 
   useEffect(() => {

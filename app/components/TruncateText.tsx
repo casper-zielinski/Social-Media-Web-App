@@ -22,7 +22,13 @@ const TruncateText = ({
     ? text.substring(0, maxLength) + "..."
     : text;
 
-  return <p className={className}>{displayText}</p>;
+  return (
+    <p
+      className={`${className} break-words overflow-hidden text-ellipsis max-w-full`} title={text}
+    >
+      {displayText}
+    </p>
+  );
 };
 
 export default TruncateText;
