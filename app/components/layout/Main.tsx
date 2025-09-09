@@ -1,26 +1,10 @@
-"use client";
-
-import React, { useState } from "react";
-import { BiRepost } from "react-icons/bi";
-import { FaEye, FaBookmark } from "react-icons/fa";
-import { CiBookmark } from "react-icons/ci";
-import { PiDownloadFill } from "react-icons/pi";
-import { AiFillLike } from "react-icons/ai";
-import { FaCommentAlt } from "react-icons/fa";
-import { IoMdPersonAdd } from "react-icons/io";
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
-import TruncateText from "../TruncateText";
+import React from "react";
 import Profile from "../Profile";
+import MainHeader from "../MainComponents/MainHeader";
+import FollowButton from "../MainComponents/FollowButton";
+import MainButtons from "../MainComponents/MainButtons";
 
 const Main = () => {
-  const [navigationPagerForYou, setNavigationPagerForYou] = useState(true);
-  const [likeColor, setLikeColor] = useState(false);
-  const [bookMark, setBookMark] = useState(false);
-  const [repost, setRepost] = useState(false);
-  const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
-  const useremail = useSelector((state: RootState) => state.user.email);
-
   return (
     <main className="col-span-9 sm:col-span-6 bg-gray-950 min-h-screen">
       {/**
@@ -29,32 +13,7 @@ const Main = () => {
        */}
 
       <header className="border-b-2 border-blue-950 grid grid-cols-2 text-center">
-        <div
-          className={`hover:bg-gray-800 p-3 cursor-pointer ${
-            navigationPagerForYou ? "font-bold" : "text-gray-500"
-          }`}
-          onClick={() => setNavigationPagerForYou(true)}
-        >
-          <p>For you</p>
-        </div>
-        <div
-          className={`hover:bg-gray-800 p-3 cursor-pointer ${
-            navigationPagerForYou ? "text-gray-500" : "font-bold"
-          }`}
-          onClick={() => setNavigationPagerForYou(false)}
-        >
-          <p>Following</p>
-        </div>
-        <div
-          className={`items-end w-1/2 h-1 translate-x-1/2 rounded ${
-            navigationPagerForYou ? "bg-sky-600" : "bg-gray-950"
-          }`}
-        ></div>
-        <div
-          className={`items-end w-1/2 h-1 translate-x-1/2 rounded ${
-            navigationPagerForYou ? "bg-gray-950" : "bg-sky-600"
-          }`}
-        ></div>
+        <MainHeader />
       </header>
       {/* All the Posts with the follow Button*/}
       <article className="border-y-2 border-blue-950">
@@ -63,20 +22,7 @@ const Main = () => {
             <Profile classname="flex flex-row col-span-full space-x-2 sm:space-x-3 items-center justify-center sm:justify-start" />
           </div>
           <div className="flex justify-end ml-auto mr-2 mt-3">
-            <button
-              className="btn btn-info col-span-8"
-              onClick={() =>
-                logedIn
-                  ? ""
-                  : (
-                      document.getElementById(
-                        "LoginOrSignUpModal"
-                      ) as HTMLDialogElement
-                    )?.showModal()
-              }
-            >
-              <IoMdPersonAdd className="w-4 h-4" />
-            </button>
+            <FollowButton />
           </div>
         </div>
         <p className="m-2">
@@ -87,111 +33,7 @@ const Main = () => {
         </p>
         <div className="divider"></div>
         <div className="flex justify-evenly items-baseline mb-5">
-          <div
-            className="tooltip tooltip-info flex flex-row items-center"
-            data-tip="Like"
-          >
-            <AiFillLike
-              className={likeColor ? "text-blue-600" : "text-white"}
-              onClick={() =>
-                logedIn
-                  ? setLikeColor((prev) => !prev)
-                  : (
-                      document.getElementById(
-                        "LoginOrSignUpModal"
-                      ) as HTMLDialogElement
-                    )?.showModal()
-              }
-            />
-          </div>
-          <div
-            className="tooltip tooltip-success flex flex-col items-center"
-            data-tip="Repost"
-          >
-            <BiRepost
-              className={repost ? "text-green-600" : "text-white"}
-              onClick={() =>
-                logedIn
-                  ? setRepost((prev) => !prev)
-                  : (
-                      document.getElementById(
-                        "LoginOrSignUpModal"
-                      ) as HTMLDialogElement
-                    )?.showModal()
-              }
-            />
-          </div>
-          <div
-            className="tooltip tooltip-info flex flex-col items-center"
-            data-tip="Comment"
-          >
-            <FaCommentAlt
-              onClick={() =>
-                logedIn
-                  ? ""
-                  : (
-                      document.getElementById(
-                        "LoginOrSignUpModal"
-                      ) as HTMLDialogElement
-                    )?.showModal()
-              }
-            />
-          </div>
-          <div
-            className="tooltip tooltip-info flex flex-col items-center"
-            data-tip="Views"
-          >
-            <FaEye
-              onClick={() =>
-                logedIn
-                  ? ""
-                  : (
-                      document.getElementById(
-                        "LoginOrSignUpModal"
-                      ) as HTMLDialogElement
-                    )?.showModal()
-              }
-            />
-          </div>
-          <div
-            className="tooltip tooltip-error flex flex-col items-center"
-            data-tip="Bookmark"
-          >
-            {bookMark ? (
-              <FaBookmark
-                onClick={() => setBookMark((prev) => !prev)}
-                className="text-red-600"
-              />
-            ) : (
-              <CiBookmark
-                onClick={() =>
-                  logedIn
-                    ? setBookMark((prev) => !prev)
-                    : (
-                        document.getElementById(
-                          "LoginOrSignUpModal"
-                        ) as HTMLDialogElement
-                      )?.showModal()
-                }
-              />
-            )}
-          </div>
-          <div
-            className="tooltip tooltip-info flex flex-col items-center"
-            data-tip="Download"
-          >
-            <PiDownloadFill
-              onClick={() =>
-                logedIn
-                  ? ""
-                  : (
-                      document.getElementById(
-                        "LoginOrSignUpModal"
-                      ) as HTMLDialogElement
-                    )?.showModal()
-              }
-            />
-          </div>
+          <MainButtons />
         </div>
       </article>
     </main>
