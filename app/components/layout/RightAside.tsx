@@ -18,6 +18,7 @@ const RightAside = () => {
       <Profile
         classname="m-2 space-y-2 flex sm:items-center mt-auto flex-col mb-20 sm:mb-3 sm:flex-row sm:space-x-2"
         tooltipDirectionEmail="tooltip-right"
+        displayUserInfo={true}
       />
     </aside>
   );

@@ -3,6 +3,7 @@ import Profile from "../Profile";
 import MainHeader from "../MainComponents/MainHeader";
 import FollowButton from "../MainComponents/FollowButton";
 import MainButtons from "../MainComponents/MainButtons";
+import Poster from "../MainComponents/Poster";
 
 const Main = () => {
   return (
@@ -15,13 +16,16 @@ const Main = () => {
       <header className="border-b-2 border-blue-950 grid grid-cols-2 text-center">
         <MainHeader />
       </header>
+      {/* To post something in the main section, without needing to open the sending popup*/}
+      <Poster />
       {/* All the Posts with the follow Button*/}
-      <article className="border-y-2 border-blue-950 overflow-hidden">
+      <article className="border-b-2 border-blue-950 overflow-hidden">
         <div className="flex items-center w-full">
           <div className="m-2 flex-1 min-w-0">
             <Profile
               classname="flex flex-row space-x-2 sm:space-x-3 items-center min-w-0 flex-shrink"
               tooltipDirectionEmail="tooltip-bottom"
+              displayUserInfo={true}
             />
           </div>
           <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">

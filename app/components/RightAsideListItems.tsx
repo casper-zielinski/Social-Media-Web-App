@@ -21,13 +21,10 @@ const RightAsideListItems = () => {
     <>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center justify-center space-x-4 btn btn-soft btn-info rounded-xl"
+          className="flex col-span-full items-center space-x-4 btn btn-soft btn-info rounded-xl px-0.5"
           onClick={() => router.push("/")}
         >
-          <div className="indicator">
-            <span className="indicator-item status status-success"></span>
-            <MdHome className="h-5 w-5 sm:h-6 sm:w-6" />
-          </div>
+            <MdHome className="h-7 w-7" />
           <div className="hidden sm:block sm:text-xs text-start justify-self-start">
             Home
           </div>

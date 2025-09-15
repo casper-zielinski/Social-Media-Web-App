@@ -6,13 +6,15 @@ import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 
 interface ProfileDisplayer {
-  classname: string;
-  tooltipDirectionEmail: string;
+  classname?: string;
+  tooltipDirectionEmail?: string;
+  displayUserInfo?: boolean;
 }
 
 const Profile = ({
   classname,
   tooltipDirectionEmail,
+  displayUserInfo,
 }: ProfileDisplayer) => {
   const user = useSelector((state: RootState) => state.user);
   return (
@@ -23,22 +25,24 @@ const Profile = ({
         </div>
       </div>
 
-      <div className="min-w-0 flex-1">
-        <p className="font-bold text-xs ">
-          {!user.name || user.name.length <= 0 ? "name" : user.name}
-        </p>
-        <div
-          className={`tooltip ${tooltipDirectionEmail} tooltip-info min-w-0 flex-1 max-w-full`}
-          data-tip={user.email?.length <= 0 ? "email" : user.email}
-        >
-          <TruncateText
-            maxLength={15}
-            text={user.email?.length <= 0 ? "email" : user.email}
-            widthToShowFull={600}
-            className="text-gray-500 text-xs"
-          />
+      {displayUserInfo && (
+        <div className="min-w-0 flex-1">
+          <p className="font-bold text-xs ">
+            {!user.name || user.name.length <= 0 ? "name" : user.name}
+          </p>
+          <div
+            className={`tooltip ${tooltipDirectionEmail} tooltip-info min-w-0 flex-1 max-w-full`}
+            data-tip={user.email?.length <= 0 ? "email" : user.email}
+          >
+            <TruncateText
+              maxLength={15}
+              text={user.email?.length <= 0 ? "email" : user.email}
+              widthToShowFull={600}
+              className="text-gray-500 text-xs"
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

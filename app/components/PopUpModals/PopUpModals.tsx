@@ -6,6 +6,7 @@ import { GiPositionMarker } from "react-icons/gi";
 import { MdGif, MdEmojiEmotions } from "react-icons/md";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
+import Profile from "../Profile";
 
 /* All the Pop Up Modules,
   Login, Sign Up, Login Or Sign Up (Choose Modal) and Post Modal, 
@@ -84,7 +85,7 @@ const PopUpModals = () => {
       {/* Post Modal for creating and sending Posts*/}
       <dialog
         id="PostModal"
-        className="modal modal-middle pb-96"
+        className="modal modal-middle"
         data-theme="dark"
       >
         <div className="modal-box w-10/12">
@@ -94,16 +95,19 @@ const PopUpModals = () => {
               ✕
             </button>
           </form>
-          <div className="grid grid-cols-12 justify-center items-baseline">
-            <div className="avatar avatar-placeholder m-4 col-span-3">
+          <div className="grid grid-cols-12 justify-center items-start">
+            {/* <div className="avatar avatar-placeholder m-4 col-span-3">
               <div className="bg-gray-400 text-neutral-content w-12 rounded-full">
                 <span>D</span>
               </div>
+            </div> */}
+            <div className="col-span-3 ">
+              <Profile/>
             </div>
             <textarea
               placeholder="Type here"
               className="textarea textarea-ghost col-span-9"
-              name="Post-Desktop"
+              name="Post-PopUp"
             />
             <div className="divider col-span-12"></div>
             <div className="col-span-10 flex justify-evenly">
