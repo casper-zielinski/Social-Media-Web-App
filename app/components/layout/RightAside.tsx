@@ -10,18 +10,15 @@ import Profile from "../Profile";
 
 const RightAside = () => {
   return (
-    <aside className="col-span-3 bg-gray-950 border-r-2 border-blue-950">
+    <aside className="col-span-3 bg-gray-950 border-r-2 border-blue-950 flex flex-col min-h-[820px]">
       <Logo />
       <ul className="list">
         <RightAsideListItems />
-        <li className="list-row p-2 justify-center">
-          <Profile
-            classname="flex flex-col space-y-2 sm:flex-row col-span-full sm:space-x-4 items-center justify-center sm:justify-start sm:pl-5"
-            tooltipDirectionAvatar="tooltip-right md:tooltip-top"
-            tooltipDirectionEmail="tooltip-right"
-          />
-        </li>
       </ul>
+      <Profile
+        classname="m-2 space-y-2 flex sm:items-center mt-auto flex-col mb-20 sm:mb-3 sm:flex-row sm:space-x-2"
+        tooltipDirectionEmail="tooltip-right"
+      />
     </aside>
   );
 };

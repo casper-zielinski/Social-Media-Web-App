@@ -21,7 +21,6 @@ const Main = () => {
           <div className="m-2 flex-1 min-w-0">
             <Profile
               classname="flex flex-row space-x-2 sm:space-x-3 items-center min-w-0 flex-shrink"
-              tooltipDirectionAvatar="tooltip-right lg:tooltip-bottom"
               tooltipDirectionEmail="tooltip-bottom"
             />
           </div>

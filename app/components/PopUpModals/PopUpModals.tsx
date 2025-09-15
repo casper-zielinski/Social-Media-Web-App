@@ -1,11 +1,11 @@
 "use client";
 
-import React, {  } from "react";
+import React from "react";
 import { AiFillPicture } from "react-icons/ai";
 import { GiPositionMarker } from "react-icons/gi";
 import { MdGif, MdEmojiEmotions } from "react-icons/md";
-import LoginModal from "./PopUpModals/LoginModal";
-import SignUpModal from "./PopUpModals/SignUpModal";
+import LoginModal from "./LoginModal";
+import SignUpModal from "./SignUpModal";
 
 /* All the Pop Up Modules,
   Login, Sign Up, Login Or Sign Up (Choose Modal) and Post Modal, 

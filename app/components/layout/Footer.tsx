@@ -21,7 +21,7 @@ const Footer = () => {
     <footer
       className={`${
         loggedIn ? "bg-gray-950" : "bg-blue-500"
-      } fixed bottom-0 footer footer-horizontal z-10 footer-center border-t-2 border-blue-950 sm:border-0 col-span-12 text-base-content`}
+      } fixed bottom-0 mt-20 footer footer-horizontal z-10 footer-center border-t-2 border-blue-950 sm:border-0 col-span-12 text-base-content`}
     >
       {loggedIn ? (
         <div className="flex m-5 space-x-5 sm:hidden">

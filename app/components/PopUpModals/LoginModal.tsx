@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
+import LogInAsGuestButton from "./LogInAsGuestButton";
 
 /* Modal for Loging In with Email and Password*/
 
@@ -83,20 +84,27 @@ const LoginModal = () => {
           <div className="w-1/2">
             <div className="divider">OR</div>
           </div>
-          <button
-            className="btn btn-info btn-soft mt-4"
-            onClick={() => {
-              (
-                document.getElementById("LoginDialog") as HTMLDialogElement
-              ).close();
-              setShowPassword(false);
-              (
-                document.getElementById("SignUpDialog") as HTMLDialogElement
-              ).show();
-            }}
-          >
-            Sign Up
-          </button>
+          <div className="flex flex-col">
+            <LogInAsGuestButton
+              classname="btn-outline btn-info"
+              closingModal="LoginDialog"
+              modalToClose={true}
+            />
+            <button
+              className="btn btn-info btn-soft mt-4"
+              onClick={() => {
+                (
+                  document.getElementById("LoginDialog") as HTMLDialogElement
+                ).close();
+                setShowPassword(false);
+                (
+                  document.getElementById("SignUpDialog") as HTMLDialogElement
+                ).show();
+              }}
+            >
+              Sign Up
+            </button>
+          </div>
         </fieldset>
       </div>
       <form

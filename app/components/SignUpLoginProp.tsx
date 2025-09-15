@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import LogInAsGuestButton from "./PopUpModals/LogInAsGuestButton";
 
 const SignUpLoginProp = () => {
-
   return (
     <>
       <div className="grid grid-cols-12 p-4 md:p-3 lg:p-2 gap-4">
@@ -36,6 +36,11 @@ const SignUpLoginProp = () => {
           >
             Sign Up
           </button>
+          <LogInAsGuestButton
+            classname="btn-sm sm:btn-md btn-accent"
+            closingModal=""
+            modalToClose={false}
+          />
         </div>
       </div>
     </>
