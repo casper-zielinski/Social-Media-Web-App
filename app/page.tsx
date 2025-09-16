@@ -1,5 +1,4 @@
 import Main from "./components/layout/Main";
-import PopUpModals from "./components/PopUpModals/PopUpModals";
 import LeftAside from "./components/layout/LeftAside";
 
 {

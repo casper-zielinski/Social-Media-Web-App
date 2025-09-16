@@ -7,7 +7,7 @@ import {
   FaBrain,
 } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
-import { MdHome, MdNotificationsActive } from "react-icons/md";
+import { MdHome, MdNotificationsActive, MdPostAdd } from "react-icons/md";
 import SignUpOrLoginProp from "../SignUpLoginProp";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
@@ -43,7 +43,7 @@ const Footer = () => {
                   )?.showModal()
             }
           >
-            <FaCreativeCommonsSamplingPlus className="w-11 h-11" />
+            <MdPostAdd className="w-6 h-6" />
           </button>
 
           <div

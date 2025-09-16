@@ -49,7 +49,7 @@ const SignUpModal = () => {
       dispatch(
         signInUser({
           name: currentUser.displayName,
-          username: currentUser.email?.split(".")[0],
+          username: currentUser.email?.split("@")[0].split(".")[0],
           email: currentUser.email,
           uid: currentUser.uid,
         })

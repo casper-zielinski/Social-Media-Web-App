@@ -15,26 +15,34 @@ import { useSelector } from "react-redux";
 }
 const Poster = () => {
   const [text, setText] = useState("");
+  const [error, setError] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
 
   async function sendPost() {
-    await addDoc(collection(db, "posts"), {
-      text: text,
-      name: user.name,
-      username: user.username,
-      useremail: user.email,
-      timeStamp: serverTimestamp(),
-      likes: [],
-      comments: [],
-    });
+    try {
+      await addDoc(collection(db, "posts"), {
+        text: text,
+        name: user.name,
+        username: user.username,
+        useremail: user.email,
+        timeStamp: serverTimestamp(),
+        likes: [],
+        comments: [],
+      });
+
+      setText("");
+    } catch (error) {
+      setError(true);
+    }
   }
+
   return (
     <div className=" border-b-2 border-blue-950 p-4 space-y-10">
       <div className="flex items-start space-x-4">
         <Profile classname="mt-2" />
         <textarea
-          placeholder="Type here"
+          placeholder="Whats happening..."
           className="textarea textarea-ghost w-full"
           name="Post-Main"
           value={text}

@@ -9,34 +9,44 @@ interface ProfileDisplayer {
   classname?: string;
   tooltipDirectionEmail?: string;
   displayUserInfo?: boolean;
+  userdata?: [string, string];
 }
 
 const Profile = ({
   classname,
   tooltipDirectionEmail,
   displayUserInfo,
+  userdata,
 }: ProfileDisplayer) => {
-  const user = useSelector((state: RootState) => state.user);
+  const displayer = () => {
+    if (!userdata) {
+      const user = useSelector((state: RootState) => state.user);
+      return [
+        user.name?.charAt(0),
+        !user.name || user.name.length <= 0 ? "name" : user.name,
+        user.username?.length <= 0 ? "username" : user.username,
+      ];
+    } else return [userdata.at(0)?.charAt(0), ...userdata];
+  };
+
   return (
     <div className={classname}>
       <div className="avatar avatar-placeholder">
         <div className="bg-gray-400 text-neutral-content w-6 sm:w-12 rounded-full">
-          <span>{user.name?.charAt(0)}</span>
+          <span>{displayer()?.at(0)}</span>
         </div>
       </div>
 
       {displayUserInfo && (
         <div className="min-w-0 flex-1">
-          <p className="font-bold text-xs ">
-            {!user.name || user.name.length <= 0 ? "name" : user.name}
-          </p>
+          <p className="font-bold text-xs ">{displayer()?.at(1)}</p>
           <div
             className={`tooltip ${tooltipDirectionEmail} tooltip-info min-w-0 flex-1 max-w-full`}
-            data-tip={user.email?.length <= 0 ? "email" : user.email}
+            data-tip={displayer()?.at(2)}
           >
             <TruncateText
               maxLength={15}
-              text={user.email?.length <= 0 ? "email" : user.email}
+              text={displayer()?.at(2) ?? "username"}
               widthToShowFull={600}
               className="text-gray-500 text-xs"
             />
