@@ -75,7 +75,7 @@ const PopUpModals = () => {
                 Sign Up
               </button>
             </div>
-            <div className="divider">OR</div>
+            <div className="divider text-white">OR</div>
             <div className="flex justify-center">
               <button
                 className="btn btn-soft btn-info w-full"
@@ -103,6 +103,7 @@ const PopUpModals = () => {
           <button>close</button>
         </form>
       </dialog>
+
       {/* Post Modal for creating and sending Posts*/}
       <dialog id="PostModal" className="modal modal-middle" data-theme="dark">
         <div className="modal-box w-10/12">
@@ -124,10 +125,10 @@ const PopUpModals = () => {
           </div>
           <div className="divider col-span-12"></div>
           <div className="flex justify-start items-center space-x-4 relative">
-            <AiFillPicture className="w-6 h-6 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
-            <MdGif className="w-6 h-6 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
-            <MdEmojiEmotions className="w-6 h-6 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
-            <GiPositionMarker className="w-6 h-6 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
+            <AiFillPicture className="w-6 h-6 hover:scale-105 transition-transform text-white hover:shadow-sm hover:text-sky-500" />
+            <MdGif className="w-6 h-6 hover:scale-105 transition-transform text-white hover:shadow-sm hover:text-sky-500" />
+            <MdEmojiEmotions className="w-6 h-6 hover:scale-105 transition-transform text-white hover:shadow-sm hover:text-sky-500" />
+            <GiPositionMarker className="w-6 h-6 hover:scale-105 transition-transform text-white hover:shadow-sm hover:text-sky-500" />
             <button
               className={`btn btn-info ${
                 text.length < 1 ? "btn-disabled" : "btn-soft"

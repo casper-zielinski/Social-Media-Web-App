@@ -8,28 +8,35 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "@/firebase";
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import Moment from "react-moment";
+import CommentModal from "./CommentModal";
 
 const PostFeed = () => {
-  const [post, setPost] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
+  const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("timeStamp", "desc"));
     const unsubsribe = onSnapshot(q, (posts) => {
       const { docs } = posts;
-      setPost(docs);
+      setPosts(docs);
       console.log(docs.at(0)?.data);
     });
 
     return unsubsribe;
   }, []);
 
-  const posttext = "Hello World";
   return (
     <>
-      {post.map((post) => (
+      {posts.map((post, index) => (
         <article
-          className="border-b-2 border-blue-950 overflow-hidden"
+          className={`${
+            posts.length === index + 1 ? "mb-16 sm:mb-0" : "border-b-2"
+          } border-blue-400 dark:border-blue-950 overflow-hidden`}
           key={post.id}
         >
+          <CommentModal
+            userdata={[post.data().name, post.data().username]}
+            Posttext={post.data().text}
+            Id={post.id}
+          />
           <div className="flex items-center w-full">
             <div className="m-2 flex-1 min-w-0">
               <Profile
@@ -51,7 +58,7 @@ const PostFeed = () => {
           </p>
           <div className="divider"></div>
           <div className="flex justify-evenly items-baseline mb-5">
-            <MainButtons />
+            <MainButtons commentId={post.id} />
           </div>
         </article>
       ))}

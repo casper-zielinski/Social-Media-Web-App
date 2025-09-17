@@ -38,7 +38,7 @@ const Poster = () => {
   }
 
   return (
-    <div className=" border-b-2 border-blue-950 p-4 space-y-10">
+    <div className=" border-b-2 border-blue-400 dark:border-blue-950 p-4 space-y-10">
       <div className="flex items-start space-x-4">
         <Profile classname="mt-2" />
         <textarea

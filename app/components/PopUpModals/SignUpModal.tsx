@@ -84,7 +84,7 @@ const SignUpModal = () => {
           <label className="label">Username</label>
           <input
             type="text"
-            className="input w-11/12 md:w-9/12"
+            className="input w-11/12 md:w-9/12 text-white"
             placeholder="Username"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
@@ -92,7 +92,7 @@ const SignUpModal = () => {
 
           <label className="label">Email</label>
           <input
-            className="input validator w-11/12 md:w-9/12"
+            className="input validator w-11/12 md:w-9/12 text-white" 
             type="email"
             required
             placeholder="mail@site.com"
@@ -105,7 +105,7 @@ const SignUpModal = () => {
           <div className="join w-11/12 md:w-9/12">
             <input
               type={showPassword ? "text" : "password"}
-              className="input validator join-item"
+              className="input validator join-item text-white"
               required
               placeholder="Password"
               minLength={8}
@@ -122,7 +122,7 @@ const SignUpModal = () => {
             </button>
           </div>
 
-          <p className="validator-hint hidden">
+          {/* <p className="validator-hint hidden">
             Must be more than 8 characters, including
             <br />
             At least one number
@@ -130,7 +130,7 @@ const SignUpModal = () => {
             At least one lowercase letter
             <br />
             At least one uppercase letter
-          </p>
+          </p> */}
 
           <button className="btn btn-info mt-4" onClick={() => handleSignUp()}>
             Sign Up

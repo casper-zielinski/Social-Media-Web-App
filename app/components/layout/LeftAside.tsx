@@ -6,7 +6,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 
 const LeftAside = () => {
   return (
-    <aside className="hidden sm:flex sm:flex-col sm:col-span-3 lg:col-span-3 bg-gray-950 border-l-2 border-blue-950 space-y-3.5 p-3">
+    <aside className="hidden bg-white dark:bg-gray-950 sm:flex sm:flex-col sm:col-span-3 lg:col-span-3 border-l-2 border-blue-400 dark:border-blue-950 space-y-3.5 p-3 h-[100vh] overflow-y-auto">
       <input
         type="text"
         placeholder="Search..."
@@ -14,7 +14,7 @@ const LeftAside = () => {
         name="Search"
       />
       {/* Premium subscription section */}
-      <section className="bg-gray-800 rounded-3xl p-3 border border-gray-600 w-95/100">
+      <section className="bg-blue-100 dark:bg-gray-800 rounded-3xl p-3 border border-gray-600 w-95/100">
         <h3 className="text-lg font-bold">Subscribe to Premium</h3>
         <p className="text-sm">
           Subscribe to unlock new features and if eligible, receive a share of
@@ -24,7 +24,7 @@ const LeftAside = () => {
       </section>
 
       {/*What's happening Section */}
-      <section className="bg-gray-800 rounded-3xl p-3 border border-gray-600 w-95/100">
+      <section className="bg-blue-100 dark:bg-gray-800 rounded-3xl p-3 border border-gray-600 w-95/100">
         <h3 className="text-lg font-bold mb-4">What's happening</h3>
         <div className="mb-3">
           <div className="flex items-center">
@@ -59,7 +59,7 @@ const LeftAside = () => {
       </section>
 
       {/* Who to follow Section*/}
-      <section className="bg-gray-800 p-3.5 grid grid-cols-6 gap-2 rounded-3xl border border-gray-600">
+      <section className="bg-blue-100 dark:bg-gray-800 p-3.5 grid grid-cols-6 gap-2 rounded-3xl border border-gray-600">
         <div className="col-span-full lg:col-span-4 flex justify-self-start space-x-2 text-xs lg:text-base">
           <Image
             src={"/profilepic.jpg"}

@@ -5,13 +5,13 @@ import PostFeed from "../MainComponents/PostFeed";
 
 const Main = () => {
   return (
-    <main className="col-span-9 sm:col-span-6 bg-gray-950 min-h-screen">
+    <main className="col-span-9 bg-white dark:bg-gray-950 sm:col-span-6 h-[100vh] overflow-y-auto">
       {/**
        * Main feed section.
        * Displays either "For you" or "Following" posts depending on navigationPagerForYou.
        */}
 
-      <header className="border-b-2 border-blue-950 grid grid-cols-2 text-center">
+      <header className="border-b-2 border-blue-400 dark:border-blue-950 grid grid-cols-2 text-center">
         <MainHeader />
       </header>
       {/* To post something in the main section, without needing to open the sending popup*/}

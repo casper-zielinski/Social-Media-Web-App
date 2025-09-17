@@ -9,7 +9,11 @@ import { FaCommentAlt, FaEye, FaBookmark } from "react-icons/fa";
 import { PiDownloadFill } from "react-icons/pi";
 import { useSelector } from "react-redux";
 
-const MainButtons = () => {
+interface MainButtonsProps {
+  commentId: string;
+}
+
+const MainButtons = ({ commentId }: MainButtonsProps) => {
   const [likeColor, setLikeColor] = useState(false);
   const [bookMark, setBookMark] = useState(false);
   const [repost, setRepost] = useState(false);
@@ -21,7 +25,7 @@ const MainButtons = () => {
         data-tip="Like"
       >
         <AiFillLike
-          className={likeColor ? "text-blue-600" : "text-white"}
+          className={likeColor ? "text-blue-600" : "text-black dark:text-white"}
           onClick={() =>
             logedIn
               ? setLikeColor((prev) => !prev)
@@ -38,7 +42,7 @@ const MainButtons = () => {
         data-tip="Repost"
       >
         <BiRepost
-          className={repost ? "text-green-600" : "text-white"}
+          className={repost ? "text-green-600" : "text-black dark:text-white"}
           onClick={() =>
             logedIn
               ? setRepost((prev) => !prev)
@@ -57,7 +61,11 @@ const MainButtons = () => {
         <FaCommentAlt
           onClick={() =>
             logedIn
-              ? ""
+              ? (
+                  document.getElementById(
+                    `CommentModal${commentId}`
+                  ) as HTMLDialogElement
+                )?.showModal()
               : (
                   document.getElementById(
                     "LoginOrSignUpModal"

@@ -23,8 +23,8 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className=" bg-gray-950 min-w-[320px] min-h-full p-0 m-0 overflow-x-hidden">
-          <div className="grid grid-cols-12 w-full min-h-screen max-h-[900px]">
+        <body className="bg-white dark:bg-gray-950 min-w-[320px] min-h-full p-0 m-0 overflow-hidden">
+          <div className="grid grid-cols-12 w-full min-h-screen">
             {/* Modals for Login & Posting */}
             <PopUpModals />
             {/* 
