@@ -1,5 +1,4 @@
 import { auth } from "@/firebase";
-import { AppDispatch } from "@/redux/store";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -12,7 +11,6 @@ const LoginModal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch: AppDispatch = useDispatch();
 
   async function handleLogin() {
     await signInWithEmailAndPassword(auth, email, password);

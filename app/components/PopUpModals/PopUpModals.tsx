@@ -22,7 +22,7 @@ const PopUpModals = () => {
   }
   const [text, setText] = useState("");
   const user = useSelector((state: RootState) => state.user);
-  const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
+  const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn.loggedIn);
 
   async function sendPost() {
     await addDoc(collection(db, "posts"), {

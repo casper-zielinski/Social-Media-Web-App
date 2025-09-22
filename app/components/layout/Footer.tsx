@@ -16,14 +16,15 @@ import { useSelector } from "react-redux";
 
 const Footer = () => {
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
+  const loader = useSelector((state: RootState) => state.loader);
 
   return (
     <footer
       className={`${
-        loggedIn ? "bg-white dark:bg-gray-950" : "bg-blue-500"
+        loggedIn.loggedIn ? "bg-white dark:bg-gray-950" : "bg-blue-500"
       } fixed bottom-0 mt-20 footer footer-horizontal z-10 footer-center border-t-2 border-blue-400 dark:border-blue-950 sm:border-0 col-span-12 text-base-content`}
     >
-      {loggedIn ? (
+      {loggedIn.loggedIn ? (
         <div className="flex m-5 space-x-5 sm:hidden">
           {/**
            * Opens the post creation modal dialog for mobile users.
@@ -80,7 +81,7 @@ const Footer = () => {
           </div>
         </div>
       ) : (
-        <SignUpOrLoginProp />
+        (!loggedIn.pending) && <SignUpOrLoginProp />
       )}
     </footer>
   );

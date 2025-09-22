@@ -1,5 +1,5 @@
 import { auth } from "@/firebase";
-import { logIn } from "@/redux/slices/loginSlice";
+import { logIn, received } from "@/redux/slices/loginSlice";
 import { signInUser } from "@/redux/slices/userSlice";
 import { AppDispatch } from "@/redux/store";
 import {
@@ -44,7 +44,10 @@ const SignUpModal = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) return;
+      if (!currentUser) {
+        dispatch(received());
+        return;
+      }
 
       dispatch(
         signInUser({
@@ -55,6 +58,7 @@ const SignUpModal = () => {
         })
       );
       dispatch(logIn());
+      dispatch(received());
     });
 
     return unsubscribe;
@@ -92,7 +96,7 @@ const SignUpModal = () => {
 
           <label className="label">Email</label>
           <input
-            className="input validator w-11/12 md:w-9/12 text-white" 
+            className="input validator w-11/12 md:w-9/12 text-white"
             type="email"
             required
             placeholder="mail@site.com"
