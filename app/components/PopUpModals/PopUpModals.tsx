@@ -51,7 +51,7 @@ const PopUpModals = () => {
         <div className="modal-box w-3/5 max-w-md">
           <form method="dialog" name="Login or Sign Up Dialog Closer">
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-white">
               ✕
             </button>
           </form>
@@ -109,7 +109,7 @@ const PopUpModals = () => {
         <div className="modal-box w-10/12">
           <form method="dialog" name="Closing Post Modal">
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-white">
               ✕
             </button>
           </form>

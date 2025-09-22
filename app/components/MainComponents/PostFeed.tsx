@@ -12,16 +12,28 @@ import CommentModal from "./CommentModal";
 
 const PostFeed = () => {
   const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
+  const [showComments, setShowComments] = useState<boolean[]>([]);
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("timeStamp", "desc"));
     const unsubsribe = onSnapshot(q, (posts) => {
       const { docs } = posts;
       setPosts(docs);
+      setShowComments(
+        docs.map((value) => {
+          return false;
+        })
+      );
       console.log(docs.at(0)?.data);
     });
 
     return unsubsribe;
   }, []);
+
+  interface Comment {
+    name: string;
+    text: string;
+    username: string;
+  }
 
   return (
     <>
@@ -29,8 +41,14 @@ const PostFeed = () => {
         <article
           className={`${
             posts.length === index + 1 ? "mb-16 sm:mb-0" : "border-b-2"
-          } border-blue-400 dark:border-blue-950 overflow-hidden`}
+          } border-blue-400 dark:border-blue-950 overflow-hidden hover:bg-gray-900`}
           key={post.id}
+          onClick={() => {
+            setShowComments((prev) =>
+              [...prev].map((value, i) => (i === index ? !value : false))
+            );
+            console.log(showComments);
+          }}
         >
           <CommentModal
             userdata={[post.data().name, post.data().username]}
@@ -60,6 +78,11 @@ const PostFeed = () => {
           <div className="flex justify-evenly items-baseline mb-5">
             <MainButtons commentId={post.id} />
           </div>
+          {showComments.at(index) && (
+            <div>
+              {post.data().comments.map((value: Comment) => value.text)}
+            </div>
+          )}
         </article>
       ))}
     </>

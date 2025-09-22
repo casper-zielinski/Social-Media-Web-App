@@ -70,7 +70,7 @@ const SignUpModal = () => {
         <form method="dialog" name="Close Sign Up Dialog">
           {/* if there is a button in form, it will close the modal */}
           <button
-            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-white"
             onClick={() => setShowPassword(false)}
           >
             ✕
