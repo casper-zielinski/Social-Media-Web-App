@@ -10,6 +10,7 @@ interface ProfileDisplayer {
   tooltipDirectionEmail?: string;
   displayUserInfo?: boolean;
   userdata?: [string, string];
+  OwnLoader?: boolean;
 }
 
 const Profile = ({
@@ -17,8 +18,15 @@ const Profile = ({
   tooltipDirectionEmail,
   displayUserInfo,
   userdata,
+  OwnLoader,
 }: ProfileDisplayer) => {
-  const loader = useSelector((state: RootState) => state.loader.loaded);
+  {
+    /* own loader to use in comments or replys for example */
+  }
+  const loader =
+    OwnLoader === undefined
+      ? useSelector((state: RootState) => state.loader.loaded)
+      : OwnLoader;
 
   const displayer = () => {
     if (!userdata) {

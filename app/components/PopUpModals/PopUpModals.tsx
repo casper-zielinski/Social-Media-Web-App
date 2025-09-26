@@ -32,7 +32,6 @@ const PopUpModals = () => {
       useremail: user.email,
       timeStamp: serverTimestamp(),
       likes: [],
-      comments: [],
     });
 
     setText("");

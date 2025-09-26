@@ -5,11 +5,16 @@ import React from "react";
 import { IoMdPersonAdd } from "react-icons/io";
 import { useSelector } from "react-redux";
 
-const FollowButton = () => {
+interface FollowButtonProps {
+  disabled?: boolean;
+  classNameAdditon?: string;
+}
+
+const FollowButton = ({ disabled, classNameAdditon }: FollowButtonProps) => {
   const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   return (
     <button
-      className="btn btn-info col-span-8"
+      className={`btn btn-info ${classNameAdditon ? classNameAdditon : ""} col-span-8 ${disabled ? "btn-disabled " : ""}`}
       onClick={() =>
         logedIn
           ? ""

@@ -3,20 +3,49 @@ import { AiFillPicture } from "react-icons/ai";
 import { GiPositionMarker } from "react-icons/gi";
 import { MdGif, MdEmojiEmotions, MdLocalPostOffice } from "react-icons/md";
 import Profile from "../Profile";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  increment,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "@/firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { v4 as uuidv4 } from "uuid";
+import { timeStamp } from "console";
 
-interface CommentModalProps {
+interface BaseCommentModalProps {
   userdata: [string, string];
   Posttext: string;
   Id: string;
+  commentId?: string;
 }
 
-const CommentModal = ({ userdata, Posttext, Id }: CommentModalProps) => {
+type CommentModalProps =
+  | (BaseCommentModalProps & {
+      Reply: true;
+      postIdforReply: string;
+    })
+  | (BaseCommentModalProps & {
+      Reply?: false;
+      postIdforReply?: undefined;
+    });
+
+const CommentModal = ({
+  userdata,
+  Posttext,
+  Id,
+  Reply,
+  postIdforReply,
+  commentId,
+}: CommentModalProps) => {
   const [text, setText] = useState("");
   const [height, setHeight] = useState("h-[80px]");
+  const [error, setError] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const pref = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
@@ -24,17 +53,67 @@ const CommentModal = ({ userdata, Posttext, Id }: CommentModalProps) => {
   }, []);
 
   async function sendComment() {
-    const postRef = doc(db, "posts", Id);
+    if (Reply) {
+      console.log("sending reply: ", Reply);
+      try {
+        await addDoc(
+          collection(
+            db,
+            "posts",
+            postIdforReply,
+            "comments",
+            commentId || Id,
+            "replys"
+          ),
+          {
+            name: user.name,
+            username: user.username,
+            text: text,
+            timeStamp: new Date(),
+            likes: [],
+            replyTo: {
+              userId: Id,
+              userName: userdata[0],
+              userUsername: userdata[1],
+              textToReplyTo: Posttext,
+            },
+            NumberOfReplys: 0,
+          }
+        );
 
-    await updateDoc(postRef, {
-      comments: arrayUnion({
-        name: user.name,
-        username: user.username,
-        text: text,
-      }),
-    });
+        await updateDoc(doc(db, "posts", postIdforReply, "comments", Id), {
+          NumberOfReplys: increment(1),
+        });
 
-    (document.getElementById(`CommentModal${Id}`) as HTMLDialogElement).close();
+        console.log("no error");
+      } catch (error) {
+        setError(true);
+        console.log("error: ", error);
+      }
+    } else {
+      try {
+        await addDoc(collection(db, "posts", Id, "comments"), {
+          name: user.name,
+          username: user.username,
+          text: text,
+          timeStamp: new Date(),
+          likes: [],
+          NumberOfComments: 0,
+        });
+
+        await updateDoc(doc(db, "posts", Id), {
+          NumberOfComments: increment(1),
+        });
+      } catch (error) {
+        setError(true);
+      }
+    }
+
+    if (!error) {
+      (
+        document.getElementById(`CommentModal${Id}`) as HTMLDialogElement
+      ).close();
+    }
   }
 
   return (

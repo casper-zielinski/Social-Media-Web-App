@@ -1,7 +1,7 @@
 "use client";
 
 import { RootState } from "@/redux/store";
-import { motion, useAnimation } from "motion/react";
+import { motion } from "motion/react";
 import React, { useState } from "react";
 import { AiFillLike } from "react-icons/ai";
 import { BiRepost } from "react-icons/bi";
@@ -16,7 +16,8 @@ interface MainButtonsProps {
   ShowCommentArray: [
     boolean[],
     React.Dispatch<React.SetStateAction<boolean[]>>,
-    number
+    number,
+    number | null
   ];
 }
 
@@ -30,9 +31,11 @@ const MainButtons = ({ commentId, ShowCommentArray }: MainButtonsProps) => {
   return (
     <>
       <div className="flex justify-evenly items-baseline mb-5">
-        <div
+        <motion.div
           className="tooltip tooltip-info flex flex-row items-center"
           data-tip="Like"
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 1.2, rotate: -10 }}
         >
           <AiFillLike
             className={
@@ -48,10 +51,12 @@ const MainButtons = ({ commentId, ShowCommentArray }: MainButtonsProps) => {
                   )?.showModal()
             }
           />
-        </div>
-        <div
+        </motion.div>
+        <motion.div
           className="tooltip tooltip-success flex flex-col items-center"
           data-tip="Repost"
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 1.2, translateY: -5 }}
         >
           <BiRepost
             className={repost ? "text-green-600" : "text-black dark:text-white"}
@@ -65,10 +70,11 @@ const MainButtons = ({ commentId, ShowCommentArray }: MainButtonsProps) => {
                   )?.showModal()
             }
           />
-        </div>
-        <div
+        </motion.div>
+        <motion.div
           className="tooltip tooltip-info flex flex-col items-center"
           data-tip="Comment"
+          whileHover={{ scale: 1.2 }}
         >
           <FaCommentAlt
             onClick={() =>
@@ -85,10 +91,12 @@ const MainButtons = ({ commentId, ShowCommentArray }: MainButtonsProps) => {
                   )?.showModal()
             }
           />
-        </div>
-        <div
+        </motion.div>
+        <motion.div
           className="tooltip tooltip-info flex flex-col items-center"
           data-tip="Views"
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 1.2, translateY: -5 }}
         >
           <FaEye
             onClick={() =>
@@ -101,10 +109,12 @@ const MainButtons = ({ commentId, ShowCommentArray }: MainButtonsProps) => {
                   )?.showModal()
             }
           />
-        </div>
-        <div
+        </motion.div>
+        <motion.div
           className="tooltip tooltip-error flex flex-col items-center"
           data-tip="Bookmark"
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 1.2, translateY: -5 }}
         >
           {bookMark ? (
             <FaBookmark
@@ -124,10 +134,11 @@ const MainButtons = ({ commentId, ShowCommentArray }: MainButtonsProps) => {
               }
             />
           )}
-        </div>
-        <div
+        </motion.div>
+        <motion.div
           className="tooltip tooltip-info flex flex-col items-center"
           data-tip="Download"
+          whileHover={{ scale: 1.2 }}
         >
           <PiDownloadFill
             onClick={() =>
@@ -140,16 +151,11 @@ const MainButtons = ({ commentId, ShowCommentArray }: MainButtonsProps) => {
                   )?.showModal()
             }
           />
-        </div>
+        </motion.div>
       </div>
-      <motion.div
-        className="flex flex-grow justify-center"
-        initial={{ textShadow: 0 }}
-        whileHover={{ scale: 1.2, textShadow: 100 }}
-        animate={{ rotate: isRotated ? 180 : 0 }}
-      >
-        <IoIosArrowDropdown
-          className="w-5 h-5 mb-4 mt-2 text-black dark:text-white hover:text-blue-600"
+      <div className="flex justify-center my-6 space-x-2 items-center">
+        <motion.p
+          className="text-xs hover:text-blue-600 cursor-pointer"
           onClick={() => {
             setRotate(!isRotated);
             ShowCommentArray[1]((prev) =>
@@ -158,8 +164,34 @@ const MainButtons = ({ commentId, ShowCommentArray }: MainButtonsProps) => {
               )
             );
           }}
-        />
-      </motion.div>
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 1.2 }}
+        >
+          {isRotated ? "Hide Comments" : "Show Comments"}
+        </motion.p>
+        <div className="indicator">
+          <span className="indicator-item scale-75 indicator-end badge badge-info font-bold">
+            {ShowCommentArray[3] || 0}
+          </span>
+          <motion.div
+            initial={{ textShadow: 0 }}
+            whileHover={{ scale: 1.2, textShadow: 100 }}
+            animate={{ rotate: isRotated ? 180 : 0 }}
+          >
+            <IoIosArrowDropdown
+              className="w-5 h-5 text-black dark:text-white hover:text-blue-600 cursor-pointer"
+              onClick={() => {
+                setRotate(!isRotated);
+                ShowCommentArray[1]((prev) =>
+                  [...prev].map((value, i) =>
+                    i === ShowCommentArray[2] ? !value : value
+                  )
+                );
+              }}
+            />
+          </motion.div>
+        </div>
+      </div>
     </>
   );
 };

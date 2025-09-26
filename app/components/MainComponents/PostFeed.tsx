@@ -8,10 +8,11 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "@/firebase";
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import Moment from "react-moment";
-import CommentModal from "./CommentModal";
+import CommentModal from "../PopUpModals/CommentModal";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingFinished } from "@/redux/slices/loadingSlice";
+import CommentShower from "./CommentShower";
 
 const PostFeed = () => {
   const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
@@ -24,21 +25,13 @@ const PostFeed = () => {
     const unsubsribe = onSnapshot(q, (posts) => {
       const { docs } = posts;
       setPosts(docs);
-      setShowComments(
-        docs.map(() => {
-          return false;
-        })
-      );
+      setShowComments(docs.map(() => false));
     });
+
     dispatch(loadingFinished());
+
     return unsubsribe;
   }, []);
-
-  interface Comment {
-    name: string;
-    text: string;
-    username: string;
-  }
 
   return (
     <>
@@ -78,35 +71,17 @@ const PostFeed = () => {
 
               <MainButtons
                 commentId={post.id}
-                ShowCommentArray={[showComments, setShowComments, index]}
+                ShowCommentArray={[
+                  showComments,
+                  setShowComments,
+                  index,
+                  post.data().NumberOfComments,
+                ]}
               />
 
-              {showComments.at(index) &&
-                (post.data().comments <= 0 ? (
-                  <div className="flex flex-grow p-2 text-gray-400">
-                    {" "}
-                    No Comments
-                  </div>
-                ) : (
-                  <div className="flex flex-grow flex-col space-y-6 p-2 text-black dark:text-white mb-7">
-                    {post
-                      .data()
-                      .comments.map((comment: Comment, index: number) => (
-                        <article key={index} className="space-y-3">
-                          <Profile
-                            userdata={[comment.name, comment.username]}
-                            displayUserInfo={true}
-                            classname="flex flex-row space-x-2 sm:space-x-3 items-center min-w-0 flex-shrink"
-                            tooltipDirectionEmail="tooltip-right"
-                          />
-                          <p>{comment.text}</p>
-                          {!(post.data().comments.length - 1 === index) && (
-                            <div className="divider w-full"></div>
-                          )}
-                        </article>
-                      ))}
-                  </div>
-                ))}
+              {showComments[index] && (
+                <CommentShower post={post} postId={post.id} />
+              )}
             </article>
           ))
         : Array.from({ length: 4 }, (_, index) => (
@@ -125,18 +100,24 @@ const PostFeed = () => {
                   />
                 </div>
                 <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">
-                  <FollowButton />
+                  <FollowButton disabled={!loaded} />
                 </div>
               </div>
-              <div className="flex-col p-3">
-                <div className="m-2 break-words animate-pulse ml-auto bg-gray-500 text-gray-500 p-2 w-11/12"></div>
-                <div className="m-2 text-end text-xs ml-auto animate-pulse bg-gray-500 text-gray-500 p-2 w-1/6"></div>
+              <div className="grid grid-cols-10 gap-2 p-3">
+                <div className="col-span-7 animate-pulse bg-gray-500 p-2 "></div>
+                <div className="col-span-3 animate-pulse bg-gray-500 p-2 "></div>
+                <div className="col-span-4 animate-pulse bg-gray-500 p-2 "></div>
+                <div className="col-span-6 animate-pulse bg-gray-500 p-2 "></div>
+                <div className="col-span-2 animate-pulse bg-gray-500 p-2 "></div>
+                <div className="col-span-8 animate-pulse bg-gray-500 p-2 "></div>
+                <div className="col-span-8 p-2 "></div>
+                <div className="mt-3 col-span-2 animate-pulse bg-gray-500 p-2"></div>
               </div>
               <div className="divider"></div>
 
               <MainButtons
                 commentId={""}
-                ShowCommentArray={[showComments, setShowComments, index]}
+                ShowCommentArray={[showComments, setShowComments, index, null]}
               />
             </article>
           ))}
