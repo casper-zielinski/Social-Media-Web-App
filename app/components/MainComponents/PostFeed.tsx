@@ -21,6 +21,7 @@ const PostFeed = () => {
   const loaded = useSelector((state: RootState) => state.loader.loaded);
   const user = useSelector((state: RootState) => state.user);
 
+  //Gets all the Posts from the Firestore DB
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("timeStamp", "desc"));
     const unsubsribe = onSnapshot(q, (posts) => {
@@ -62,7 +63,9 @@ const PostFeed = () => {
                   <FollowButton />
                 </div>
               </div>
-              <p className="m-2 break-words">{post.data().text}</p>
+              <p className="m-2 break-words text-black dark:text-white">
+                {post.data().text}
+              </p>
               <p className="m-2 text-end text-xs text-gray-500">
                 {post.data().timeStamp && (
                   <Moment fromNow date={post.data().timeStamp.toDate()} />

@@ -28,7 +28,7 @@ const Poster = () => {
         useremail: user.email,
         timeStamp: serverTimestamp(),
         likes: [],
-        comments: [],
+        NumberOfComments: 0,
       });
 
       setText("");
@@ -43,20 +43,20 @@ const Poster = () => {
         <Profile classname="mt-2" />
         <textarea
           placeholder="Whats happening..."
-          className="textarea textarea-ghost w-full"
+          className="p-2 focus:ring-1 dark:bg-gray-800 focus:shadow w-full text-black dark:text-white rounded"
           name="Post-Main"
           value={text}
           onChange={(event) => setText(event.target.value)}
         />
       </div>
       <div className="flex justify-start items-center space-x-4 relative">
-        <AiFillPicture className="w-4 h-4 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
-        <MdGif className="w-4 h-4 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
-        <MdEmojiEmotions className="w-4 h-4 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
-        <GiPositionMarker className="w-4 h-4 hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
+        <AiFillPicture className="w-4 h-4 text-black dark:text-white hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
+        <MdGif className="w-4 h-4 text-black dark:text-white hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
+        <MdEmojiEmotions className="w-4 h-4 text-black dark:text-white hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
+        <GiPositionMarker className="w-4 h-4 text-black dark:text-white hover:scale-105 transition-transform hover:shadow-sm hover:text-sky-500" />
         <button
-          className={`btn btn-info ${
-            text.length < 1 ? "btn-disabled" : "btn-soft"
+          className={`btn ${
+            text.length === 0 ? "border-2 border-error" : "btn-info"
           } btn-sm absolute right-0 sm:w-24`}
           onClick={() => {
             loggedIn
@@ -67,8 +67,9 @@ const Poster = () => {
                   ) as HTMLDialogElement
                 ).show();
           }}
+          disabled={text.length === 0}
         >
-          <MdLocalPostOffice className="w-4 h-4" />
+          <MdLocalPostOffice className="w-4 h-4 text-black dark:text-white" />
         </button>
       </div>
     </div>

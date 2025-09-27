@@ -4,6 +4,7 @@ import StoreProvider from "@/redux/StoreProvider";
 import RightAside from "./components/layout/RightAside";
 import Footer from "./components/layout/Footer";
 import PopUpModals from "./components/PopUpModals/PopUpModals";
+import { ThemeProvider } from "next-themes";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -24,18 +25,25 @@ export default function RootLayout({
     <StoreProvider>
       <html lang="en">
         <body className="bg-white dark:bg-gray-950 min-w-[320px] min-h-full p-0 m-0 overflow-hidden">
-          <div className="grid grid-cols-12 w-full min-h-screen">
-            {/* Modals for Login & Posting */}
-            <PopUpModals />
-            {/* 
-            Right Side Bar with Buttons for Navigation like Home, Search, AI-Tools etc. 
-            both visible on Mobile and on Desktop, but without Text on Mobile (only Button Icons)
-            */}
-            <RightAside />
-            {children}
-            {/* The Footer Interface for Smart Phones or, if User not Logged In, Shows Login or Sign Up Prop*/}
-            <Footer />
-          </div>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange={false}
+          >
+            <div className="grid grid-cols-12 w-full min-h-screen">
+              {/* Modals for Login & Posting */}
+              <PopUpModals />
+              {/*
+                Right Side Bar with Buttons for Navigation like Home, Search, AI-Tools etc.
+                both visible on Mobile and on Desktop, but without Text on Mobile (only Button Icons)
+                */}
+              <RightAside />
+              {children}
+              {/* The Footer Interface for Smart Phones or, if User not Logged In, Shows Login or Sign Up Prop*/}
+              <Footer />
+            </div>
+          </ThemeProvider>
         </body>
       </html>
     </StoreProvider>

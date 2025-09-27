@@ -10,7 +10,7 @@ import Profile from "../Profile";
 
 const RightAside = () => {
   return (
-    <aside className="col-span-3 bg-slate-100 dark:bg-gray-950 border-r-2 border-blue-400 dark:border-blue-950 flex flex-col h-[100vh] overflow-y-auto overflow-x-hidden">
+    <aside className="col-span-3 pb-16 sm:pb-0 bg-slate-100 dark:bg-gray-950 border-r-2 border-blue-400 dark:border-blue-950 flex flex-col h-[100vh] overflow-y-auto overflow-x-hidden">
       <Logo />
       <ul className="list">
         <RightAsideListItems />

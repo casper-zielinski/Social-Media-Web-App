@@ -56,7 +56,7 @@ const Profile = ({
       {displayUserInfo && (
         <div className="min-w-0 flex-1">
           <p
-            className={`font-bold text-xs ${
+            className={`font-bold text-xs text-black dark:text-white ${
               !loader && "bg-gray-600 text-gray-600 animate-pulse rounded"
             }`}
           >

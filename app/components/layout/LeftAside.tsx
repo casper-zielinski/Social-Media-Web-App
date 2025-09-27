@@ -10,13 +10,15 @@ const LeftAside = () => {
       <input
         type="text"
         placeholder="Search..."
-        className="input input-md rounded-3xl w-95/100"
+        className="input input-md rounded-3xl w-95/100 dark:bg-gray-800 text-black dark:text-white"
         name="Search"
       />
       {/* Premium subscription section */}
       <section className="bg-blue-100 dark:bg-gray-800 rounded-3xl p-3 border border-gray-600 w-95/100">
-        <h3 className="text-lg font-bold">Subscribe to Premium</h3>
-        <p className="text-sm">
+        <h3 className="text-lg font-bold text-black dark:text-white">
+          Subscribe to Premium
+        </h3>
+        <p className="text-sm text-gray-400">
           Subscribe to unlock new features and if eligible, receive a share of
           revenue.
         </p>
@@ -25,35 +27,37 @@ const LeftAside = () => {
 
       {/*What's happening Section */}
       <section className="bg-blue-100 dark:bg-gray-800 rounded-3xl p-3 border border-gray-600 w-95/100">
-        <h3 className="text-lg font-bold mb-4">What's happening</h3>
+        <h3 className="text-lg font-bold mb-4 text-black dark:text-white">
+          What's happening
+        </h3>
         <div className="mb-3">
           <div className="flex items-center">
             <p className="text-sm text-gray-500">Trending in Austria</p>
             <p className="ms-auto">
-              <HiDotsHorizontal className="hover:font-bold" />
+              <HiDotsHorizontal className="hover:font-bold text-black dark:text-white" />
             </p>
           </div>
-          <p className="text-sm font-bold">#React</p>
+          <p className="text-sm font-bold text-black dark:text-white">#React</p>
           <p className="text-sm text-gray-500">220k Clicks</p>
         </div>
         <div className="mb-3">
           <div className="flex items-center">
             <p className="text-sm text-gray-500">Trending in Austria</p>
             <p className="ms-auto">
-              <HiDotsHorizontal className="hover:font-bold" />
+              <HiDotsHorizontal className="hover:font-bold text-black dark:text-white" />
             </p>
           </div>
-          <p className="text-sm font-bold">#React</p>
+          <p className="text-sm font-bold text-black dark:text-white">#React</p>
           <p className="text-sm text-gray-500">220k Clicks</p>
         </div>
         <div className="mb-3">
           <div className="flex items-center">
             <p className="text-sm text-gray-500">Trending in Austria</p>
             <p className="ms-auto">
-              <HiDotsHorizontal className="hover:font-bold" />
+              <HiDotsHorizontal className="hover:font-bold text-black dark:text-white" />
             </p>
           </div>
-          <p className="text-sm font-bold">#React</p>
+          <p className="text-sm font-bold text-black dark:text-white">#React</p>
           <p className="text-sm text-gray-500">220k Clicks</p>
         </div>
       </section>
@@ -67,7 +71,9 @@ const LeftAside = () => {
             </div>
           </div>
           <div className="text-xs text-start lg:text-base min-w-0">
-            <p className="font-bold break-words whitespace-normal">Dua Lipa</p>
+            <p className="font-bold break-words whitespace-normal text-black dark:text-white">
+              Dua Lipa
+            </p>
             <p className="text-gray-500 break-words whitespace-normal">
               D.lipa@gmail.com
             </p>
@@ -84,7 +90,9 @@ const LeftAside = () => {
             </div>
           </div>
           <div className="text-xs text-start lg:text-base min-w-0">
-            <p className="font-bold break-words whitespace-normal">Dua Lipa</p>
+            <p className="font-bold break-words whitespace-normal text-black dark:text-white">
+              Dua Lipa
+            </p>
             <p className="text-gray-500 break-words whitespace-normal">
               D.lipa@gmail.com
             </p>
@@ -101,7 +109,9 @@ const LeftAside = () => {
             </div>
           </div>
           <div className="text-xs text-start lg:text-base min-w-0">
-            <p className="font-bold break-words whitespace-normal">Dua Lipa</p>
+            <p className="font-bold break-words whitespace-normal text-black dark:text-white">
+              Dua Lipa
+            </p>
             <p className="text-gray-500 break-words whitespace-normal">
               D.lipa@gmail.com
             </p>

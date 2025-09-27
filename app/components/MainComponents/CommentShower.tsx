@@ -38,6 +38,7 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
   const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   const user = useSelector((state: RootState) => state.user);
 
+  //Gets all the Comments of Firestore DB
   useEffect(() => {
     if (!postId) {
       return;
@@ -133,7 +134,7 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
       {comments.map((comment, index) => (
         <article key={comment.id} className={`space-y-3 px-1.5`}>
           <div
-            className={`divider w-full ${index === 0 && "divider-primary"} `}
+            className={`divider w-full ${index === 0 ? "divider-primary dark:divider-primary" : "divider-neutral dark:divider-info"} `}
           ></div>
           <div className="flex">
             <Profile

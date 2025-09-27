@@ -36,10 +36,10 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
   const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   const user = useSelector((state: RootState) => state.user);
 
+  // Gets all the Replies of Firestore DB
   useEffect(() => {
     if (PostId === undefined || CommentId === undefined) return;
 
-    console.log("use effect started");
     const q = query(
       collection(db, "posts", PostId, "comments", CommentId, "replys"),
       orderBy("timeStamp", "asc")
@@ -117,7 +117,7 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
       {replies.map((reply, index) => (
         <article key={reply.id} className="space-y-3">
           <div
-            className={`divider w-full ${0 === index && "divider-primary"}`}
+            className={`divider w-full ${0 === index ? "divider-primary" : "divider-info"}`}
           ></div>
           <div className="flex items-center sm:space-x-2 md:space-x-4 lg:space-x-6">
             <Profile

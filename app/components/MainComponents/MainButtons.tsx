@@ -72,7 +72,9 @@ const MainButtons = ({
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 1.2, rotate: -10 }}
         >
-          {Likes !== undefined && Likes !== null && <span>{Likes.length}</span>}
+          {Likes !== undefined && Likes !== null && (
+            <span className="text-black dark:text-white">{Likes.length}</span>
+          )}
           <AiFillLike
             className={
               likeColor ? "text-blue-600" : "text-black dark:text-white"
@@ -113,6 +115,7 @@ const MainButtons = ({
           whileHover={{ scale: 1.2 }}
         >
           <FaCommentAlt
+            className="text-black dark:text-white"
             onClick={() =>
               logedIn
                 ? (
@@ -135,6 +138,7 @@ const MainButtons = ({
           whileTap={{ scale: 1.2, translateY: -5 }}
         >
           <FaEye
+            className="text-black dark:text-white"
             onClick={() =>
               logedIn
                 ? ""
@@ -159,6 +163,7 @@ const MainButtons = ({
             />
           ) : (
             <CiBookmark
+              className="text-black dark:text-white"
               onClick={() =>
                 logedIn
                   ? setBookMark((prev) => !prev)
@@ -177,6 +182,7 @@ const MainButtons = ({
           whileHover={{ scale: 1.2 }}
         >
           <PiDownloadFill
+            className="text-black dark:text-white"
             onClick={() =>
               logedIn
                 ? ""
@@ -191,7 +197,7 @@ const MainButtons = ({
       </div>
       <div className="flex justify-center my-6 space-x-2 items-center">
         <motion.p
-          className="text-xs hover:text-blue-600 cursor-pointer"
+          className="text-xs hover:text-blue-600 cursor-pointer text-black dark:text-white"
           onClick={() => {
             setRotate(!isRotated);
             ShowCommentArray[1]((prev) =>

@@ -44,44 +44,44 @@ const Footer = () => {
                   )?.showModal()
             }
           >
-            <MdPostAdd className="w-6 h-6" />
+            <MdPostAdd className="w-6 h-6 text-black" />
           </button>
 
           <div
             className="tooltip tooltip-info flex flex-col items-center"
             data-tip="Home Page"
           >
-            <MdHome className="w-6 h-6" />
+            <MdHome className="w-6 h-6 text-info dark:text-white" />
           </div>
 
           <div
             className="tooltip tooltip-info flex flex-col items-center"
             data-tip="Search"
           >
-            <FaSearch className="w-5 h-5" />
+            <FaSearch className="w-5 h-5 text-info dark:text-white" />
           </div>
 
           <div
             className="tooltip tooltip-info flex flex-col items-center"
             data-tip="Notifications"
           >
-            <MdNotificationsActive className="w-5 h-5" />
+            <MdNotificationsActive className="w-5 h-5 text-info dark:text-white" />
           </div>
           <div
             className="tooltip tooltip-info flex flex-col items-center"
             data-tip="Messages"
           >
-            <LuMessageSquare className="w-5 h-5" />
+            <LuMessageSquare className="w-5 h-5 text-info dark:text-white" />
           </div>
           <div
             className="tooltip tooltip-info flex flex-col items-center"
             data-tip="AI Chatbot"
           >
-            <FaBrain className="w-5 h-5" />
+            <FaBrain className="w-5 h-5 text-info dark:text-white" />
           </div>
         </div>
       ) : (
-        (!loggedIn.pending) && <SignUpOrLoginProp />
+        !loggedIn.pending && <SignUpOrLoginProp />
       )}
     </footer>
   );

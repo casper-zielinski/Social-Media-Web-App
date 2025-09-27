@@ -21,10 +21,10 @@ const RightAsideListItems = () => {
     <>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn dark:btn-soft btn-info rounded-xl px-0.5"
+          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-0.5"
           onClick={() => router.push("/")}
         >
-            <MdHome className="h-7 w-7" />
+          <MdHome className="h-7 w-7" />
           <div className="hidden sm:block sm:text-xs text-start justify-self-start">
             Home
           </div>
@@ -32,7 +32,7 @@ const RightAsideListItems = () => {
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn dark:btn-soft btn-info rounded-xl px-0.5"
+          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-0.5"
           onClick={() =>
             loggedIn
               ? ""
@@ -49,7 +49,7 @@ const RightAsideListItems = () => {
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-1.3 btn dark:btn-soft btn-info rounded-xl px-0.5"
+          className="flex col-span-full items-center space-x-1.3 btn btn-info rounded-xl px-0.5"
           onClick={() =>
             loggedIn
               ? ""
@@ -68,7 +68,7 @@ const RightAsideListItems = () => {
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn dark:btn-soft btn-info rounded-xl px-1"
+          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-1"
           onClick={() =>
             loggedIn
               ? ""
@@ -85,7 +85,7 @@ const RightAsideListItems = () => {
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn dark:btn-soft btn-info rounded-xl px-1"
+          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-1"
           onClick={() =>
             loggedIn
               ? ""
@@ -102,7 +102,7 @@ const RightAsideListItems = () => {
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn dark:btn-soft btn-info rounded-xl px-0.5"
+          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-0.5"
           onClick={() =>
             loggedIn
               ? router.push("/settings")

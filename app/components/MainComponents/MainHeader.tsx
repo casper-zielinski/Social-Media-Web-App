@@ -13,7 +13,7 @@ const MainHeader = () => {
         }`}
         onClick={() => setNavigationPagerForYou(true)}
       >
-        <p>For you</p>
+        <p className="text-black dark:text-white">For you</p>
       </div>
       <div
         className={`dark:hover:bg-gray-800 hover:bg-gray-400 p-3 cursor-pointer ${
@@ -21,7 +21,7 @@ const MainHeader = () => {
         }`}
         onClick={() => setNavigationPagerForYou(false)}
       >
-        <p>Following</p>
+        <p className="text-black dark:text-white">Following</p>
       </div>
       <div
         className={`items-end w-1/2 h-1 translate-x-1/2 rounded ${
