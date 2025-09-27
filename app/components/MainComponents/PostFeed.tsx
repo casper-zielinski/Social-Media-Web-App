@@ -19,6 +19,7 @@ const PostFeed = () => {
   const [showComments, setShowComments] = useState<boolean[]>([]);
   const dispatch: AppDispatch = useDispatch();
   const loaded = useSelector((state: RootState) => state.loader.loaded);
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("timeStamp", "desc"));
@@ -77,6 +78,8 @@ const PostFeed = () => {
                   index,
                   post.data().NumberOfComments,
                 ]}
+                Likes={post.data().likes}
+                isLiked={post.data().likes.includes(user.email)}
               />
 
               {showComments[index] && (
@@ -109,7 +112,8 @@ const PostFeed = () => {
                 <div className="col-span-4 animate-pulse bg-gray-500 p-2 "></div>
                 <div className="col-span-6 animate-pulse bg-gray-500 p-2 "></div>
                 <div className="col-span-2 animate-pulse bg-gray-500 p-2 "></div>
-                <div className="col-span-8 animate-pulse bg-gray-500 p-2 "></div>
+                <div className="col-span-4 animate-pulse bg-gray-500 p-2 "></div>
+                <div className="col-span-4 animate-pulse bg-gray-500 p-2 "></div>
                 <div className="col-span-8 p-2 "></div>
                 <div className="mt-3 col-span-2 animate-pulse bg-gray-500 p-2"></div>
               </div>

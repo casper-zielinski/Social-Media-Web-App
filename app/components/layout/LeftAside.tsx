@@ -61,13 +61,11 @@ const LeftAside = () => {
       {/* Who to follow Section*/}
       <section className="bg-blue-100 dark:bg-gray-800 p-3.5 grid grid-cols-6 gap-2 rounded-3xl border border-gray-600">
         <div className="col-span-full lg:col-span-4 flex justify-self-start space-x-2 text-xs lg:text-base">
-          <Image
-            src={"/profilepic.jpg"}
-            alt="demo picture"
-            width={36}
-            height={36}
-            className="rounded"
-          />
+          <div className="avatar">
+            <div className="w-8 rounded-sm">
+              <img src="https://img.daisyui.com/images/profile/demo/yellingwoman@192.webp" />
+            </div>
+          </div>
           <div className="text-xs text-start lg:text-base min-w-0">
             <p className="font-bold break-words whitespace-normal">Dua Lipa</p>
             <p className="text-gray-500 break-words whitespace-normal">
@@ -80,13 +78,11 @@ const LeftAside = () => {
         </div>
 
         <div className="col-span-full lg:col-span-4 flex justify-self-start space-x-2 text-xs lg:text-base">
-          <Image
-            src={"/profilepic.jpg"}
-            alt="demo picture"
-            width={36}
-            height={36}
-            className="rounded"
-          />
+          <div className="avatar">
+            <div className="w-8 rounded-sm">
+              <img src="https://img.daisyui.com/images/profile/demo/yellingwoman@192.webp" />
+            </div>
+          </div>
           <div className="text-xs text-start lg:text-base min-w-0">
             <p className="font-bold break-words whitespace-normal">Dua Lipa</p>
             <p className="text-gray-500 break-words whitespace-normal">
@@ -99,13 +95,11 @@ const LeftAside = () => {
         </div>
 
         <div className="col-span-full lg:col-span-4 flex justify-self-start space-x-2 text-xs lg:text-base">
-          <Image
-            src={"/profilepic.jpg"}
-            alt="demo picture"
-            width={36}
-            height={36}
-            className="rounded"
-          />
+          <div className="avatar">
+            <div className="w-8 rounded-sm">
+              <img src="https://img.daisyui.com/images/profile/demo/yellingwoman@192.webp" />
+            </div>
+          </div>
           <div className="text-xs text-start lg:text-base min-w-0">
             <p className="font-bold break-words whitespace-normal">Dua Lipa</p>
             <p className="text-gray-500 break-words whitespace-normal">

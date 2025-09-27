@@ -1,11 +1,15 @@
 import { db } from "@/firebase";
 import {
+  arrayUnion,
   collection,
   DocumentData,
   onSnapshot,
   orderBy,
   query,
   QueryDocumentSnapshot,
+  updateDoc,
+  doc as Doc,
+  arrayRemove,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import Profile from "../Profile";
@@ -13,7 +17,6 @@ import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
 import FollowButton from "./FollowButton";
 import { motion } from "motion/react";
-import { comment } from "postcss";
 import Moment from "react-moment";
 import CommentModal from "../PopUpModals/CommentModal";
 import { RootState } from "@/redux/store";
@@ -30,8 +33,8 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
   >([]);
   const [loading, setLoading] = useState(false);
-  const [likes, setLikes] = useState<boolean[]>([]);
   const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (PostId === undefined || CommentId === undefined) return;
@@ -44,12 +47,29 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
     const unsubscribe = onSnapshot(q, (replies) => {
       const { docs } = replies;
       setReplies(docs);
-      setLikes(docs.map(() => false));
       setLoading(true);
     });
 
     return unsubscribe;
   }, []);
+
+  async function LikeOrDislike(ReplyId: string, Likes: string[]) {
+    if (!Likes.includes(user.email)) {
+      await updateDoc(
+        Doc(db, "posts", PostId, "comments", CommentId, "replys", ReplyId),
+        {
+          likes: arrayUnion(user.email),
+        }
+      );
+    } else {
+      await updateDoc(
+        Doc(db, "posts", PostId, "comments", CommentId, "replys", ReplyId),
+        {
+          likes: arrayRemove(user.email),
+        }
+      );
+    }
+  }
 
   if (!loading)
     return (
@@ -99,13 +119,13 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
           <div
             className={`divider w-full ${0 === index && "divider-primary"}`}
           ></div>
-          <div className="flex items-center">
+          <div className="flex items-center sm:space-x-2 md:space-x-4 lg:space-x-6">
             <Profile
               userdata={[reply.data().name, reply.data().username]}
               displayUserInfo={true}
               classname="flex flex-row space-x-1 sm:space-x-2 items-center min-w-0 flex-shrink"
             />
-            <IoMdArrowDropright />
+            <IoMdArrowDropright className="sm:w-5 sm:h-5 md:w-7 md:h-7" />
             <Profile
               userdata={[
                 reply.data().replyTo.userName,
@@ -125,13 +145,15 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
             <motion.div
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 1.2, rotate: -10 }}
+              className="flex space-x-1 items-center"
             >
+              <span>{reply.data().likes.length}</span>
               <AiFillLike
-                className={`h-5 w-5 ${likes[index] && "text-blue-600"}`}
+                className={`h-5 w-5 ${
+                  reply.data().likes.includes(user.email) && "text-blue-600"
+                }`}
                 onClick={() => {
-                  setLikes(
-                    [...likes].map((value, i) => (i === index ? !value : value))
-                  );
+                  LikeOrDislike(reply.id, reply.data().likes);
                 }}
               />
             </motion.div>
@@ -168,3 +190,13 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
 };
 
 export default ReplyShower;
+function doc(
+  arg0: string,
+  PostId: string,
+  arg2: string,
+  CommentId: string,
+  arg4: string,
+  ReplyId: string
+): import("@firebase/firestore").DocumentReference<unknown, DocumentData> {
+  throw new Error("Function not implemented.");
+}

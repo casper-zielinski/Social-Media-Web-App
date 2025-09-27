@@ -1,8 +1,17 @@
 "use client";
 
+import { db } from "@/firebase";
 import { RootState } from "@/redux/store";
+import {
+  arrayRemove,
+  arrayUnion,
+  deleteDoc,
+  doc,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import { motion } from "motion/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillLike } from "react-icons/ai";
 import { BiRepost } from "react-icons/bi";
 import { CiBookmark } from "react-icons/ci";
@@ -19,37 +28,64 @@ interface MainButtonsProps {
     number,
     number | null
   ];
+  Likes?: [];
+  isLiked?: boolean;
 }
 
-const MainButtons = ({ commentId, ShowCommentArray }: MainButtonsProps) => {
+const MainButtons = ({
+  commentId,
+  ShowCommentArray,
+  Likes,
+  isLiked,
+}: MainButtonsProps) => {
   const [likeColor, setLikeColor] = useState(false);
   const [bookMark, setBookMark] = useState(false);
   const [repost, setRepost] = useState(false);
   const [isRotated, setRotate] = useState(false);
   const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
+  const user = useSelector((state: RootState) => state.user);
+
+  async function LikeorDislike() {
+    if (!likeColor) {
+      setLikeColor((prev) => !prev);
+      await updateDoc(doc(db, "posts", commentId), {
+        likes: arrayUnion(user.email),
+      });
+    } else {
+      setLikeColor((prev) => !prev);
+      await updateDoc(doc(db, "posts", commentId), {
+        likes: arrayRemove(user.email),
+      });
+    }
+  }
+
+  useEffect(() => {
+    isLiked ? setLikeColor(true) : setLikeColor(false);
+  }, []);
 
   return (
     <>
-      <div className="flex justify-evenly items-baseline mb-5">
+      <div className="flex justify-evenly items-center mb-5">
         <motion.div
-          className="tooltip tooltip-info flex flex-row items-center"
+          className="tooltip tooltip-info flex flex-row items-center space-x-1"
           data-tip="Like"
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 1.2, rotate: -10 }}
         >
+          {Likes !== undefined && Likes !== null && <span>{Likes.length}</span>}
           <AiFillLike
             className={
               likeColor ? "text-blue-600" : "text-black dark:text-white"
             }
-            onClick={() =>
+            onClick={() => {
               logedIn
-                ? setLikeColor((prev) => !prev)
+                ? LikeorDislike()
                 : (
                     document.getElementById(
                       "LoginOrSignUpModal"
                     ) as HTMLDialogElement
-                  )?.showModal()
-            }
+                  )?.showModal();
+            }}
           />
         </motion.div>
         <motion.div

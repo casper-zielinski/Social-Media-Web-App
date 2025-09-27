@@ -5,7 +5,10 @@ import {
   query,
   orderBy,
   onSnapshot,
-  Timestamp,
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { motion } from "motion/react";
 import React, { useEffect, useState } from "react";
@@ -27,17 +30,19 @@ interface CommentShowerProps {
 }
 
 const CommentShower = ({ post, postId }: CommentShowerProps) => {
-  const [like, setLike] = useState<boolean[]>([]);
   const [comments, setcomments] = useState<
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
   >([]);
   const [loading, setLoading] = useState(false);
   const [replys, ShowReplyArray] = useState<boolean[]>([]);
+  const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (!postId) {
       return;
     }
+    console.log("use Effect");
     const commentsRef = collection(db, "posts", postId, "comments");
     const q = query(commentsRef, orderBy("timeStamp", "desc"));
     const unsubscribe = onSnapshot(
@@ -45,7 +50,6 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
       (snapShot) => {
         const { docs } = snapShot;
         setcomments(docs);
-        setLike(docs.map(() => false));
         ShowReplyArray(docs.map(() => false));
         setLoading(true);
       },
@@ -55,9 +59,19 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
     );
 
     return unsubscribe;
-  }, [postId]);
+  }, []);
 
-  const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
+  async function LikeorDislike(CommentId: string, Likes: string[]) {
+    if (!Likes.includes(user.email)) {
+      await updateDoc(doc(db, "posts", postId, "comments", CommentId), {
+        likes: arrayUnion(user.email),
+      });
+    } else {
+      await updateDoc(doc(db, "posts", postId, "comments", CommentId), {
+        likes: arrayRemove(user.email),
+      });
+    }
+  }
 
   if (!loading) {
     return (
@@ -142,14 +156,15 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
             <motion.div
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 1.2, rotate: -10 }}
+              className="flex space-x-1 items-center"
             >
+              <span>{comment.data().likes.length}</span>
               <AiFillLike
-                className={`h-5 w-5 ${like[index] && "text-blue-600"}`}
+                className={`h-5 w-5 ${
+                  comment.data().likes.includes(user.email) && "text-blue-600"
+                }`}
                 onClick={() => {
-                  setLike(
-                    [...like].map((value, i) => (i === index ? !value : value))
-                  );
-                  console.log(comment.data());
+                  LikeorDislike(comment.id, comment.data().likes);
                 }}
               />
             </motion.div>
