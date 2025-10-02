@@ -4,6 +4,7 @@ const initialState = {
   loggedIn: {
     pending: true,
     loggedIn: false,
+    asGuest: false,
   },
 };
 
@@ -19,10 +20,14 @@ const loginSlice = createSlice({
     },
     logOut: (state) => {
       state.loggedIn.loggedIn = false;
+      state.loggedIn.asGuest = false;
+    },
+    loggedInasGuest: (state) => {
+      state.loggedIn.asGuest = true;
     },
   },
 });
 
-export const { logIn, logOut, received } = loginSlice.actions;
+export const { logIn, logOut, received, loggedInasGuest } = loginSlice.actions;
 
 export default loginSlice.reducer;

@@ -1,6 +1,7 @@
 "use client";
 
 import { db } from "@/firebase";
+import { loggedInasGuest } from "@/redux/slices/loginSlice";
 import { RootState } from "@/redux/store";
 import {
   arrayRemove,
@@ -80,7 +81,7 @@ const MainButtons = ({
               likeColor ? "text-blue-600" : "text-black dark:text-white"
             }
             onClick={() => {
-              logedIn
+              logedIn.loggedIn && !logedIn.asGuest
                 ? LikeorDislike()
                 : (
                     document.getElementById(
@@ -99,7 +100,7 @@ const MainButtons = ({
           <BiRepost
             className={repost ? "text-green-600" : "text-black dark:text-white"}
             onClick={() =>
-              logedIn
+              logedIn.loggedIn && !logedIn.asGuest
                 ? setRepost((prev) => !prev)
                 : (
                     document.getElementById(
@@ -117,7 +118,7 @@ const MainButtons = ({
           <FaCommentAlt
             className="text-black dark:text-white"
             onClick={() =>
-              logedIn
+              logedIn.loggedIn && !logedIn.asGuest
                 ? (
                     document.getElementById(
                       `CommentModal${commentId}`
@@ -140,7 +141,7 @@ const MainButtons = ({
           <FaEye
             className="text-black dark:text-white"
             onClick={() =>
-              logedIn
+              logedIn.loggedIn && !logedIn.asGuest
                 ? ""
                 : (
                     document.getElementById(
@@ -165,7 +166,7 @@ const MainButtons = ({
             <CiBookmark
               className="text-black dark:text-white"
               onClick={() =>
-                logedIn
+                logedIn.loggedIn && !logedIn.asGuest
                   ? setBookMark((prev) => !prev)
                   : (
                       document.getElementById(
@@ -184,7 +185,7 @@ const MainButtons = ({
           <PiDownloadFill
             className="text-black dark:text-white"
             onClick={() =>
-              logedIn
+              logedIn.loggedIn && !logedIn.asGuest
                 ? ""
                 : (
                     document.getElementById(
@@ -195,7 +196,11 @@ const MainButtons = ({
           />
         </motion.div>
       </div>
-      <div className="flex justify-center my-6 space-x-2 items-center">
+      <div
+        className={`flex justify-center mt-6 ${
+          isRotated ? "" : "mb-3"
+        } space-x-2 items-center`}
+      >
         <motion.p
           className="text-xs hover:text-blue-600 cursor-pointer text-black dark:text-white"
           onClick={() => {

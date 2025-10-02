@@ -134,7 +134,11 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
       {comments.map((comment, index) => (
         <article key={comment.id} className={`space-y-3 px-1.5`}>
           <div
-            className={`divider w-full ${index === 0 ? "divider-primary dark:divider-primary" : "divider-neutral dark:divider-info"} `}
+            className={`divider w-full ${
+              index === 0
+                ? "divider-primary dark:divider-primary"
+                : "divider-neutral dark:divider-info"
+            } `}
           ></div>
           <div className="flex">
             <Profile
@@ -165,14 +169,20 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
                   comment.data().likes.includes(user.email) && "text-blue-600"
                 }`}
                 onClick={() => {
-                  LikeorDislike(comment.id, comment.data().likes);
+                  logedIn.loggedIn && !logedIn.asGuest
+                    ? LikeorDislike(comment.id, comment.data().likes)
+                    : (
+                        document.getElementById(
+                          "LoginOrSignUpModal"
+                        ) as HTMLDialogElement
+                      )?.showModal();
                 }}
               />
             </motion.div>
             <motion.div whileHover={{ scale: 1.2 }}>
               <FaCommentAlt
                 onClick={() => {
-                  logedIn
+                  logedIn.loggedIn && !logedIn.asGuest
                     ? (
                         document.getElementById(
                           `CommentModal${comment.id}`
@@ -186,11 +196,14 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
                 }}
               />
               <CommentModal
-                Id={comment.id}
+                PostId={postId}
+                commentId={comment.id}
                 Posttext={comment.data().text}
-                userdata={[comment.data().name, comment.data().username]}
+                userdata={{
+                  name: comment.data().name,
+                  username: comment.data().username,
+                }}
                 Reply={true}
-                postIdforReply={post.id}
               />
             </motion.div>
             <div className="flex justify-center my-6 space-x-2 items-center">

@@ -59,7 +59,7 @@ const Poster = () => {
             text.length === 0 ? "border-2 border-error" : "btn-info"
           } btn-sm absolute right-0 sm:w-24`}
           onClick={() => {
-            loggedIn
+            loggedIn.loggedIn && !loggedIn.asGuest
               ? sendPost()
               : (
                   document.getElementById(

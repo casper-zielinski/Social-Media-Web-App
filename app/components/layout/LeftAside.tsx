@@ -6,11 +6,11 @@ import { HiDotsHorizontal } from "react-icons/hi";
 
 const LeftAside = () => {
   return (
-    <aside className="hidden bg-slate-100 dark:bg-gray-950 sm:flex sm:flex-col sm:col-span-3 lg:col-span-3 border-l-2 border-blue-400 dark:border-blue-950 space-y-3.5 p-3 h-[100vh] overflow-y-auto">
+    <aside className="hidden bg-slate-100 dark:bg-gray-950 sm:flex sm:flex-col sm:col-span-3 lg:col-span-3 border-l-2 border-blue-400 dark:border-blue-950 space-y-3.5 p-3 h-[100vh] overflow-y-auto scrollbar-hide">
       <input
         type="text"
         placeholder="Search..."
-        className="input input-md rounded-3xl w-95/100 dark:bg-gray-800 text-black dark:text-white"
+        className="rounded-3xl p-3 w-95/100 bg-slate-300 dark:bg-gray-800 text-black dark:text-white"
         name="Search"
       />
       {/* Premium subscription section */}

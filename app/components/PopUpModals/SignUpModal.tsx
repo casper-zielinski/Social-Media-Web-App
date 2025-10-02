@@ -1,5 +1,5 @@
 import { auth } from "@/firebase";
-import { logIn, received } from "@/redux/slices/loginSlice";
+import { loggedInasGuest, logIn, received } from "@/redux/slices/loginSlice";
 import { signInUser } from "@/redux/slices/userSlice";
 import { AppDispatch } from "@/redux/store";
 import {
@@ -30,14 +30,18 @@ const SignUpModal = () => {
       displayName: username,
     });
 
-    dispatch(
-      signInUser({
-        name: userCredentials.user.displayName,
-        username: userCredentials.user.email?.split(".")[0],
-        email: userCredentials.user.email,
-        uid: userCredentials.user.uid,
-      })
-    );
+    if (userCredentials.user.displayName === "Guest ") {
+      dispatch(loggedInasGuest());
+    } else {
+      dispatch(
+        signInUser({
+          name: userCredentials.user.displayName,
+          username: userCredentials.user.email?.split(".")[0],
+          email: userCredentials.user.email,
+          uid: userCredentials.user.uid,
+        })
+      );
+    }
 
     (document.getElementById("SignUpDialog") as HTMLDialogElement).close();
   }
@@ -49,6 +53,9 @@ const SignUpModal = () => {
         return;
       }
 
+      if (currentUser.email === "guest123@gmail.com") {
+        dispatch(loggedInasGuest());
+      }
       dispatch(
         signInUser({
           name: currentUser.displayName,
@@ -58,6 +65,7 @@ const SignUpModal = () => {
         })
       );
       dispatch(logIn());
+
       dispatch(received());
     });
 

@@ -29,7 +29,6 @@ const PostFeed = () => {
       setPosts(docs);
       setShowComments(docs.map(() => false));
     });
-
     dispatch(loadingFinished());
 
     return unsubsribe;
@@ -46,9 +45,12 @@ const PostFeed = () => {
               key={post.id}
             >
               <CommentModal
-                userdata={[post.data().name, post.data().username]}
+                userdata={{
+                  name: post.data().name,
+                  username: post.data().username,
+                }}
                 Posttext={post.data().text}
-                Id={post.id}
+                PostId={post.id}
               />
               <div className="flex items-center w-full">
                 <div className="m-2 flex-1 min-w-0">

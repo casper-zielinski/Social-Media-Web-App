@@ -2,7 +2,12 @@
 
 import { auth } from "@/firebase";
 import { loadingFinished } from "@/redux/slices/loadingSlice";
-import { logIn, logOut, received } from "@/redux/slices/loginSlice";
+import {
+  loggedInasGuest,
+  logIn,
+  logOut,
+  received,
+} from "@/redux/slices/loginSlice";
 import { signInUser, signOutUser } from "@/redux/slices/userSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -29,9 +34,12 @@ const UserSettings = () => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
         dispatch(received());
+        dispatch(loadingFinished());
         return;
       }
-
+      if (currentUser.email === "guest123@gmail.com") {
+        dispatch(loggedInasGuest());
+      }
       dispatch(
         signInUser({
           name: currentUser.displayName,
@@ -87,18 +95,13 @@ const UserSettings = () => {
             <p className="font-bold text-xs sm:text-base text-black dark:text-white">
               Profile Picture
             </p>
-            <p className="text-gray-500 text-xs sm:text-base">
+            <p className="text-gray-500 text-xs sm:text-base pr-5">
               Uploud a Profile Picture
             </p>
           </div>
         </div>
         <div>
-          <button
-            className="btn btn-neutral btn-sm sm:btn-md"
-            onClick={() => console.log(user)}
-          >
-            change
-          </button>
+          <button className="btn btn-neutral btn-sm sm:btn-md">change</button>
         </div>
       </div>
 
@@ -110,9 +113,11 @@ const UserSettings = () => {
           <input
             type="text"
             className={`w-full px-3 py-2 rounded-lg border transition-colors ${
-              loading.loading && logedIn ? "animate-pulse bg-gray-500" : ""
+              loading.loading && logedIn.loggedIn
+                ? "animate-pulse bg-gray-500"
+                : ""
             } dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500`}
-            value={username}
+            value={logedIn.loggedIn ? username : "your_username"}
             onChange={(event) => setUsername(event.target.value)}
           />
         </div>
@@ -123,9 +128,11 @@ const UserSettings = () => {
           <input
             type="text"
             className={`w-full px-3 py-2 rounded-lg border transition-colors ${
-              loading.loading && logedIn ? "animate-pulse bg-gray-500" : ""
+              loading.loading && logedIn.loggedIn
+                ? "animate-pulse bg-gray-500"
+                : ""
             } dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500`}
-            value={name}
+            value={logedIn.loggedIn ? name : "your_name"}
             onChange={(event) => setname(event.target.value)}
           />
         </div>

@@ -34,13 +34,9 @@ const RightAsideListItems = () => {
         <button
           className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-0.5"
           onClick={() =>
-            loggedIn
-              ? ""
-              : (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                )?.showModal()
+            (
+              document.getElementById("LoginOrSignUpModal") as HTMLDialogElement
+            )?.showModal()
           }
         >
           <FaSearch className="h-5 w-5" />
@@ -51,7 +47,7 @@ const RightAsideListItems = () => {
         <button
           className="flex col-span-full items-center space-x-1.3 btn btn-info rounded-xl px-0.5"
           onClick={() =>
-            loggedIn
+            loggedIn.loggedIn && !loggedIn.asGuest
               ? ""
               : (
                   document.getElementById(
@@ -70,7 +66,7 @@ const RightAsideListItems = () => {
         <button
           className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-1"
           onClick={() =>
-            loggedIn
+            loggedIn.loggedIn && !loggedIn.asGuest
               ? ""
               : (
                   document.getElementById(
@@ -87,7 +83,7 @@ const RightAsideListItems = () => {
         <button
           className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-1"
           onClick={() =>
-            loggedIn
+            loggedIn.loggedIn
               ? ""
               : (
                   document.getElementById(
@@ -103,15 +99,7 @@ const RightAsideListItems = () => {
       <li className="list-row justify-center">
         <button
           className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-0.5"
-          onClick={() =>
-            loggedIn
-              ? router.push("/settings")
-              : (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                )?.showModal()
-          }
+          onClick={() => router.push("/settings")}
         >
           <CiSettings className="h-5 w-5" />
           <div className="hidden sm:block sm:text-xs">Settings</div>
@@ -120,9 +108,9 @@ const RightAsideListItems = () => {
       <li className="list-row justify-center">
         {/* "Post" button in sidebar (desktop) */}
         <button
-          className="flex col-span-full items-center space-x-4 btn btn-info btn-outline rounded-xl px-1"
+          className="flex col-span-full items-center space-x-4 btn dark:btn-info dark:btn-outline rounded-xl px-1"
           onClick={() =>
-            loggedIn
+            loggedIn.loggedIn && !loggedIn.asGuest
               ? (
                   document.getElementById("PostModal") as HTMLDialogElement
                 )?.showModal()

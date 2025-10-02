@@ -4,6 +4,7 @@ import React from "react";
 import TruncateText from "./TruncateText";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 interface ProfileDisplayer {
   classname?: string;
@@ -11,6 +12,11 @@ interface ProfileDisplayer {
   displayUserInfo?: boolean;
   userdata?: [string, string];
   OwnLoader?: boolean;
+  route?: {
+    Userprofile: boolean;
+    DifferentUserProfile: boolean;
+    IdFromDifUser?: string;
+  };
 }
 
 const Profile = ({
@@ -28,13 +34,15 @@ const Profile = ({
       ? useSelector((state: RootState) => state.loader.loaded)
       : OwnLoader;
 
+  const router = useRouter();
+
   const displayer = () => {
     if (!userdata) {
       const user = useSelector((state: RootState) => state.user);
       return [
         user.name?.charAt(0),
-        !user.name || user.name.length <= 0 ? "name" : user.name,
-        user.username?.length <= 0 ? "username" : user.username,
+        !user.name || user.name.length <= 0 ? "your_name" : user.name,
+        user.username?.length <= 0 ? "your_username" : user.username,
       ];
     } else return [userdata.at(0)?.charAt(0), ...userdata];
   };
@@ -42,6 +50,7 @@ const Profile = ({
   return (
     <div
       className={!loader ? `${classname} max-w-32 sm:max-w-48` : `${classname}`}
+      onClick={() => router.push("/settings")}
     >
       <div className="avatar avatar-placeholder">
         <div
@@ -55,13 +64,14 @@ const Profile = ({
 
       {displayUserInfo && (
         <div className="min-w-0 flex-1">
-          <p
-            className={`font-bold text-xs text-black dark:text-white ${
+          <TruncateText
+            maxLength={15}
+            text={displayer()?.at(1) ?? "your_name"}
+            widthToShowFull={600}
+            className={`font-bold text-xs break-words text-black dark:text-white ${
               !loader && "bg-gray-600 text-gray-600 animate-pulse rounded"
             }`}
-          >
-            {displayer()?.at(1)}
-          </p>
+          />
           <div
             className={` ${
               tooltipDirectionEmail && "tooltip tooltip-info"

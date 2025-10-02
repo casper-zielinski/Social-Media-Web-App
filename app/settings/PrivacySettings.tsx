@@ -34,14 +34,16 @@ const PrivacySettings = () => {
         <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
           Email
         </label>
-        <div className="flex items-baseline flex-grow space-x-3">
+        <div className="flex items-baseline flex-grow flex-wrap space-y-2">
           <input
             id="emailSetter"
             type="text"
-            className={`w-full px-3 py-2 rounded-lg border transition-colors ${
+            className={`w-full px-3 py-2 text-xs md:text-base rounded-lg border transition-colors ${
               loading.loading && logedIn ? "animate-pulse bg-gray-500" : ""
             } ${
-              disableEmail ? "text-gray-400 cursor-not-allowed" : ""
+              disableEmail
+                ? "text-gray-400 cursor-not-allowed"
+                : "cursor-default"
             } dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500`}
             value={email}
             onChange={(event) => setemail(event.target.value)}
@@ -50,7 +52,7 @@ const PrivacySettings = () => {
           <button
             className={`btn ${
               disableEmail ? "btn-neutral" : "btn-success"
-            } btn-neutral btn-sm`}
+            } btn-neutral btn-xs`}
             onClick={() => {
               setdisableEmail((prev) => !prev);
               if (disableEmail) document.getElementById("emailSetter")?.focus();
@@ -64,15 +66,17 @@ const PrivacySettings = () => {
         <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
           Password
         </label>
-        <div className="flex items-baseline flex-grow space-x-3">
+        <div className="flex items-baseline flex-grow flex-wrap space-y-2">
           <div className="w-full join">
             <input
               id="passwordSetter"
               type={showPassword ? "text" : "password"}
-              className={`w-full join-item px-3 py-2 rounded-lg border transition-colors ${
+              className={`w-full join-item text-xs md:text-base  px-2 py-1 rounded-lg border transition-colors ${
                 loading.loading && logedIn ? "animate-pulse bg-gray-500" : ""
               } ${
-                disableEmail ? "text-gray-400 cursor-not-allowed" : ""
+                disablePassword
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "cursor-default"
               } dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500`}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -90,10 +94,10 @@ const PrivacySettings = () => {
           <button
             className={`btn ${
               disablePassword ? "btn-neutral" : "btn-success"
-            } btn-neutral btn-sm`}
+            } btn-neutral btn-xs`}
             onClick={() => {
               setdisablePassword((prev) => !prev);
-              setShowPassword((prev) => !prev);
+              setShowPassword(disablePassword);
               if (disableEmail)
                 document.getElementById("passwordSetter")?.focus();
             }}

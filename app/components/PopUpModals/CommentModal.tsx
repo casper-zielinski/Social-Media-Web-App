@@ -5,43 +5,42 @@ import { MdGif, MdEmojiEmotions, MdLocalPostOffice } from "react-icons/md";
 import Profile from "../Profile";
 import {
   addDoc,
-  arrayUnion,
   collection,
   doc,
   increment,
-  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { v4 as uuidv4 } from "uuid";
-import { timeStamp } from "console";
 
 interface BaseCommentModalProps {
-  userdata: [string, string];
+  userdata: {
+    name: string;
+    username: string;
+  };
   Posttext: string;
-  Id: string;
-  commentId?: string;
+  PostId: string;
+  replyId?: string;
 }
 
 type CommentModalProps =
   | (BaseCommentModalProps & {
       Reply: true;
-      postIdforReply: string;
+      commentId: string;
     })
   | (BaseCommentModalProps & {
       Reply?: false;
-      postIdforReply?: undefined;
+      commentId?: undefined;
     });
 
 const CommentModal = ({
   userdata,
   Posttext,
-  Id,
+  PostId,
   Reply,
-  postIdforReply,
   commentId,
+  replyId,
 }: CommentModalProps) => {
   const [text, setText] = useState("");
   const [height, setHeight] = useState("h-[80px]");
@@ -52,19 +51,16 @@ const CommentModal = ({
     setHeight(`${80 + ((pref.current?.offsetHeight || 24) / 24 - 1) * 24}px`);
   }, []);
 
+  function getCorrectResponseToID() {
+    return replyId ?? (Reply ? commentId : PostId);
+  }
+
   async function sendComment() {
     if (Reply) {
       console.log("sending reply: ", Reply);
       try {
         await addDoc(
-          collection(
-            db,
-            "posts",
-            postIdforReply,
-            "comments",
-            commentId || Id,
-            "replys"
-          ),
+          collection(db, "posts", PostId, "comments", commentId, "replys"),
           {
             name: user.name,
             username: user.username,
@@ -72,16 +68,16 @@ const CommentModal = ({
             timeStamp: new Date(),
             likes: [],
             replyTo: {
-              userId: Id,
-              userName: userdata[0],
-              userUsername: userdata[1],
+              userId: getCorrectResponseToID(),
+              userName: userdata.name,
+              userUsername: userdata.username,
               textToReplyTo: Posttext,
             },
             NumberOfReplys: 0,
           }
         );
 
-        await updateDoc(doc(db, "posts", postIdforReply, "comments", Id), {
+        await updateDoc(doc(db, "posts", PostId, "comments", commentId), {
           NumberOfReplys: increment(1),
         });
 
@@ -92,7 +88,7 @@ const CommentModal = ({
       }
     } else {
       try {
-        await addDoc(collection(db, "posts", Id, "comments"), {
+        await addDoc(collection(db, "posts", PostId, "comments"), {
           name: user.name,
           username: user.username,
           text: text,
@@ -101,7 +97,7 @@ const CommentModal = ({
           NumberOfComments: 0,
         });
 
-        await updateDoc(doc(db, "posts", Id), {
+        await updateDoc(doc(db, "posts", PostId), {
           NumberOfComments: increment(1),
         });
       } catch (error) {
@@ -111,14 +107,16 @@ const CommentModal = ({
 
     if (!error) {
       (
-        document.getElementById(`CommentModal${Id}`) as HTMLDialogElement
-      ).close();
+        document.getElementById(
+          `CommentModal${getCorrectResponseToID()}`
+        ) as HTMLDialogElement
+      )?.close();
     }
   }
 
   return (
     <dialog
-      id={`CommentModal${Id}`}
+      id={`CommentModal${getCorrectResponseToID()}`}
       className="modal modal-middle"
       data-theme="dark"
     >
@@ -131,7 +129,10 @@ const CommentModal = ({
         </form>
         <div className="flex items-baseline min-w-0">
           <div className="flex flex-col items-center">
-            <Profile classname="mt-2" userdata={userdata} />
+            <Profile
+              classname="mt-2"
+              userdata={[userdata.name, userdata.username]}
+            />
             <div
               className={`w-0.5 bg-gray-500 m-0`}
               style={{ height: height }}
@@ -140,8 +141,8 @@ const CommentModal = ({
           </div>
           <div className="flex-col flex-grow min-w-0">
             <div className="ml-2 flex space-x-4 items-center">
-              <p className="text-sm font-bold text-white">{userdata[0]}</p>
-              <p className="text-xs text-gray-500">{userdata[1]}</p>
+              <p className="text-sm font-bold text-white">{userdata.name}</p>
+              <p className="text-xs text-gray-500">{userdata.username}</p>
             </div>
             <div className="ml-4 mt-4">
               <p
@@ -151,13 +152,14 @@ const CommentModal = ({
                 {Posttext}
               </p>
               <p className="text-gray-400 text-xs">
-                <span className="text-gray-500">Replying to</span> {userdata[1]}
+                <span className="text-gray-500 mr-0.5">Replying to </span>
+                {userdata.name}
               </p>
             </div>
             <div className="px-3 mt-5 sm:mt-9">
               <textarea
                 placeholder="Send your Reply"
-                className="textarea textarea-ghost w-full"
+                className="textarea textarea-ghost w-full text-white"
                 name="Post-Main"
                 value={text}
                 onChange={(event) => setText(event.target.value)}
@@ -173,7 +175,10 @@ const CommentModal = ({
           <MdEmojiEmotions className="w-6 h-6 hover:scale-105 transition-transform text-white hover:shadow-sm hover:text-sky-500" />
           <GiPositionMarker className="w-6 h-6 hover:scale-105 transition-transform text-white hover:shadow-sm hover:text-sky-500" />
           <button
-            onClick={() => sendComment()}
+            onClick={() => {
+              sendComment();
+              console.log(getCorrectResponseToID());
+            }}
             className={`btn btn-info ${
               text.length < 1 ? "btn-disabled" : "btn-soft"
             } btn-sm absolute right-0 sm:w-24`}

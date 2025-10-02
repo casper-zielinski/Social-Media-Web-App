@@ -1,22 +1,19 @@
 "use client";
 
 import React from "react";
-import {
-  FaCreativeCommonsSamplingPlus,
-  FaSearch,
-  FaBrain,
-} from "react-icons/fa";
+import { FaSearch, FaBrain } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
 import { MdHome, MdNotificationsActive, MdPostAdd } from "react-icons/md";
 import SignUpOrLoginProp from "../SignUpLoginProp";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 /* The Footer Interface for Smart Phones or, if User not Logged In, Shows Login or Sign Up Prop*/
 
 const Footer = () => {
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
-  const loader = useSelector((state: RootState) => state.loader);
+  const router = useRouter();
 
   return (
     <footer
@@ -33,7 +30,7 @@ const Footer = () => {
           <button
             className="btn btn-circle btn-info absolute left-0 rounded-cir m-3"
             onClick={() =>
-              loggedIn
+              loggedIn.loggedIn && !loggedIn.asGuest
                 ? (
                     document.getElementById("PostModal") as HTMLDialogElement
                   )?.showModal()
@@ -51,7 +48,10 @@ const Footer = () => {
             className="tooltip tooltip-info flex flex-col items-center"
             data-tip="Home Page"
           >
-            <MdHome className="w-6 h-6 text-info dark:text-white" />
+            <MdHome
+              className="w-6 h-6 text-info dark:text-white"
+              onClick={() => router.push("/")}
+            />
           </div>
 
           <div

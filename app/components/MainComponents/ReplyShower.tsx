@@ -117,7 +117,9 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
       {replies.map((reply, index) => (
         <article key={reply.id} className="space-y-3">
           <div
-            className={`divider w-full ${0 === index ? "divider-primary" : "divider-info"}`}
+            className={`divider w-full ${
+              0 === index ? "divider-primary" : "divider-info"
+            }`}
           ></div>
           <div className="flex items-center sm:space-x-2 md:space-x-4 lg:space-x-6">
             <Profile
@@ -153,14 +155,20 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
                   reply.data().likes.includes(user.email) && "text-blue-600"
                 }`}
                 onClick={() => {
-                  LikeOrDislike(reply.id, reply.data().likes);
+                  logedIn.loggedIn && !logedIn.asGuest
+                    ? LikeOrDislike(reply.id, reply.data().likes)
+                    : (
+                        document.getElementById(
+                          "LoginOrSignUpModal"
+                        ) as HTMLDialogElement
+                      )?.showModal();
                 }}
               />
             </motion.div>
             <motion.div whileHover={{ scale: 1.2 }}>
               <FaCommentAlt
                 onClick={() => {
-                  logedIn
+                  logedIn.loggedIn && !logedIn.asGuest
                     ? (
                         document.getElementById(
                           `CommentModal${reply.id}`
@@ -175,12 +183,15 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
               />
             </motion.div>
             <CommentModal
-              Id={reply.id}
+              PostId={PostId}
               Posttext={reply.data().text}
-              userdata={[reply.data().name, reply.data().username]}
+              userdata={{
+                name: reply.data().name,
+                username: reply.data().username,
+              }}
               Reply={true}
-              postIdforReply={PostId}
               commentId={CommentId}
+              replyId={reply.id}
             />
           </div>
         </article>

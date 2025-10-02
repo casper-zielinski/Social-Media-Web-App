@@ -11,6 +11,9 @@ import { db } from "@/firebase";
 import { RootState } from "@/redux/store";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import { useModal } from "@/app/hooks/useModal";
+import { MODAL_IDS } from "@/app/constants/modal";
+import LogInOrSignUpModal from "./LogInOrSignUpModal";
 
 /* All the Pop Up Modules,
   Login, Sign Up, Login Or Sign Up (Choose Modal) and Post Modal, 
@@ -22,7 +25,9 @@ const PopUpModals = () => {
   }
   const [text, setText] = useState("");
   const user = useSelector((state: RootState) => state.user);
-  const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn.loggedIn);
+  const loggedIn = useSelector(
+    (state: RootState) => state.loggingIn.loggedIn.loggedIn
+  );
 
   async function sendPost() {
     await addDoc(collection(db, "posts"), {
@@ -46,62 +51,7 @@ const PopUpModals = () => {
       <SignUpModal />
 
       {/* Login or Sign Up Dialog */}
-      <dialog id="LoginOrSignUpModal" className="modal" data-theme="dark">
-        <div className="modal-box w-3/5 max-w-md">
-          <form method="dialog" name="Login or Sign Up Dialog Closer">
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-white">
-              ✕
-            </button>
-          </form>
-          <div className="grid grid-cols-1 gap-4 justify-center items-center p-4">
-            {" "}
-            {/* grid-cols-1 */}
-            <div className="flex justify-center">
-              <button
-                className="btn btn-info w-full"
-                onClick={() => {
-                  (
-                    document.getElementById(
-                      "LoginOrSignUpModal"
-                    ) as HTMLDialogElement
-                  ).close();
-                  (
-                    document.getElementById("SignUpDialog") as HTMLDialogElement
-                  ).show();
-                }}
-              >
-                Sign Up
-              </button>
-            </div>
-            <div className="divider text-white">OR</div>
-            <div className="flex justify-center">
-              <button
-                className="btn btn-soft btn-info w-full"
-                onClick={() => {
-                  (
-                    document.getElementById(
-                      "LoginOrSignUpModal"
-                    ) as HTMLDialogElement
-                  ).close();
-                  (
-                    document.getElementById("LoginDialog") as HTMLDialogElement
-                  ).show();
-                }}
-              >
-                Log In
-              </button>
-            </div>
-          </div>
-        </div>
-        <form
-          method="dialog"
-          className="modal-backdrop cursor-none"
-          name="Login or Sign Up Dialog Closer from Backgound"
-        >
-          <button>close</button>
-        </form>
-      </dialog>
+      <LogInOrSignUpModal />
 
       {/* Post Modal for creating and sending Posts*/}
       <dialog id="PostModal" className="modal modal-middle" data-theme="dark">
@@ -135,11 +85,7 @@ const PopUpModals = () => {
               onClick={() => {
                 loggedIn
                   ? sendPost()
-                  : (
-                      document.getElementById(
-                        "LoginOrSignUpModal"
-                      ) as HTMLDialogElement
-                    ).show();
+                  : useModal(MODAL_IDS.LOGIN_OR_SIGNUP, MODAL_IDS.POST);
               }}
             >
               <MdLocalPostOffice className="w-4 h-4" />

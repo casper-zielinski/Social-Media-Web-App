@@ -16,7 +16,7 @@ const FollowButton = ({ disabled, classNameAdditon }: FollowButtonProps) => {
     <button
       className={`btn btn-info ${classNameAdditon ? classNameAdditon : ""} col-span-8 ${disabled ? "btn-disabled " : ""}`}
       onClick={() =>
-        logedIn
+        logedIn.loggedIn
           ? ""
           : (
               document.getElementById("LoginOrSignUpModal") as HTMLDialogElement

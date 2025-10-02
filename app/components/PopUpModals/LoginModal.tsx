@@ -65,7 +65,7 @@ const LoginModal = () => {
               {showPassword ? <FaEye /> : <FaEyeSlash />}
             </button>
           </div>
-{/* 
+          {/* 
           <p className="validator-hint hidden">
             Must be more than 8 characters, including
             <br />
