@@ -16,8 +16,11 @@ const RightAside = () => {
         <RightAsideListItems />
       </ul>
       <Profile
-        classname="m-2 space-y-2 flex bg-slate-100 hover:bg-gray-300 p-2 dark:bg-base-200 dark:hover:bg-base-300 rounded-lg  sm:items-center mt-auto flex-col mb-20 sm:mb-3 sm:flex-row sm:space-x-2"
+        classname="cursor-pointer m-2 space-y-2 flex bg-slate-200 hover:bg-gray-300 p-2 dark:bg-base-200 dark:hover:bg-base-300 rounded-lg  sm:items-center mt-auto flex-col mb-20 sm:mb-3 sm:flex-row sm:space-x-2"
         displayUserInfo={true}
+        route={{
+          Userprofile: true,
+        }}
       />
     </aside>
   );

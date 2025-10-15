@@ -13,6 +13,7 @@ import {
 import { db } from "@/firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { closeModel } from "@/app/hooks/useModal";
 
 interface BaseCommentModalProps {
   userdata: {
@@ -106,11 +107,7 @@ const CommentModal = ({
     }
 
     if (!error) {
-      (
-        document.getElementById(
-          `CommentModal${getCorrectResponseToID()}`
-        ) as HTMLDialogElement
-      )?.close();
+      closeModel(`CommentModal${getCorrectResponseToID()}`);
     }
   }
 
@@ -177,7 +174,6 @@ const CommentModal = ({
           <button
             onClick={() => {
               sendComment();
-              console.log(getCorrectResponseToID());
             }}
             className={`btn btn-info ${
               text.length < 1 ? "btn-disabled" : "btn-soft"
@@ -194,15 +190,6 @@ const CommentModal = ({
       >
         <button>close</button>
       </form>
-      {/*  Toast animation, has to be implemeted*/}
-      <div className="toast toast-center hidden">
-        <div className="alert alert-error w-[200px] sm:w-[320px]">
-          <span>Error sending Post</span>
-        </div>
-        <div className="alert alert-success">
-          <span>Message sent successfully.</span>
-        </div>
-      </div>
     </dialog>
   );
 };

@@ -12,6 +12,8 @@ import {
   MdLocalPostOffice,
 } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { useModal } from "../hooks/useModal";
+import { MODAL_IDS } from "../constants/modal";
 
 const RightAsideListItems = () => {
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
@@ -34,9 +36,9 @@ const RightAsideListItems = () => {
         <button
           className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-0.5"
           onClick={() =>
-            (
-              document.getElementById("LoginOrSignUpModal") as HTMLDialogElement
-            )?.showModal()
+            loggedIn.loggedIn && !loggedIn.asGuest
+              ? ""
+              : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
           <FaSearch className="h-5 w-5" />
@@ -49,11 +51,7 @@ const RightAsideListItems = () => {
           onClick={() =>
             loggedIn.loggedIn && !loggedIn.asGuest
               ? ""
-              : (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                )?.showModal()
+              : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
           <MdNotificationsActive className="h-5 w-5" />
@@ -68,11 +66,7 @@ const RightAsideListItems = () => {
           onClick={() =>
             loggedIn.loggedIn && !loggedIn.asGuest
               ? ""
-              : (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                )?.showModal()
+              : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
           <LuMessageSquare className="h-5 w-5" />
@@ -83,13 +77,7 @@ const RightAsideListItems = () => {
         <button
           className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-1"
           onClick={() =>
-            loggedIn.loggedIn
-              ? ""
-              : (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                )?.showModal()
+            loggedIn.loggedIn ? "" : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
           <FaBrain className="h-5 w-5" />
@@ -111,14 +99,8 @@ const RightAsideListItems = () => {
           className="flex col-span-full items-center space-x-4 btn dark:btn-info dark:btn-outline rounded-xl px-1"
           onClick={() =>
             loggedIn.loggedIn && !loggedIn.asGuest
-              ? (
-                  document.getElementById("PostModal") as HTMLDialogElement
-                )?.showModal()
-              : (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                )?.showModal()
+              ? useModal(MODAL_IDS.POST)
+              : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
           <MdLocalPostOffice className="w-4 h-4" />

@@ -23,6 +23,8 @@ import Moment from "react-moment";
 import FollowButton from "./FollowButton";
 import { IoIosArrowDropdown } from "react-icons/io";
 import ReplyShower from "./ReplyShower";
+import { useModal } from "@/app/hooks/useModal";
+import { MODAL_IDS } from "@/app/constants/modal";
 
 interface CommentShowerProps {
   post: QueryDocumentSnapshot<DocumentData, DocumentData>;
@@ -34,7 +36,7 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
   >([]);
   const [loading, setLoading] = useState(false);
-  const [replys, ShowReplyArray] = useState<boolean[]>([]);
+  const [replys, showReplyArray] = useState<boolean[]>([]);
   const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   const user = useSelector((state: RootState) => state.user);
 
@@ -43,7 +45,6 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
     if (!postId) {
       return;
     }
-    console.log("use Effect");
     const commentsRef = collection(db, "posts", postId, "comments");
     const q = query(commentsRef, orderBy("timeStamp", "desc"));
     const unsubscribe = onSnapshot(
@@ -51,7 +52,9 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
       (snapShot) => {
         const { docs } = snapShot;
         setcomments(docs);
-        ShowReplyArray(docs.map(() => false));
+        showReplyArray((prev) =>
+          docs.length === prev.length ? prev : docs.map(() => false)
+        );
         setLoading(true);
       },
       (error) => {
@@ -171,11 +174,7 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
                 onClick={() => {
                   logedIn.loggedIn && !logedIn.asGuest
                     ? LikeorDislike(comment.id, comment.data().likes)
-                    : (
-                        document.getElementById(
-                          "LoginOrSignUpModal"
-                        ) as HTMLDialogElement
-                      )?.showModal();
+                    : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
                 }}
               />
             </motion.div>
@@ -183,16 +182,8 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
               <FaCommentAlt
                 onClick={() => {
                   logedIn.loggedIn && !logedIn.asGuest
-                    ? (
-                        document.getElementById(
-                          `CommentModal${comment.id}`
-                        ) as HTMLDialogElement
-                      )?.showModal()
-                    : (
-                        document.getElementById(
-                          "LoginOrSignUpModal"
-                        ) as HTMLDialogElement
-                      )?.showModal();
+                    ? useModal(`CommentModal${comment.id}`)
+                    : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
                 }}
               />
               <CommentModal
@@ -210,7 +201,7 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
               <motion.p
                 className="text-xs hover:text-blue-600 cursor-pointer"
                 onClick={() =>
-                  ShowReplyArray((prev) =>
+                  showReplyArray((prev) =>
                     [...prev].map((value, i) => (index === i ? !value : value))
                   )
                 }
@@ -231,7 +222,7 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
                   <IoIosArrowDropdown
                     className="w-5 h-5 text-black dark:text-white hover:text-blue-600 cursor-pointer"
                     onClick={() => {
-                      ShowReplyArray((prev) =>
+                      showReplyArray((prev) =>
                         [...prev].map((value, i) =>
                           index === i ? !value : value
                         )

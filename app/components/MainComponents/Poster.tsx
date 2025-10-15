@@ -9,6 +9,8 @@ import { db } from "@/firebase";
 import { RootState } from "@/redux/store";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import { useModal } from "@/app/hooks/useModal";
+import { MODAL_IDS } from "@/app/constants/modal";
 
 {
   /* Component to send Post's */
@@ -61,11 +63,7 @@ const Poster = () => {
           onClick={() => {
             loggedIn.loggedIn && !loggedIn.asGuest
               ? sendPost()
-              : (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                ).show();
+              : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
           }}
           disabled={text.length === 0}
         >

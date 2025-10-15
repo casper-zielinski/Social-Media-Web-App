@@ -1,5 +1,7 @@
 "use client";
 
+import { MODAL_IDS } from "@/app/constants/modal";
+import { useModal } from "@/app/hooks/useModal";
 import { db } from "@/firebase";
 import { loggedInasGuest } from "@/redux/slices/loginSlice";
 import { RootState } from "@/redux/store";
@@ -21,21 +23,23 @@ import { IoIosArrowDropdown } from "react-icons/io";
 import { PiDownloadFill } from "react-icons/pi";
 import { useSelector } from "react-redux";
 
+interface ShowComments {
+  showComments: boolean[];
+  setShowComments: React.Dispatch<React.SetStateAction<boolean[]>>;
+  index: number;
+  commentamout: number | null;
+}
+
 interface MainButtonsProps {
   commentId: string;
-  ShowCommentArray: [
-    boolean[],
-    React.Dispatch<React.SetStateAction<boolean[]>>,
-    number,
-    number | null
-  ];
+  ShowCommentObject: ShowComments;
   Likes?: [];
   isLiked?: boolean;
 }
 
 const MainButtons = ({
   commentId,
-  ShowCommentArray,
+  ShowCommentObject,
   Likes,
   isLiked,
 }: MainButtonsProps) => {
@@ -78,16 +82,13 @@ const MainButtons = ({
           )}
           <AiFillLike
             className={
-              likeColor ? "text-blue-600" : "text-black dark:text-white"
+              likeColor ? "text-blue-600 cursor-pointer" : "text-black dark:text-white cursor-pointer"
             }
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               logedIn.loggedIn && !logedIn.asGuest
                 ? LikeorDislike()
-                : (
-                    document.getElementById(
-                      "LoginOrSignUpModal"
-                    ) as HTMLDialogElement
-                  )?.showModal();
+                : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
             }}
           />
         </motion.div>
@@ -98,15 +99,11 @@ const MainButtons = ({
           whileTap={{ scale: 1.2, translateY: -5 }}
         >
           <BiRepost
-            className={repost ? "text-green-600" : "text-black dark:text-white"}
+            className={repost ? "text-green-600 cursor-pointer" : "text-black dark:text-white cursor-pointer"}
             onClick={() =>
               logedIn.loggedIn && !logedIn.asGuest
                 ? setRepost((prev) => !prev)
-                : (
-                    document.getElementById(
-                      "LoginOrSignUpModal"
-                    ) as HTMLDialogElement
-                  )?.showModal()
+                : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
             }
           />
         </motion.div>
@@ -116,19 +113,11 @@ const MainButtons = ({
           whileHover={{ scale: 1.2 }}
         >
           <FaCommentAlt
-            className="text-black dark:text-white"
+            className="text-black dark:text-white cursor-pointer"
             onClick={() =>
               logedIn.loggedIn && !logedIn.asGuest
-                ? (
-                    document.getElementById(
-                      `CommentModal${commentId}`
-                    ) as HTMLDialogElement
-                  )?.showModal()
-                : (
-                    document.getElementById(
-                      "LoginOrSignUpModal"
-                    ) as HTMLDialogElement
-                  )?.showModal()
+                ? useModal(`CommentModal${commentId}`)
+                : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
             }
           />
         </motion.div>
@@ -139,15 +128,11 @@ const MainButtons = ({
           whileTap={{ scale: 1.2, translateY: -5 }}
         >
           <FaEye
-            className="text-black dark:text-white"
+            className="text-black dark:text-white cursor-pointer"
             onClick={() =>
               logedIn.loggedIn && !logedIn.asGuest
                 ? ""
-                : (
-                    document.getElementById(
-                      "LoginOrSignUpModal"
-                    ) as HTMLDialogElement
-                  )?.showModal()
+                : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
             }
           />
         </motion.div>
@@ -160,19 +145,15 @@ const MainButtons = ({
           {bookMark ? (
             <FaBookmark
               onClick={() => setBookMark((prev) => !prev)}
-              className="text-red-600"
+              className="text-red-600 cursor-pointer"
             />
           ) : (
             <CiBookmark
-              className="text-black dark:text-white"
+              className="text-black dark:text-white cursor-pointer"
               onClick={() =>
                 logedIn.loggedIn && !logedIn.asGuest
                   ? setBookMark((prev) => !prev)
-                  : (
-                      document.getElementById(
-                        "LoginOrSignUpModal"
-                      ) as HTMLDialogElement
-                    )?.showModal()
+                  : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
               }
             />
           )}
@@ -183,55 +164,49 @@ const MainButtons = ({
           whileHover={{ scale: 1.2 }}
         >
           <PiDownloadFill
-            className="text-black dark:text-white"
+            className="text-black dark:text-white cursor-pointer"
             onClick={() =>
               logedIn.loggedIn && !logedIn.asGuest
                 ? ""
-                : (
-                    document.getElementById(
-                      "LoginOrSignUpModal"
-                    ) as HTMLDialogElement
-                  )?.showModal()
+                : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
             }
           />
         </motion.div>
       </div>
       <div
         className={`flex justify-center mt-6 ${
-          isRotated ? "" : "mb-3"
+          ShowCommentObject.showComments[ShowCommentObject.index] ? "" : "mb-3"
         } space-x-2 items-center`}
       >
         <motion.p
           className="text-xs hover:text-blue-600 cursor-pointer text-black dark:text-white"
           onClick={() => {
-            setRotate(!isRotated);
-            ShowCommentArray[1]((prev) =>
+            ShowCommentObject.setShowComments((prev) =>
               [...prev].map((value, i) =>
-                i === ShowCommentArray[2] ? !value : value
+                i === ShowCommentObject.index ? !value : value
               )
             );
           }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 1.2 }}
         >
-          {isRotated ? "Hide Comments" : "Show Comments"}
+          {ShowCommentObject.showComments[ShowCommentObject.index] ? "Hide Comments" : "Show Comments"}
         </motion.p>
         <div className="indicator">
           <span className="indicator-item scale-75 indicator-end badge badge-info font-bold">
-            {ShowCommentArray[3] || 0}
+            {ShowCommentObject.commentamout || 0}
           </span>
           <motion.div
             initial={{ textShadow: 0 }}
             whileHover={{ scale: 1.2, textShadow: 100 }}
-            animate={{ rotate: isRotated ? 180 : 0 }}
+            animate={{ rotate: ShowCommentObject.showComments[ShowCommentObject.index] ? 180 : 0 }}
           >
             <IoIosArrowDropdown
               className="w-5 h-5 text-black dark:text-white hover:text-blue-600 cursor-pointer"
               onClick={() => {
-                setRotate(!isRotated);
-                ShowCommentArray[1]((prev) =>
+                ShowCommentObject.setShowComments((prev) =>
                   [...prev].map((value, i) =>
-                    i === ShowCommentArray[2] ? !value : value
+                    i === ShowCommentObject.index ? !value : value
                   )
                 );
               }}

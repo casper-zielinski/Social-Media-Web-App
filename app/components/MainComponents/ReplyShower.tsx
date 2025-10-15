@@ -22,6 +22,8 @@ import CommentModal from "../PopUpModals/CommentModal";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { IoMdArrowDropright } from "react-icons/io";
+import { useModal } from "@/app/hooks/useModal";
+import { MODAL_IDS } from "@/app/constants/modal";
 
 interface ReplyShowerProps {
   PostId: string;
@@ -112,6 +114,10 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
       </article>
     );
 
+  if (replies.length === 0) {
+    return <div className="m-2 text-gray-500">No Replys</div>;
+  }
+
   return (
     <div className="flex flex-grow flex-col space-y-6 p-3 text-black dark:text-white mb-2">
       {replies.map((reply, index) => (
@@ -157,11 +163,7 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
                 onClick={() => {
                   logedIn.loggedIn && !logedIn.asGuest
                     ? LikeOrDislike(reply.id, reply.data().likes)
-                    : (
-                        document.getElementById(
-                          "LoginOrSignUpModal"
-                        ) as HTMLDialogElement
-                      )?.showModal();
+                    : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
                 }}
               />
             </motion.div>
@@ -169,16 +171,8 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
               <FaCommentAlt
                 onClick={() => {
                   logedIn.loggedIn && !logedIn.asGuest
-                    ? (
-                        document.getElementById(
-                          `CommentModal${reply.id}`
-                        ) as HTMLDialogElement
-                      )?.showModal()
-                    : (
-                        document.getElementById(
-                          "LoginOrSignUpModal"
-                        ) as HTMLDialogElement
-                      )?.showModal();
+                    ? useModal(`CommentModal${reply.id}`)
+                    : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
                 }}
               />
             </motion.div>
@@ -201,13 +195,3 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
 };
 
 export default ReplyShower;
-function doc(
-  arg0: string,
-  PostId: string,
-  arg2: string,
-  CommentId: string,
-  arg4: string,
-  ReplyId: string
-): import("@firebase/firestore").DocumentReference<unknown, DocumentData> {
-  throw new Error("Function not implemented.");
-}

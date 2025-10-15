@@ -11,6 +11,8 @@ import React, { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import LogInAsGuestButton from "./LogInAsGuestButton";
+import { closeModel, useModal } from "@/app/hooks/useModal";
+import { MODAL_IDS } from "@/app/constants/modal";
 
 const SignUpModal = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +45,7 @@ const SignUpModal = () => {
       );
     }
 
-    (document.getElementById("SignUpDialog") as HTMLDialogElement).close();
+    closeModel(MODAL_IDS.SIGNUP);
   }
 
   useEffect(() => {
@@ -114,15 +116,15 @@ const SignUpModal = () => {
           <div className="validator-hint hidden">Enter valid email address</div>
 
           <label className="label">Password</label>
-          <div className="join w-11/12 md:w-9/12">
+          <div className="join w-11/12 md:w-9/12 flex-wrap">
             <input
               type={showPassword ? "text" : "password"}
-              className="input validator join-item text-white"
+              className="input validator join-item text-white w-[77.7%]"
               required
               placeholder="Password"
               minLength={8}
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-              title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+              pattern="(?=.*\d)(?=.*[a-z]).{8,}"
+              title="Must be more than 8 characters, including number, lowercase letter"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
@@ -132,17 +134,15 @@ const SignUpModal = () => {
             >
               {showPassword ? <FaEye /> : <FaEyeSlash />}
             </button>
-          </div>
 
-          {/* <p className="validator-hint hidden">
-            Must be more than 8 characters, including
-            <br />
-            At least one number
-            <br />
-            At least one lowercase letter
-            <br />
-            At least one uppercase letter
-          </p> */}
+            <p className="validator-hint hidden">
+              Must be more than 8 characters, including
+              <br />
+              At least one number
+              <br />
+              At least one lowercase letter
+            </p>
+          </div>
 
           <button className="btn btn-info mt-4" onClick={() => handleSignUp()}>
             Sign Up
@@ -154,13 +154,9 @@ const SignUpModal = () => {
             <button
               className="btn btn-info btn-soft mt-4"
               onClick={() => {
-                (
-                  document.getElementById("SignUpDialog") as HTMLDialogElement
-                ).close();
+                closeModel(MODAL_IDS.SIGNUP);
                 setShowPassword(false);
-                (
-                  document.getElementById("LoginDialog") as HTMLDialogElement
-                ).show();
+                useModal(MODAL_IDS.LOGIN);
               }}
             >
               Log in

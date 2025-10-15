@@ -13,8 +13,8 @@ interface ProfileDisplayer {
   userdata?: [string, string];
   OwnLoader?: boolean;
   route?: {
-    Userprofile: boolean;
-    DifferentUserProfile: boolean;
+    Userprofile?: boolean;
+    DifferentUserProfile?: boolean;
     IdFromDifUser?: string;
   };
 }
@@ -25,6 +25,7 @@ const Profile = ({
   displayUserInfo,
   userdata,
   OwnLoader,
+  route,
 }: ProfileDisplayer) => {
   {
     /* own loader to use in comments or replys for example */
@@ -50,12 +51,12 @@ const Profile = ({
   return (
     <div
       className={!loader ? `${classname} max-w-32 sm:max-w-48` : `${classname}`}
-      onClick={() => router.push("/settings")}
+      onClick={() => route?.Userprofile && router.push("/settings")}
     >
       <div className="avatar avatar-placeholder">
         <div
           className={`bg-gray-400 text-neutral-content w-6 sm:w-12 rounded-full ${
-            !loader && "animate-pulse text-gray-400"
+            !loader && "animate-pulse"
           }`}
         >
           <span className={!loader ? "hidden" : ""}>{displayer()?.at(0)}</span>
@@ -68,9 +69,11 @@ const Profile = ({
             maxLength={15}
             text={displayer()?.at(1) ?? "your_name"}
             widthToShowFull={600}
-            className={`font-bold text-xs break-words text-black dark:text-white ${
-              !loader && "bg-gray-600 text-gray-600 animate-pulse rounded"
-            }`}
+            className={
+              !loader
+                ? "bg-gray-600 text-gray-600 dark:text-gray-600 animate-pulse rounded"
+                : "font-bold text-xs break-words text-black dark:text-white"
+            }
           />
           <div
             className={` ${
@@ -84,7 +87,7 @@ const Profile = ({
               widthToShowFull={600}
               className={`text-gray-500 text-xs ${
                 !loader &&
-                "bg-gray-600 text-gray-600 animate-pulse rounded mt-2"
+                "bg-gray-600 text-gray-600 animate-pulse rounded mt-2 px-1"
               }`}
             />
           </div>

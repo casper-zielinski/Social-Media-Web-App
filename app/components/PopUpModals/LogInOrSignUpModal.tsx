@@ -1,3 +1,5 @@
+import { MODAL_IDS } from "@/app/constants/modal";
+import { useModal } from "@/app/hooks/useModal";
 import { RootState } from "@/redux/store";
 import React from "react";
 import { CiBookmark } from "react-icons/ci";
@@ -33,10 +35,10 @@ const LogInOrSignUpModal = () => {
           {loggedIn.asGuest && (
             <>
               <div>
-                <p className="font-bold text-lg text-white">
+                <p className="font-bold text-lg text-white text-center">
                   Join the conversation
                 </p>
-                <p className="font-semibold text-gray-300 my-3 text-center sm:text-start">
+                <p className="font-semibold text-gray-300 my-3 text-start">
                   You're browsing as a guest. Sign up to unlock all features!
                 </p>
               </div>
@@ -64,14 +66,7 @@ const LogInOrSignUpModal = () => {
             <button
               className="btn btn-info w-full"
               onClick={() => {
-                (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                ).close();
-                (
-                  document.getElementById("SignUpDialog") as HTMLDialogElement
-                ).show();
+                useModal(MODAL_IDS.SIGNUP, MODAL_IDS.LOGIN_OR_SIGNUP);
               }}
             >
               Sign Up
@@ -82,14 +77,7 @@ const LogInOrSignUpModal = () => {
             <button
               className="btn btn-soft btn-info w-full"
               onClick={() => {
-                (
-                  document.getElementById(
-                    "LoginOrSignUpModal"
-                  ) as HTMLDialogElement
-                ).close();
-                (
-                  document.getElementById("LoginDialog") as HTMLDialogElement
-                ).show();
+                useModal(MODAL_IDS.LOGIN, MODAL_IDS.LOGIN_OR_SIGNUP);
               }}
             >
               Log In

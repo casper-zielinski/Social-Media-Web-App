@@ -8,6 +8,8 @@ import SignUpOrLoginProp from "../SignUpLoginProp";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { useModal } from "@/app/hooks/useModal";
+import { MODAL_IDS } from "@/app/constants/modal";
 
 /* The Footer Interface for Smart Phones or, if User not Logged In, Shows Login or Sign Up Prop*/
 
@@ -31,14 +33,8 @@ const Footer = () => {
             className="btn btn-circle btn-info absolute left-0 rounded-cir m-3"
             onClick={() =>
               loggedIn.loggedIn && !loggedIn.asGuest
-                ? (
-                    document.getElementById("PostModal") as HTMLDialogElement
-                  )?.showModal()
-                : (
-                    document.getElementById(
-                      "LoginOrSignUpModal"
-                    ) as HTMLDialogElement
-                  )?.showModal()
+                ? useModal(MODAL_IDS.POST)
+                : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
             }
           >
             <MdPostAdd className="w-6 h-6 text-black" />

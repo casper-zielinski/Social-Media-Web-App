@@ -20,6 +20,7 @@ const PostFeed = () => {
   const dispatch: AppDispatch = useDispatch();
   const loaded = useSelector((state: RootState) => state.loader.loaded);
   const user = useSelector((state: RootState) => state.user);
+  const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
 
   //Gets all the Posts from the Firestore DB
   useEffect(() => {
@@ -27,7 +28,12 @@ const PostFeed = () => {
     const unsubsribe = onSnapshot(q, (posts) => {
       const { docs } = posts;
       setPosts(docs);
-      setShowComments(docs.map(() => false));
+      setShowComments(
+        (prev) =>
+          prev.length === docs.length
+            ? prev // Keeps the state, when the count doesn't change
+            : docs.map(() => false) // Keep the state, but add a false value for the new post
+      );
     });
     dispatch(loadingFinished());
 
@@ -77,12 +83,12 @@ const PostFeed = () => {
 
               <MainButtons
                 commentId={post.id}
-                ShowCommentArray={[
-                  showComments,
-                  setShowComments,
-                  index,
-                  post.data().NumberOfComments,
-                ]}
+                ShowCommentObject={{
+                  showComments: showComments,
+                  setShowComments: setShowComments,
+                  index: index,
+                  commentamout: post.data().NumberOfComments,
+                }}
                 Likes={post.data().likes}
                 isLiked={post.data().likes.includes(user.email)}
               />
@@ -126,7 +132,12 @@ const PostFeed = () => {
 
               <MainButtons
                 commentId={""}
-                ShowCommentArray={[showComments, setShowComments, index, null]}
+                ShowCommentObject={{
+                  showComments: [],
+                  setShowComments: setShowComments,
+                  index: index,
+                  commentamout: null,
+                }}
               />
             </article>
           ))}
