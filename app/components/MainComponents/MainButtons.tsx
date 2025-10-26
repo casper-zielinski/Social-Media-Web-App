@@ -2,17 +2,8 @@
 
 import { MODAL_IDS } from "@/app/constants/modal";
 import { useModal } from "@/app/hooks/useModal";
-import { db } from "@/firebase";
-import { loggedInasGuest } from "@/redux/slices/loginSlice";
 import { RootState } from "@/redux/store";
-import {
-  arrayRemove,
-  arrayUnion,
-  deleteDoc,
-  doc,
-  query,
-  updateDoc,
-} from "firebase/firestore";
+import { toggleLikeOnPost } from "@/lib/auth";
 import { motion } from "motion/react";
 import React, { useEffect, useState } from "react";
 import { AiFillLike } from "react-icons/ai";
@@ -46,22 +37,12 @@ const MainButtons = ({
   const [likeColor, setLikeColor] = useState(false);
   const [bookMark, setBookMark] = useState(false);
   const [repost, setRepost] = useState(false);
-  const [isRotated, setRotate] = useState(false);
   const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   const user = useSelector((state: RootState) => state.user);
 
   async function LikeorDislike() {
-    if (!likeColor) {
-      setLikeColor((prev) => !prev);
-      await updateDoc(doc(db, "posts", commentId), {
-        likes: arrayUnion(user.email),
-      });
-    } else {
-      setLikeColor((prev) => !prev);
-      await updateDoc(doc(db, "posts", commentId), {
-        likes: arrayRemove(user.email),
-      });
-    }
+    setLikeColor((prev) => !prev);
+    await toggleLikeOnPost(commentId, user.email, likeColor);
   }
 
   useEffect(() => {
@@ -76,20 +57,22 @@ const MainButtons = ({
           data-tip="Like"
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 1.2, rotate: -10 }}
+          onClick={(e) => {
+            e.stopPropagation();
+            logedIn.loggedIn && !logedIn.asGuest
+              ? LikeorDislike()
+              : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
+          }}
         >
           {Likes !== undefined && Likes !== null && (
             <span className="text-black dark:text-white">{Likes.length}</span>
           )}
           <AiFillLike
             className={
-              likeColor ? "text-blue-600 cursor-pointer" : "text-black dark:text-white cursor-pointer"
+              likeColor
+                ? "text-blue-600 cursor-pointer"
+                : "text-black dark:text-white cursor-pointer"
             }
-            onClick={(e) => {
-              e.stopPropagation();
-              logedIn.loggedIn && !logedIn.asGuest
-                ? LikeorDislike()
-                : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
-            }}
           />
         </motion.div>
         <motion.div
@@ -99,7 +82,11 @@ const MainButtons = ({
           whileTap={{ scale: 1.2, translateY: -5 }}
         >
           <BiRepost
-            className={repost ? "text-green-600 cursor-pointer" : "text-black dark:text-white cursor-pointer"}
+            className={
+              repost
+                ? "text-green-600 cursor-pointer"
+                : "text-black dark:text-white cursor-pointer"
+            }
             onClick={() =>
               logedIn.loggedIn && !logedIn.asGuest
                 ? setRepost((prev) => !prev)
@@ -190,7 +177,9 @@ const MainButtons = ({
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 1.2 }}
         >
-          {ShowCommentObject.showComments[ShowCommentObject.index] ? "Hide Comments" : "Show Comments"}
+          {ShowCommentObject.showComments[ShowCommentObject.index]
+            ? "Hide Comments"
+            : "Show Comments"}
         </motion.p>
         <div className="indicator">
           <span className="indicator-item scale-75 indicator-end badge badge-info font-bold">
@@ -199,7 +188,11 @@ const MainButtons = ({
           <motion.div
             initial={{ textShadow: 0 }}
             whileHover={{ scale: 1.2, textShadow: 100 }}
-            animate={{ rotate: ShowCommentObject.showComments[ShowCommentObject.index] ? 180 : 0 }}
+            animate={{
+              rotate: ShowCommentObject.showComments[ShowCommentObject.index]
+                ? 180
+                : 0,
+            }}
           >
             <IoIosArrowDropdown
               className="w-5 h-5 text-black dark:text-white hover:text-blue-600 cursor-pointer"

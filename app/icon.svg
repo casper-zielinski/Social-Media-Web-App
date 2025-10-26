@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Hintergrund Kreis -->
+  <circle cx="128" cy="128" r="120" fill="#4F46E5"/>
+
+  <!-- Chat Bubble mit Netzwerk -->
+  <g transform="translate(1, 18)">
+    <g stroke="#ffffff" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" fill="none">
+      <path d="M200 44H56c-17 0-28 11-28 28v68c0 17 11 28 28 28h46l26 24c3 3 8 3 11 0l26-24h35c17 0 28-11 28-28V72c0-17-11-28-28-28z" />
+
+      <circle cx="96" cy="104" r="10" fill="#ffffff" />
+      <circle cx="160" cy="88" r="10" fill="#ffffff" />
+      <circle cx="148" cy="136" r="10" fill="#ffffff" />
+      <circle cx="116" cy="150" r="10" fill="#ffffff" />
+
+      <path d="M106 104 L150 90" />
+      <path d="M106 104 L140 136" />
+      <path d="M150 90 L148 136" />
+      <path d="M116 150 L140 136" />
+    </g>
+  </g>
+</svg>

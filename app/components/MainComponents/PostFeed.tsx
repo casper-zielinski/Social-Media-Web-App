@@ -4,9 +4,8 @@ import React, { useEffect, useState } from "react";
 import Profile from "../Profile";
 import FollowButton from "../MainComponents/FollowButton";
 import MainButtons from "../MainComponents/MainButtons";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { db } from "@/firebase";
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
+import { subscribeToPostsFeed } from "@/lib/auth";
 import Moment from "react-moment";
 import CommentModal from "../PopUpModals/CommentModal";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -24,17 +23,7 @@ const PostFeed = () => {
 
   //Gets all the Posts from the Firestore DB
   useEffect(() => {
-    const q = query(collection(db, "posts"), orderBy("timeStamp", "desc"));
-    const unsubsribe = onSnapshot(q, (posts) => {
-      const { docs } = posts;
-      setPosts(docs);
-      setShowComments(
-        (prev) =>
-          prev.length === docs.length
-            ? prev // Keeps the state, when the count doesn't change
-            : docs.map(() => false) // Keep the state, but add a false value for the new post
-      );
-    });
+    const unsubsribe = subscribeToPostsFeed(setPosts, setShowComments);
     dispatch(loadingFinished());
 
     return unsubsribe;

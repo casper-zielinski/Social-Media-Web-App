@@ -3,12 +3,11 @@
 import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import LogInAsGuestButton from "./PopUpModals/LogInAsGuestButton";
+import LogInAsGuestButton from "./LogInAsGuestButton";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 
 const SignUpLoginProp = () => {
-
   return (
     <>
       <div className="grid grid-cols-12 p-4 md:p-3 lg:p-2 gap-4">

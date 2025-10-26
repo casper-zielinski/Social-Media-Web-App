@@ -5,12 +5,13 @@ import Profile from "../Profile";
 import { MdEmojiEmotions, MdGif, MdLocalPostOffice } from "react-icons/md";
 import { AiFillPicture } from "react-icons/ai";
 import { GiPositionMarker } from "react-icons/gi";
-import { db } from "@/firebase";
+import { db } from "@/lib/firebase";
 import { RootState } from "@/redux/store";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
+import { sendPost } from "@/lib/auth";
 
 {
   /* Component to send Post's */
@@ -20,24 +21,6 @@ const Poster = () => {
   const [error, setError] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
-
-  async function sendPost() {
-    try {
-      await addDoc(collection(db, "posts"), {
-        text: text,
-        name: user.name,
-        username: user.username,
-        useremail: user.email,
-        timeStamp: serverTimestamp(),
-        likes: [],
-        NumberOfComments: 0,
-      });
-
-      setText("");
-    } catch (error) {
-      setError(true);
-    }
-  }
 
   return (
     <div className=" border-b-2 border-blue-400 dark:border-blue-950 p-4 space-y-10">
@@ -62,7 +45,7 @@ const Poster = () => {
           } btn-sm absolute right-0 sm:w-24`}
           onClick={() => {
             loggedIn.loggedIn && !loggedIn.asGuest
-              ? sendPost()
+              ? sendPost(text, user, setText, setError, false)
               : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
           }}
           disabled={text.length === 0}

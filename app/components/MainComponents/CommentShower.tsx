@@ -1,15 +1,4 @@
-import {
-  QueryDocumentSnapshot,
-  DocumentData,
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  doc,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-} from "firebase/firestore";
+import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import { motion } from "motion/react";
 import React, { useEffect, useState } from "react";
 import { AiFillLike } from "react-icons/ai";
@@ -18,7 +7,7 @@ import CommentModal from "../PopUpModals/CommentModal";
 import Profile from "../Profile";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { db } from "@/firebase";
+import { subscribeToComments, toggleLikeOnComment } from "@/lib/auth";
 import Moment from "react-moment";
 import FollowButton from "./FollowButton";
 import { IoIosArrowDropdown } from "react-icons/io";
@@ -42,39 +31,19 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
 
   //Gets all the Comments of Firestore DB
   useEffect(() => {
-    if (!postId) {
-      return;
-    }
-    const commentsRef = collection(db, "posts", postId, "comments");
-    const q = query(commentsRef, orderBy("timeStamp", "desc"));
-    const unsubscribe = onSnapshot(
-      q,
-      (snapShot) => {
-        const { docs } = snapShot;
-        setcomments(docs);
-        showReplyArray((prev) =>
-          docs.length === prev.length ? prev : docs.map(() => false)
-        );
-        setLoading(true);
-      },
-      (error) => {
-        setLoading(false);
-      }
+    const unsubscribe = subscribeToComments(
+      postId,
+      setcomments,
+      showReplyArray,
+      setLoading
     );
 
     return unsubscribe;
-  }, []);
+  }, [postId]);
 
   async function LikeorDislike(CommentId: string, Likes: string[]) {
-    if (!Likes.includes(user.email)) {
-      await updateDoc(doc(db, "posts", postId, "comments", CommentId), {
-        likes: arrayUnion(user.email),
-      });
-    } else {
-      await updateDoc(doc(db, "posts", postId, "comments", CommentId), {
-        likes: arrayRemove(user.email),
-      });
-    }
+    const isLiked = Likes.includes(user.email);
+    await toggleLikeOnComment(postId, CommentId, user.email, isLiked);
   }
 
   if (!loading) {
@@ -165,17 +134,17 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 1.2, rotate: -10 }}
               className="flex space-x-1 items-center"
+              onClick={() => {
+                logedIn.loggedIn && !logedIn.asGuest
+                  ? LikeorDislike(comment.id, comment.data().likes)
+                  : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
+              }}
             >
               <span>{comment.data().likes.length}</span>
               <AiFillLike
                 className={`h-5 w-5 ${
                   comment.data().likes.includes(user.email) && "text-blue-600"
                 }`}
-                onClick={() => {
-                  logedIn.loggedIn && !logedIn.asGuest
-                    ? LikeorDislike(comment.id, comment.data().likes)
-                    : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
-                }}
               />
             </motion.div>
             <motion.div whileHover={{ scale: 1.2 }}>

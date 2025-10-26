@@ -3,9 +3,15 @@
 A modern, real-time social media application built with Next.js 14, Firebase, and Redux. Features include user authentication, post creation, comments, replies, guest login and dark mode support.
 
 ![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?style=flat-square&logo=typescript)
 ![Firebase](https://img.shields.io/badge/Firebase-12.2-orange?style=flat-square&logo=firebase)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?style=flat-square&logo=tailwind-css)
+<br>
+[![Logo Badge](/public/social_logo_badge.svg)](https://social-media-web-app-weld.vercel.app/)
+
+[![Logo](/app/icon.svg)](https://social-media-web-app-weld.vercel.app/)
+
 
 ## ✨ Features
 
@@ -324,3 +330,6 @@ For support, email casper.zielinski@edu.fh-joanneum.at or create an issue in the
 ---
 
 **Built with ❤️ using Next.js and Firebase**
+
+![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge)
+![Coffee](https://img.shields.io/badge/Powered%20by-Coffee-brown?style=for-the-badge&logo=buy-me-a-coffee)

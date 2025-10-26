@@ -1,0 +1,45 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 160 32"
+  width="160"
+  height="32"
+>
+  <!-- Background -->
+  <rect width="160" height="32" rx="6" fill="#4F46E5"/>
+  
+  <!-- Logo Section Background -->
+  <rect width="45" height="32" rx="6" fill="#3730A3"/>
+  
+  <!-- Logo (shifted more to the right) -->
+  <g transform="translate(5.5, 1) scale(0.13)">
+    <g
+      stroke="#ffffff"
+      strokeWidth="12"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    >
+      <path d="M200 44H56c-17 0-28 11-28 28v68c0 17 11 28 28 28h46l26 24c3 3 8 3 11 0l26-24h35c17 0 28-11 28-28V72c0-17-11-28-28-28z" />
+      <circle cx="96" cy="104" r="10" fill="#ffffff" />
+      <circle cx="160" cy="88" r="10" fill="#ffffff" />
+      <circle cx="148" cy="136" r="10" fill="#ffffff" />
+      <circle cx="116" cy="150" r="10" fill="#ffffff" />
+      <path d="M106 104 L150 90" />
+      <path d="M106 104 L140 136" />
+      <path d="M150 90 L148 136" />
+      <path d="M116 150 L140 136" />
+    </g>
+  </g>
+  
+  <!-- Text -->
+  <text
+    x="55"
+    y="21"
+    font-family="Arial, sans-serif"
+    font-size="15"
+    font-weight="600"
+    fill="#ffffff"
+  >
+    ChatAI
+  </text>
+</svg>

@@ -1,16 +1,5 @@
-import { db } from "@/firebase";
-import {
-  arrayUnion,
-  collection,
-  DocumentData,
-  onSnapshot,
-  orderBy,
-  query,
-  QueryDocumentSnapshot,
-  updateDoc,
-  doc as Doc,
-  arrayRemove,
-} from "firebase/firestore";
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import { subscribeToReplies, toggleLikeOnReply } from "@/lib/auth";
 import React, { useEffect, useState } from "react";
 import Profile from "../Profile";
 import { AiFillLike } from "react-icons/ai";
@@ -40,37 +29,19 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
 
   // Gets all the Replies of Firestore DB
   useEffect(() => {
-    if (PostId === undefined || CommentId === undefined) return;
-
-    const q = query(
-      collection(db, "posts", PostId, "comments", CommentId, "replys"),
-      orderBy("timeStamp", "asc")
+    const unsubscribe = subscribeToReplies(
+      PostId,
+      CommentId,
+      setReplies,
+      setLoading
     );
-    const unsubscribe = onSnapshot(q, (replies) => {
-      const { docs } = replies;
-      setReplies(docs);
-      setLoading(true);
-    });
 
     return unsubscribe;
-  }, []);
+  }, [PostId, CommentId]);
 
   async function LikeOrDislike(ReplyId: string, Likes: string[]) {
-    if (!Likes.includes(user.email)) {
-      await updateDoc(
-        Doc(db, "posts", PostId, "comments", CommentId, "replys", ReplyId),
-        {
-          likes: arrayUnion(user.email),
-        }
-      );
-    } else {
-      await updateDoc(
-        Doc(db, "posts", PostId, "comments", CommentId, "replys", ReplyId),
-        {
-          likes: arrayRemove(user.email),
-        }
-      );
-    }
+    const isLiked = Likes.includes(user.email);
+    await toggleLikeOnReply(PostId, CommentId, ReplyId, user.email, isLiked);
   }
 
   if (!loading)
@@ -154,17 +125,17 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 1.2, rotate: -10 }}
               className="flex space-x-1 items-center"
+              onClick={() => {
+                logedIn.loggedIn && !logedIn.asGuest
+                  ? LikeOrDislike(reply.id, reply.data().likes)
+                  : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
+              }}
             >
               <span>{reply.data().likes.length}</span>
               <AiFillLike
                 className={`h-5 w-5 ${
                   reply.data().likes.includes(user.email) && "text-blue-600"
                 }`}
-                onClick={() => {
-                  logedIn.loggedIn && !logedIn.asGuest
-                    ? LikeOrDislike(reply.id, reply.data().likes)
-                    : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
-                }}
               />
             </motion.div>
             <motion.div whileHover={{ scale: 1.2 }}>

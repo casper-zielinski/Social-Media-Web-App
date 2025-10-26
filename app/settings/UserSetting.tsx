@@ -1,18 +1,7 @@
 "use client";
 
-import { auth } from "@/firebase";
-import { loadingFinished } from "@/redux/slices/loadingSlice";
-import {
-  loggedInasGuest,
-  logIn,
-  logOut,
-  received,
-} from "@/redux/slices/loginSlice";
-import { signInUser, signOutUser } from "@/redux/slices/userSlice";
+import { handleSignOut } from "@/lib/auth";
 import { AppDispatch, RootState } from "@/redux/store";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { motion } from "motion/react";
-import { Root } from "postcss";
 import React, { useEffect, useState } from "react";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
@@ -20,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UserSettings = () => {
   const dispatch: AppDispatch = useDispatch();
-  const [toasterHandler, setToasterHandler] = useState(false);
 
   const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   const user = useSelector((state: RootState) => state.user);
@@ -28,51 +16,16 @@ const UserSettings = () => {
   const [name, setname] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
-  const [isUserDataLoaded, setUserDataLoaded] = useState(false);
+  const change =
+    user?.name?.trim() != name.trim() ||
+    user?.username?.trim() != username.trim();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) {
-        dispatch(received());
-        dispatch(loadingFinished());
-        return;
-      }
-      if (currentUser.email === "guest123@gmail.com") {
-        dispatch(loggedInasGuest());
-      }
-      dispatch(
-        signInUser({
-          name: currentUser.displayName,
-          username: currentUser.email?.split("@")[0].split(".")[0],
-          email: currentUser.email,
-          uid: currentUser.uid,
-        })
-      );
-      dispatch(logIn());
-      dispatch(received());
-      dispatch(loadingFinished());
-      setUserDataLoaded(true);
-    });
-
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    if (isUserDataLoaded && logedIn) {
+    if (logedIn) {
       setname(user.name || "");
       setUsername(user.username || "");
     }
-  }, [isUserDataLoaded, logedIn, user.name, user.username, user.email]);
-
-  async function handleSignOut() {
-    await signOut(auth);
-
-    setToasterHandler(true);
-    setTimeout(() => setToasterHandler(false), 3000);
-
-    dispatch(logOut());
-    dispatch(signOutUser());
-  }
+  }, [logedIn, user.name, user.username, user.email]);
 
   return (
     <>
@@ -100,9 +53,38 @@ const UserSettings = () => {
             </p>
           </div>
         </div>
-        <div>
-          <button className="btn btn-neutral btn-sm sm:btn-md">change</button>
-        </div>
+        {change && (
+          <div className="flex gap-2">
+            <button
+              className={`btn  ${
+                !change
+                  ? "btn-neutral [&:disabled]:bg-black [&:disabled]:text-black"
+                  : "btn-success"
+              } btn-sm sm:btn-md`}
+              onClick={() => {
+                !change ? console.log("do not change") : console.log("change");
+              }}
+              disabled={!change}
+            >
+              change
+            </button>
+            <button
+              className={`btn  ${
+                !change
+                  ? "btn-neutral [&:disabled]:bg-black [&:disabled]:text-black"
+                  : "btn-info"
+              } btn-sm sm:btn-md`}
+              onClick={() => {
+                setname(user.name);
+                setUsername(user.username);
+                setBio("");
+              }}
+              disabled={!change}
+            >
+              revert
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
@@ -113,10 +95,10 @@ const UserSettings = () => {
           <input
             type="text"
             className={`w-full px-3 py-2 rounded-lg border transition-colors ${
-              loading.loading && logedIn.loggedIn
-                ? "animate-pulse bg-gray-500"
-                : ""
-            } dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500`}
+              loading.loading
+                ? "animate-pulse dakr:animate-pulse bg-gray-500 dark:bg-gray-500"
+                : "dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500"
+            } `}
             value={logedIn.loggedIn ? username : "your_username"}
             onChange={(event) => setUsername(event.target.value)}
           />
@@ -128,10 +110,10 @@ const UserSettings = () => {
           <input
             type="text"
             className={`w-full px-3 py-2 rounded-lg border transition-colors ${
-              loading.loading && logedIn.loggedIn
-                ? "animate-pulse bg-gray-500"
-                : ""
-            } dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500`}
+              loading.loading
+                ? "animate-pulse dakr:animate-pulse bg-gray-500 dark:bg-gray-500"
+                : "dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500"
+            } `}
             value={logedIn.loggedIn ? name : "your_name"}
             onChange={(event) => setname(event.target.value)}
           />
@@ -145,24 +127,22 @@ const UserSettings = () => {
         <textarea
           rows={3}
           placeholder="Tell us about yourself..."
-          className="w-full px-3 py-2 rounded-lg border transition-colors bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500"
+          className={`w-full px-3 py-2 rounded-lg border transition-colors ${
+            loading.loading
+              ? "animate-pulse dakr:animate-pulse bg-gray-500 dark:bg-gray-500"
+              : "dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500"
+          } `}
+          onChange={(e) => setBio(e.target.value)}
+          value={bio}
         />
       </div>
 
-      <button className="btn btn-info" onClick={() => handleSignOut()}>
+      <button
+        className="btn btn-info md:w-1/2 md:translate-x-[50%]"
+        onClick={() => handleSignOut(dispatch)}
+      >
         Log Out
       </button>
-      <div className="toast toast-center">
-        {!logedIn && (
-          <motion.div
-            className="alert alert-soft w-48 mb-32"
-            initial={{ translateY: 0 }}
-            animate={{ translateY: toasterHandler ? 0 : 100 }}
-          >
-            <span>Logged Out</span>
-          </motion.div>
-        )}
-      </div>
     </>
   );
 };

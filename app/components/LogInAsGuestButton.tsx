@@ -1,5 +1,8 @@
-import { useModal } from "@/app/hooks/useModal";
-import { auth } from "@/firebase";
+"use client";
+
+import { closeModal, useModal } from "@/app/hooks/useModal";
+import { handleGuestLogin } from "@/lib/auth";
+import { auth } from "@/lib/firebase";
 import { loggedInasGuest, received } from "@/redux/slices/loginSlice";
 import { AppDispatch } from "@/redux/store";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -18,21 +21,14 @@ const LogInAsGuestButton = ({
   modalToClose,
 }: GuestLoginButton) => {
   const dispatch: AppDispatch = useDispatch();
-  async function handleGuestLogin() {
-    await signInWithEmailAndPassword(
-      auth,
-      "guest123@gmail.com",
-      "MeinPasswort1!"
-    );
-    if (modalToClose) useModal(closingModal);
-
-    dispatch(loggedInasGuest());
-    dispatch(received());
-    console.log("klicked");
-  }
 
   return (
-    <button className={`btn ${classname}`} onClick={() => handleGuestLogin()}>
+    <button
+      className={`btn ${classname}`}
+      onClick={() =>
+        handleGuestLogin(modalToClose, closingModal, dispatch)
+      }
+    >
       Login as Guest
     </button>
   );

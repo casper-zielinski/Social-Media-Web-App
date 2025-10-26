@@ -23,88 +23,86 @@ const RightAsideListItems = () => {
     <>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-0.5"
+          className="grid grid-cols-2 col-span-full items-center gap-x-2 md:gap-x-7 btn btn-info rounded-xl px-0.5"
           onClick={() => router.push("/")}
         >
-          <MdHome className="h-7 w-7" />
-          <div className="hidden sm:block sm:text-xs text-start justify-self-start">
-            Home
-          </div>
+          <MdHome className="h-8 w-8 col-span-2 sm:col-span-1 justify-self-center md:justify-self-end" />
+          <div className="hidden sm:block sm:text-xs text-start">Home</div>
         </button>
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-0.5"
+          className="grid grid-cols-2 col-span-full items-center gap-x-2 md:gap-x-7 btn btn-info rounded-xl px-0.5"
           onClick={() =>
             loggedIn.loggedIn && !loggedIn.asGuest
               ? ""
               : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
-          <FaSearch className="h-5 w-5" />
-          <div className="hidden sm:block sm:text-xs">Explore</div>
+          <FaSearch className="h-7 w-7 col-span-2 sm:col-span-1 justify-self-center md:justify-self-end" />
+          <div className="hidden sm:block sm:text-xs text-start">Explore</div>
         </button>
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-1.3 btn btn-info rounded-xl px-0.5"
+          className="grid grid-cols-2 col-span-full items-center gap-x-2 md:gap-x-7 btn btn-info rounded-xl px-0.5"
           onClick={() =>
             loggedIn.loggedIn && !loggedIn.asGuest
               ? ""
               : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
-          <MdNotificationsActive className="h-5 w-5" />
-          <div className="hidden sm:block sm:text-xs md:ms-2">
+          <MdNotificationsActive className="h-7 w-7 col-span-2 sm:col-span-1 justify-self-center md:justify-self-end" />
+          <div className="hidden sm:block sm:text-xs text-start">
             Notifications
           </div>
         </button>
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-1"
+          className="grid grid-cols-2 col-span-full items-center gap-x-2 md:gap-x-7 btn btn-info rounded-xl px-0.5"
           onClick={() =>
             loggedIn.loggedIn && !loggedIn.asGuest
               ? ""
               : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
-          <LuMessageSquare className="h-5 w-5" />
-          <div className="hidden sm:block sm:text-xs">Message</div>
+          <LuMessageSquare className="h-7 w-7 col-span-2 sm:col-span-1 justify-self-center md:justify-self-end" />
+          <div className="hidden sm:block sm:text-xs text-start">Message</div>
         </button>
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-1"
+          className="grid grid-cols-2 col-span-full items-center gap-x-2 md:gap-x-7 btn btn-info rounded-xl px-0.5"
           onClick={() =>
             loggedIn.loggedIn ? "" : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
-          <FaBrain className="h-5 w-5" />
-          <div className="hidden sm:block sm:text-xs">AI Chatbot</div>
+          <FaBrain className="h-7 w-7 col-span-2 sm:col-span-1 justify-self-center md:justify-self-end" />
+          <div className="hidden sm:block sm:text-xs text-start">AI Chatbot</div>
         </button>
       </li>
       <li className="list-row justify-center">
         <button
-          className="flex col-span-full items-center space-x-4 btn btn-info rounded-xl px-0.5"
+          className="grid grid-cols-2 col-span-full items-center gap-x-2 md:gap-x-7 btn btn-info rounded-xl px-0.5"
           onClick={() => router.push("/settings")}
         >
-          <CiSettings className="h-5 w-5" />
-          <div className="hidden sm:block sm:text-xs">Settings</div>
+          <CiSettings className="h-7 w-7 col-span-2 sm:col-span-1 justify-self-center md:justify-self-end" />
+          <div className="hidden sm:block sm:text-xs text-start">Settings</div>
         </button>
       </li>
       <li className="list-row justify-center">
         {/* "Post" button in sidebar (desktop) */}
         <button
-          className="flex col-span-full items-center space-x-4 btn dark:btn-info dark:btn-outline rounded-xl px-1"
+          className="grid grid-cols-2 col-span-full items-center gap-x-2 md:gap-x-7 btn dark:btn-info dark:btn-outline rounded-xl px-0.5"
           onClick={() =>
             loggedIn.loggedIn && !loggedIn.asGuest
               ? useModal(MODAL_IDS.POST)
               : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
           }
         >
-          <MdLocalPostOffice className="w-4 h-4" />
-          <div className="hidden sm:flex">Post</div>
+          <MdLocalPostOffice className="h-7 w-7 col-span-2 sm:col-span-1 justify-self-center md:justify-self-end" />
+          <div className="hidden sm:block sm:text-xs text-start">Post</div>
         </button>
       </li>
     </>

@@ -5,6 +5,6 @@ export const useModal = (ModalId: string, CloseAnotherModal?: string) => {
   (document.getElementById(ModalId) as HTMLDialogElement).show();
 };
 
-export const closeModel = (ModalId: string) => {
+export const closeModal = (ModalId: string) => {
   (document.getElementById(ModalId) as HTMLDialogElement).close();
 };

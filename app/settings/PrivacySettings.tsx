@@ -15,6 +15,7 @@ const PrivacySettings = () => {
   const logedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   const user = useSelector((state: RootState) => state.user);
   const loading = useSelector((state: RootState) => state.loader);
+  const changeButton = user.email.trim() !== email.trim();
 
   useEffect(() => {
     if (logedIn) {
@@ -39,7 +40,9 @@ const PrivacySettings = () => {
             id="emailSetter"
             type="text"
             className={`w-full px-3 py-2 text-xs md:text-base rounded-lg border transition-colors ${
-              loading.loading && logedIn ? "animate-pulse bg-gray-500" : ""
+              loading.loading
+                ? "animate-pulse dakr:animate-pulse bg-gray-500 dark:bg-gray-500"
+                : "dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500"
             } ${
               disableEmail
                 ? "text-gray-400 cursor-not-allowed"
@@ -72,7 +75,9 @@ const PrivacySettings = () => {
               id="passwordSetter"
               type={showPassword ? "text" : "password"}
               className={`w-full join-item text-xs md:text-base  px-2 py-1 rounded-lg border transition-colors ${
-                loading.loading && logedIn ? "animate-pulse bg-gray-500" : ""
+                loading.loading
+                  ? "animate-pulse dakr:animate-pulse bg-gray-500 dark:bg-gray-500"
+                  : "dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500"
               } ${
                 disablePassword
                   ? "text-gray-400 cursor-not-allowed"
@@ -106,6 +111,14 @@ const PrivacySettings = () => {
           </button>
         </div>
       </div>
+      {changeButton && (
+        <div className="flex gap-4 justify-evenly md:flex-col md:justify-center md:w-1/2 translate-x-[50%]">
+          <button className="btn btn-success"> Change </button>
+          <button className="btn btn-info" onClick={() => setemail(user.email)}>
+            Revert
+          </button>
+        </div>
+      )}
     </>
   );
 };

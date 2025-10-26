@@ -3,7 +3,12 @@
 @tailwind utilities;
 @plugin "daisyui";
 
+/* Verhindert das beim Modal die Maus nicht pointer ist wenn die maus außerhalb des modals ist (für das schließen des modals) */
 .modal-backdrop button {
       cursor: auto !important;
 }
 
+/* Verhindert das Layout-Shift beim Modal öffnen */
+:root {
+  scrollbar-gutter: unset !important;
+}

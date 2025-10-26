@@ -1,10 +1,13 @@
-import { auth } from "@/firebase";
+"use client";
+
+import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import LogInAsGuestButton from "./LogInAsGuestButton";
-import { closeModel, useModal } from "@/app/hooks/useModal";
+import LogInAsGuestButton from "../LogInAsGuestButton";
+import { closeModal, useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
+import { handleLogin } from "@/lib/auth";
 
 /* Modal for Loging In with Email and Password*/
 
@@ -12,11 +15,6 @@ const LoginModal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  async function handleLogin() {
-    await signInWithEmailAndPassword(auth, email, password);
-    closeModel(MODAL_IDS.LOGIN);
-  }
 
   return (
     <dialog id="LoginDialog" className="modal" data-theme="dark">
@@ -74,7 +72,10 @@ const LoginModal = () => {
             </p>
           </div>
 
-          <button className="btn btn-info mt-4" onClick={() => handleLogin()}>
+          <button
+            className="btn btn-info mt-4"
+            onClick={() => handleLogin(email, password)}
+          >
             Login
           </button>
           <div className="w-1/2">
@@ -89,7 +90,7 @@ const LoginModal = () => {
             <button
               className="btn btn-info btn-soft mt-4"
               onClick={() => {
-                closeModel(MODAL_IDS.LOGIN);
+                closeModal(MODAL_IDS.LOGIN);
                 setShowPassword(false);
                 useModal(MODAL_IDS.SIGNUP);
               }}

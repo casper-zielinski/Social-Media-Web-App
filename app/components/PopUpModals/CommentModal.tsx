@@ -3,17 +3,9 @@ import { AiFillPicture } from "react-icons/ai";
 import { GiPositionMarker } from "react-icons/gi";
 import { MdGif, MdEmojiEmotions, MdLocalPostOffice } from "react-icons/md";
 import Profile from "../Profile";
-import {
-  addDoc,
-  collection,
-  doc,
-  increment,
-  updateDoc,
-} from "firebase/firestore";
-import { db } from "@/firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { closeModel } from "@/app/hooks/useModal";
+import { sendCommentOrReply } from "@/lib/auth";
 
 interface BaseCommentModalProps {
   userdata: {
@@ -57,58 +49,18 @@ const CommentModal = ({
   }
 
   async function sendComment() {
-    if (Reply) {
-      console.log("sending reply: ", Reply);
-      try {
-        await addDoc(
-          collection(db, "posts", PostId, "comments", commentId, "replys"),
-          {
-            name: user.name,
-            username: user.username,
-            text: text,
-            timeStamp: new Date(),
-            likes: [],
-            replyTo: {
-              userId: getCorrectResponseToID(),
-              userName: userdata.name,
-              userUsername: userdata.username,
-              textToReplyTo: Posttext,
-            },
-            NumberOfReplys: 0,
-          }
-        );
-
-        await updateDoc(doc(db, "posts", PostId, "comments", commentId), {
-          NumberOfReplys: increment(1),
-        });
-
-        console.log("no error");
-      } catch (error) {
-        setError(true);
-        console.log("error: ", error);
-      }
-    } else {
-      try {
-        await addDoc(collection(db, "posts", PostId, "comments"), {
-          name: user.name,
-          username: user.username,
-          text: text,
-          timeStamp: new Date(),
-          likes: [],
-          NumberOfComments: 0,
-        });
-
-        await updateDoc(doc(db, "posts", PostId), {
-          NumberOfComments: increment(1),
-        });
-      } catch (error) {
-        setError(true);
-      }
-    }
-
-    if (!error) {
-      closeModel(`CommentModal${getCorrectResponseToID()}`);
-    }
+    await sendCommentOrReply(
+      PostId,
+      user,
+      text,
+      Reply || false,
+      commentId,
+      replyId,
+      userdata,
+      Posttext,
+      setError,
+      getCorrectResponseToID
+    );
   }
 
   return (

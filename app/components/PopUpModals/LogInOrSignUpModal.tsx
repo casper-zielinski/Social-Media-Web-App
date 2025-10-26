@@ -1,3 +1,5 @@
+"use client";
+
 import { MODAL_IDS } from "@/app/constants/modal";
 import { useModal } from "@/app/hooks/useModal";
 import { RootState } from "@/redux/store";
