@@ -5,7 +5,8 @@ import { MdGif, MdEmojiEmotions, MdLocalPostOffice } from "react-icons/md";
 import Profile from "../Profile";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { sendCommentOrReply } from "@/lib/auth";
+import { sendCommentOrReply } from "@/lib/post";
+import useScreenSize from "@/app/hooks/useScreenSize";
 
 interface BaseCommentModalProps {
   userdata: {
@@ -40,9 +41,11 @@ const CommentModal = ({
   const [error, setError] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const pref = useRef<HTMLParagraphElement>(null);
+  const screenSize = useScreenSize();
+
   useEffect(() => {
     setHeight(`${80 + ((pref.current?.offsetHeight || 24) / 24 - 1) * 24}px`);
-  }, []);
+  }, [pref.current?.offsetHeight, screenSize]);
 
   function getCorrectResponseToID() {
     return replyId ?? (Reply ? commentId : PostId);
@@ -58,6 +61,7 @@ const CommentModal = ({
       replyId,
       userdata,
       Posttext,
+      setText,
       setError,
       getCorrectResponseToID
     );

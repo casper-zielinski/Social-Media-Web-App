@@ -1,11 +1,7 @@
 "use client";
 
-import { closeModal, useModal } from "@/app/hooks/useModal";
 import { handleGuestLogin } from "@/lib/auth";
-import { auth } from "@/lib/firebase";
-import { loggedInasGuest, received } from "@/redux/slices/loginSlice";
 import { AppDispatch } from "@/redux/store";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { useDispatch } from "react-redux";
 

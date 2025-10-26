@@ -5,25 +5,30 @@ import Profile from "../Profile";
 import FollowButton from "../MainComponents/FollowButton";
 import MainButtons from "../MainComponents/MainButtons";
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
-import { subscribeToPostsFeed } from "@/lib/auth";
+import { subscribeToPostsFeed } from "@/lib/get";
 import Moment from "react-moment";
 import CommentModal from "../PopUpModals/CommentModal";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingFinished } from "@/redux/slices/loadingSlice";
 import CommentShower from "./CommentShower";
+import TruncateText from "../TruncateText";
 
 const PostFeed = () => {
   const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
   const [showComments, setShowComments] = useState<boolean[]>([]);
+  const [hideFullText, setHideFullText] = useState<boolean[]>([]);
   const dispatch: AppDispatch = useDispatch();
   const loaded = useSelector((state: RootState) => state.loader.loaded);
   const user = useSelector((state: RootState) => state.user);
-  const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
 
   //Gets all the Posts from the Firestore DB
   useEffect(() => {
-    const unsubsribe = subscribeToPostsFeed(setPosts, setShowComments);
+    const unsubsribe = subscribeToPostsFeed(
+      setPosts,
+      setShowComments,
+      setHideFullText
+    );
     dispatch(loadingFinished());
 
     return unsubsribe;
@@ -60,9 +65,40 @@ const PostFeed = () => {
                   <FollowButton />
                 </div>
               </div>
-              <p className="m-2 break-words text-black dark:text-white">
-                {post.data().text}
-              </p>
+              {post.data().text.length > 500 && hideFullText[index] ? (
+                <TruncateText
+                  maxLength={500}
+                  text={post.data().text}
+                  widthToShowFull={Infinity}
+                  className="m-2 break-words text-black dark:text-white"
+                />
+              ) : (
+                <p className="m-2 break-words text-black dark:text-white">
+                  {post.data().text}
+                </p>
+              )}
+
+              {post.data().text.length > 500 && (
+                <button
+                  className="p-2 "
+                  onClick={() =>
+                    setHideFullText((prev) =>
+                      [...prev].map((p, i) => (i === index ? !p : p))
+                    )
+                  }
+                >
+                  {hideFullText[index] ? (
+                    <span className="text-sm text-gray-600 hover:text-gray-500">
+                      Show Full Text
+                    </span>
+                  ) : (
+                    <span className="text-sm text-gray-600 hover:text-gray-500">
+                      Hide Text
+                    </span>
+                  )}
+                </button>
+              )}
+
               <p className="m-2 text-end text-xs text-gray-500">
                 {post.data().timeStamp && (
                   <Moment fromNow date={post.data().timeStamp.toDate()} />
@@ -87,7 +123,8 @@ const PostFeed = () => {
               )}
             </article>
           ))
-        : Array.from({ length: 4 }, (_, index) => (
+        : //Skeleton Loader for Posts
+          Array.from({ length: 4 }, (_, index) => (
             <article
               className={`${
                 posts.length === index + 1 ? "mb-16 sm:mb-0" : "border-b-2"

@@ -8,6 +8,8 @@ import LogInAsGuestButton from "../LogInAsGuestButton";
 import { closeModal, useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
 import { handleLogin } from "@/lib/auth";
+import { AppDispatch } from "@/redux/store";
+import { useDispatch } from "react-redux";
 
 /* Modal for Loging In with Email and Password*/
 
@@ -15,6 +17,10 @@ const LoginModal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch: AppDispatch = useDispatch();
+  const isValidPassword = /^(?=.*[0-9])(?=.*[a-z]).{8,}$/.test(password);
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isFormValid = isValidEmail && isValidPassword;
 
   return (
     <dialog id="LoginDialog" className="modal" data-theme="dark">
@@ -74,7 +80,8 @@ const LoginModal = () => {
 
           <button
             className="btn btn-info mt-4"
-            onClick={() => handleLogin(email, password)}
+            onClick={() => handleLogin(email, password, dispatch)}
+            disabled={!isFormValid}
           >
             Login
           </button>

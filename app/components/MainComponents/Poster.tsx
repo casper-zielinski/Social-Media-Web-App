@@ -5,13 +5,11 @@ import Profile from "../Profile";
 import { MdEmojiEmotions, MdGif, MdLocalPostOffice } from "react-icons/md";
 import { AiFillPicture } from "react-icons/ai";
 import { GiPositionMarker } from "react-icons/gi";
-import { db } from "@/lib/firebase";
 import { RootState } from "@/redux/store";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
-import { sendPost } from "@/lib/auth";
+import { sendPost } from "@/lib/post";
 
 {
   /* Component to send Post's */

@@ -1,5 +1,5 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
-import { subscribeToReplies, toggleLikeOnReply } from "@/lib/auth";
+import { subscribeToReplies } from "@/lib/get";
 import React, { useEffect, useState } from "react";
 import Profile from "../Profile";
 import { AiFillLike } from "react-icons/ai";
@@ -11,8 +11,9 @@ import CommentModal from "../PopUpModals/CommentModal";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { IoMdArrowDropright } from "react-icons/io";
-import { useModal } from "@/app/hooks/useModal";
+import { commentModal, useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
+import { toggleLikeOnReply } from "@/lib/like";
 
 interface ReplyShowerProps {
   PostId: string;
@@ -44,55 +45,26 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
     await toggleLikeOnReply(PostId, CommentId, ReplyId, user.email, isLiked);
   }
 
-  if (!loading)
-    return (
-      <article
-        className={` border-blue-400 dark:border-blue-950 overflow-hidden mb-5 hover:bg-slate-100 dark:hover:bg-gray-900 p-2`}
-      >
-        <div className="divider w-full "></div>
-        <div className="flex items-center w-full">
-          <div className="m-2 flex-1 min-w-0">
-            <Profile
-              classname="flex flex-row space-x-2 sm:space-x-3 items-center min-w-0 flex-shrink"
-              displayUserInfo={true}
-              userdata={["-", "----"]}
-              OwnLoader={loading}
-            />
-          </div>
-          <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">
-            <FollowButton
-              disabled={loading}
-              classNameAdditon={" btn-sm scale-75 "}
-            />
-          </div>
-        </div>
-        <div className="grid grid-cols-10 gap-2 p-3">
-          <div className="col-span-7 animate-pulse bg-gray-500 p-2 "></div>
-          <div className="col-span-3 animate-pulse bg-gray-500 p-2 "></div>
-          <div className="col-span-2 animate-pulse bg-gray-500 p-2 "></div>
-          <div className="col-span-8 animate-pulse bg-gray-500 p-2 "></div>
-          <div className="col-span-8 p-2 "></div>
-          <div className="mt-3 col-span-2 animate-pulse bg-gray-500 p-2"></div>
-        </div>
-        <div className="flex space-x-4 flex-grow justify-end mt-2 me-5 items-center">
-          <div>
-            <AiFillLike className={`h-5 w-5`} />
-          </div>
-          <div>
-            <FaCommentAlt />
-          </div>
-        </div>
-      </article>
-    );
-
-  if (replies.length === 0) {
+  if (replies.length === 0 && loading) {
     return <div className="m-2 text-gray-500">No Replys</div>;
   }
 
-  return (
+  return loading ? (
     <div className="flex flex-grow flex-col space-y-6 p-3 text-black dark:text-white mb-2">
       {replies.map((reply, index) => (
         <article key={reply.id} className="space-y-3">
+          <CommentModal
+            key={commentModal(reply.id)}
+            PostId={PostId}
+            Posttext={reply.data().text}
+            userdata={{
+              name: reply.data().name,
+              username: reply.data().username,
+            }}
+            Reply={true}
+            commentId={CommentId}
+            replyId={reply.id}
+          />
           <div
             className={`divider w-full ${
               0 === index ? "divider-primary" : "divider-info"
@@ -124,7 +96,7 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
             <motion.div
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 1.2, rotate: -10 }}
-              className="flex space-x-1 items-center"
+              className="flex space-x-1 items-center cursor-pointer"
               onClick={() => {
                 logedIn.loggedIn && !logedIn.asGuest
                   ? LikeOrDislike(reply.id, reply.data().likes)
@@ -138,30 +110,58 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
                 }`}
               />
             </motion.div>
-            <motion.div whileHover={{ scale: 1.2 }}>
+            <motion.div className="cursor-pointer" whileHover={{ scale: 1.2 }}>
               <FaCommentAlt
                 onClick={() => {
                   logedIn.loggedIn && !logedIn.asGuest
-                    ? useModal(`CommentModal${reply.id}`)
+                    ? useModal(commentModal(reply.id))
                     : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
                 }}
               />
             </motion.div>
-            <CommentModal
-              PostId={PostId}
-              Posttext={reply.data().text}
-              userdata={{
-                name: reply.data().name,
-                username: reply.data().username,
-              }}
-              Reply={true}
-              commentId={CommentId}
-              replyId={reply.id}
-            />
           </div>
         </article>
       ))}
     </div>
+  ) : (
+    // Skeleton Loader for Replys
+    <article
+      className={` border-blue-400 dark:border-blue-950 overflow-hidden mb-5 hover:bg-slate-100 dark:hover:bg-gray-900 p-2`}
+    >
+      <div className="divider w-full "></div>
+      <div className="flex items-center w-full">
+        <div className="m-2 flex-1 min-w-0">
+          <Profile
+            classname="flex flex-row space-x-2 sm:space-x-3 items-center min-w-0 flex-shrink"
+            displayUserInfo={true}
+            userdata={["-", "----"]}
+            OwnLoader={loading}
+          />
+        </div>
+        <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">
+          <FollowButton
+            disabled={loading}
+            classNameAdditon={" btn-sm scale-75 "}
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-10 gap-2 p-3">
+        <div className="col-span-7 animate-pulse bg-gray-500 p-2 "></div>
+        <div className="col-span-3 animate-pulse bg-gray-500 p-2 "></div>
+        <div className="col-span-2 animate-pulse bg-gray-500 p-2 "></div>
+        <div className="col-span-8 animate-pulse bg-gray-500 p-2 "></div>
+        <div className="col-span-8 p-2 "></div>
+        <div className="mt-3 col-span-2 animate-pulse bg-gray-500 p-2"></div>
+      </div>
+      <div className="flex space-x-4 flex-grow justify-end mt-2 me-5 items-center">
+        <div>
+          <AiFillLike className={`h-5 w-5`} />
+        </div>
+        <div>
+          <FaCommentAlt />
+        </div>
+      </div>
+    </article>
   );
 };
 

@@ -62,7 +62,7 @@ const UserSettings = () => {
                   : "btn-success"
               } btn-sm sm:btn-md`}
               onClick={() => {
-                !change ? console.log("do not change") : console.log("change");
+                // Handle change action
               }}
               disabled={!change}
             >
@@ -98,9 +98,12 @@ const UserSettings = () => {
               loading.loading
                 ? "animate-pulse dakr:animate-pulse bg-gray-500 dark:bg-gray-500"
                 : "dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500"
-            } `}
+            } ${
+              (logedIn.asGuest || !logedIn.loggedIn) && "cursor-not-allowed"
+            }`}
             value={logedIn.loggedIn ? username : "your_username"}
             onChange={(event) => setUsername(event.target.value)}
+            disabled={logedIn.asGuest || !logedIn.loggedIn}
           />
         </div>
         <div>
@@ -113,9 +116,12 @@ const UserSettings = () => {
               loading.loading
                 ? "animate-pulse dakr:animate-pulse bg-gray-500 dark:bg-gray-500"
                 : "dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500"
+            } ${
+              (logedIn.asGuest || !logedIn.loggedIn) && "cursor-not-allowed"
             } `}
             value={logedIn.loggedIn ? name : "your_name"}
             onChange={(event) => setname(event.target.value)}
+            disabled={logedIn.asGuest || !logedIn.loggedIn}
           />
         </div>
       </div>
@@ -131,9 +137,10 @@ const UserSettings = () => {
             loading.loading
               ? "animate-pulse dakr:animate-pulse bg-gray-500 dark:bg-gray-500"
               : "dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500"
-          } `}
+          } ${(logedIn.asGuest || !logedIn.loggedIn) && "cursor-not-allowed"} `}
           onChange={(e) => setBio(e.target.value)}
           value={bio}
+          disabled={logedIn.asGuest || !logedIn.loggedIn}
         />
       </div>
 

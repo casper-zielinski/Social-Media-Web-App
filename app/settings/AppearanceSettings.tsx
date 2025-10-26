@@ -3,10 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { LuPalette } from "react-icons/lu";
 import { useTheme } from "next-themes";
+import toast from "react-hot-toast";
 
 const AppearanceSettings = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark";
 
   useEffect(() => setMounted(true), []);
   return (
@@ -32,8 +34,24 @@ const AppearanceSettings = () => {
             <input
               type="checkbox"
               name="theme-switcher"
-              checked={theme === "light"}
-              onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+              checked={!isDark}
+              onChange={() => {
+                setTheme(isDark ? "light" : "dark");
+                toast.success(
+                  !isDark ? "Dark mode activated!" : "Light mode activated!",
+                  {
+                    icon: !isDark ? "🌙" : "☀️",
+                    style: {
+                      background: !isDark ? "#1f2937" : "#ffffff", // gray-800 : white
+                      color: !isDark ? "#f9fafb" : "#111827", // gray-50 : gray-900
+                      border: !isDark
+                        ? "1px solid #374151"
+                        : "1px solid #e5e7eb",
+                    },
+                    duration: 2000,
+                  }
+                );
+              }}
             />
             {/* sun icon */}
             <svg

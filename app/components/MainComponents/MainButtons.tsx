@@ -1,9 +1,9 @@
 "use client";
 
 import { MODAL_IDS } from "@/app/constants/modal";
-import { useModal } from "@/app/hooks/useModal";
+import { commentModal, useModal } from "@/app/hooks/useModal";
 import { RootState } from "@/redux/store";
-import { toggleLikeOnPost } from "@/lib/auth";
+import { toggleLikeOnPost } from "@/lib/like";
 import { motion } from "motion/react";
 import React, { useEffect, useState } from "react";
 import { AiFillLike } from "react-icons/ai";
@@ -103,7 +103,7 @@ const MainButtons = ({
             className="text-black dark:text-white cursor-pointer"
             onClick={() =>
               logedIn.loggedIn && !logedIn.asGuest
-                ? useModal(`CommentModal${commentId}`)
+                ? useModal(commentModal(commentId))
                 : useModal(MODAL_IDS.LOGIN_OR_SIGNUP)
             }
           />

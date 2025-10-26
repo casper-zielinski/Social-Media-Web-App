@@ -1,11 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { FaEye } from "react-icons/fa";
-import { FaEyeSlash } from "react-icons/fa";
+import React from "react";
 import LogInAsGuestButton from "./LogInAsGuestButton";
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
 
 const SignUpLoginProp = () => {
   return (

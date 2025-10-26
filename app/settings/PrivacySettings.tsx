@@ -16,12 +16,15 @@ const PrivacySettings = () => {
   const user = useSelector((state: RootState) => state.user);
   const loading = useSelector((state: RootState) => state.loader);
   const changeButton = user.email.trim() !== email.trim();
+  const notAllowedChange = !logedIn.loggedIn || logedIn.asGuest;
 
   useEffect(() => {
-    if (logedIn) {
-      setemail(user.email || "");
+    if (logedIn.loggedIn) {
+      setemail(user.email || "your_email");
+    } else {
+      setemail("your_email");
     }
-  }, [logedIn, user.email]);
+  }, [logedIn.loggedIn, user.email]);
 
   return (
     <>
@@ -50,7 +53,7 @@ const PrivacySettings = () => {
             } dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-blue-500 bg-white border-gray-300 text-gray-900 focus:border-blue-500`}
             value={email}
             onChange={(event) => setemail(event.target.value)}
-            disabled={disableEmail}
+            disabled={disableEmail || notAllowedChange}
           />
           <button
             className={`btn ${
@@ -60,6 +63,7 @@ const PrivacySettings = () => {
               setdisableEmail((prev) => !prev);
               if (disableEmail) document.getElementById("emailSetter")?.focus();
             }}
+            disabled={notAllowedChange}
           >
             Change
           </button>
@@ -92,6 +96,7 @@ const PrivacySettings = () => {
                 showPassword ? "btn-accent" : "btn-error"
               }  py-3 px-3 join-item`}
               onClick={() => setShowPassword((prev) => !prev)}
+              disabled={notAllowedChange}
             >
               <FaEye />
             </button>
@@ -106,12 +111,13 @@ const PrivacySettings = () => {
               if (disableEmail)
                 document.getElementById("passwordSetter")?.focus();
             }}
+            disabled={notAllowedChange}
           >
             Change
           </button>
         </div>
       </div>
-      {changeButton && (
+      {changeButton && !notAllowedChange && (
         <div className="flex gap-4 justify-evenly md:flex-col md:justify-center md:w-1/2 translate-x-[50%]">
           <button className="btn btn-success"> Change </button>
           <button className="btn btn-info" onClick={() => setemail(user.email)}>

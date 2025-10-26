@@ -9,7 +9,7 @@ import { MdGif, MdEmojiEmotions, MdLocalPostOffice } from "react-icons/md";
 import Profile from "../Profile";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { sendPost } from "@/lib/auth";
+import { sendPost } from "@/lib/post";
 
 {
   /* Post Modal for creating and sending Posts*/

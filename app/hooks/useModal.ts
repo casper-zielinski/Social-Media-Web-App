@@ -8,3 +8,5 @@ export const useModal = (ModalId: string, CloseAnotherModal?: string) => {
 export const closeModal = (ModalId: string) => {
   (document.getElementById(ModalId) as HTMLDialogElement).close();
 };
+
+export const commentModal = (Id: string) => `CommentModal${Id}`;

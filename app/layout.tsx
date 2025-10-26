@@ -6,6 +6,7 @@ import Footer from "./components/layout/Footer";
 import PopUpModals from "./components/PopUpModals/PopUpModals";
 import { ThemeProvider } from "next-themes";
 import AuthProvider from "./components/AuthProvider";
+import ToasterProvider from "./components/Toaster";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -45,6 +46,7 @@ export default function RootLayout({
                 {/* The Footer Interface for Smart Phones or, if User not Logged In, Shows Login or Sign Up Prop*/}
                 <Footer />
               </div>
+              <ToasterProvider />
             </AuthProvider>
           </ThemeProvider>
         </body>
