@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Profile from "../Profile";
+import Profile from "../ui/Profile";
 import { MdEmojiEmotions, MdGif, MdLocalPostOffice } from "react-icons/md";
 import { AiFillPicture } from "react-icons/ai";
 import { GiPositionMarker } from "react-icons/gi";
@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import { useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
 import { sendPost } from "@/lib/post";
+import toast from "react-hot-toast";
+import toastanimation from "./taost-animation.module.css";
 
 {
   /* Component to send Post's */
@@ -45,6 +47,33 @@ const Poster = () => {
             loggedIn.loggedIn && !loggedIn.asGuest
               ? sendPost(text, user, setText, setError, false)
               : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
+            if (!error) {
+              toast.custom((t) => (
+                <div
+                  role="alert"
+                  className={`${
+                    t.visible
+                      ? `${toastanimation["animation-enter"]}`
+                      : "-translate-y-4 opacity-0 scale-90"
+                  } alert alert-success transition-all duration-300 ease-in-out`}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 shrink-0 stroke-current"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>Your thoughts are now live!</span>
+                </div>
+              ));
+            }
           }}
           disabled={text.length === 0}
         >

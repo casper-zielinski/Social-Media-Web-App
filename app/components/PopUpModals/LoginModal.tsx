@@ -4,7 +4,7 @@ import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import LogInAsGuestButton from "../LogInAsGuestButton";
+import LogInAsGuestButton from "../ui/LogInAsGuestButton";
 import { closeModal, useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
 import { handleLogin } from "@/lib/auth";

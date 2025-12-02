@@ -34,6 +34,7 @@ export default function ToasterProvider() {
             primary: "#191316",
             secondary: "#FFFFFF",
           },
+          
         },
       }}
     />

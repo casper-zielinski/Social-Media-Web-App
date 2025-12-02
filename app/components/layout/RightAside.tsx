@@ -1,7 +1,7 @@
 import React from "react";
-import Logo from "../Logo";
-import RightAsideListItems from "../RightAsideListItems";
-import Profile from "../Profile";
+import Logo from "../ui/Logo";
+import RightAsideListItems from "../ui/RightAsideListItems";
+import Profile from "../ui/Profile";
 
 /* 
       Right Side Bar with Buttons for Navigation like Home, Search, AI-Tools etc. 

@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { AiFillPicture } from "react-icons/ai";
 import { GiPositionMarker } from "react-icons/gi";
 import { MdGif, MdEmojiEmotions, MdLocalPostOffice } from "react-icons/md";
-import Profile from "../Profile";
+import Profile from "../ui/Profile";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { sendPost } from "@/lib/post";

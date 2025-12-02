@@ -4,7 +4,7 @@ import { AppDispatch } from "@/redux/store";
 import React, { useMemo, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import LogInAsGuestButton from "../LogInAsGuestButton";
+import LogInAsGuestButton from "../ui/LogInAsGuestButton";
 import { closeModal, useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
 import { handleSignUp } from "@/lib/auth";

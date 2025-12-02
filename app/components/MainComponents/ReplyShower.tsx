@@ -1,7 +1,7 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { subscribeToReplies } from "@/lib/get";
 import React, { useEffect, useState } from "react";
-import Profile from "../Profile";
+import Profile from "../ui/Profile";
 import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
 import FollowButton from "./FollowButton";

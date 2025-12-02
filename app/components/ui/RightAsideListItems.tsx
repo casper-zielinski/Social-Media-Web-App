@@ -12,8 +12,8 @@ import {
   MdLocalPostOffice,
 } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { useModal } from "../hooks/useModal";
-import { MODAL_IDS } from "../constants/modal";
+import { useModal } from "../../hooks/useModal";
+import { MODAL_IDS } from "../../constants/modal";
 
 const RightAsideListItems = () => {
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);

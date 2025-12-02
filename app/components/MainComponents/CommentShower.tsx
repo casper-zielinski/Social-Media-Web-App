@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
 import CommentModal from "../PopUpModals/CommentModal";
-import Profile from "../Profile";
+import Profile from "../ui/Profile";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { subscribeToComments } from "@/lib/get";

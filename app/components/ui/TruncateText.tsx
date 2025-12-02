@@ -1,6 +1,6 @@
 // components/TruncateText.tsx
 import React from "react";
-import useScreenSize from "../hooks/useScreenSize";
+import useScreenSize from "../../hooks/useScreenSize";
 
 interface TruncateTextProps {
   text: string;
@@ -24,7 +24,8 @@ const TruncateText = ({
 
   return (
     <p
-      className={`${className} break-words overflow-hidden text-ellipsis max-w-full`} title={text}
+      className={`${className} break-words overflow-hidden text-ellipsis max-w-full`}
+      title={text}
     >
       {displayText}
     </p>

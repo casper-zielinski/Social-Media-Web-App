@@ -67,15 +67,7 @@ export async function sendPost(
     });
 
     if (usingPostModal) closeModal(MODAL_IDS.POST);
-    toast("Your thoughts are now live!", {
-      icon: "✉️",
-      style: {
-        borderRadius: "10px",
-        background: "#2424A3",
-        color: "#FFFFFF",
-      },
-      duration: 1500,
-    });
+    setError(false);
     setText("");
   } catch (error) {
     setError(true);

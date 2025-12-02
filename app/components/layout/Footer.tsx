@@ -4,7 +4,7 @@ import React from "react";
 import { FaSearch, FaBrain } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
 import { MdHome, MdNotificationsActive, MdPostAdd } from "react-icons/md";
-import SignUpOrLoginProp from "../SignUpLoginProp";
+import SignUpOrLoginProp from "../ui/SignUpLoginProp";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";

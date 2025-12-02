@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { AiFillPicture } from "react-icons/ai";
 import { GiPositionMarker } from "react-icons/gi";
 import { MdGif, MdEmojiEmotions, MdLocalPostOffice } from "react-icons/md";
-import Profile from "../Profile";
+import Profile from "../ui/Profile";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { sendCommentOrReply } from "@/lib/post";
 import useScreenSize from "@/app/hooks/useScreenSize";
+import TruncateText from "../ui/TruncateText";
 
 interface BaseCommentModalProps {
   userdata: {
@@ -39,13 +40,14 @@ const CommentModal = ({
   const [text, setText] = useState("");
   const [height, setHeight] = useState("h-[80px]");
   const [error, setError] = useState(false);
+  const [showFullComment, setShowFullComment] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const pref = useRef<HTMLParagraphElement>(null);
   const screenSize = useScreenSize();
 
   useEffect(() => {
     setHeight(`${80 + ((pref.current?.offsetHeight || 24) / 24 - 1) * 24}px`);
-  }, [pref.current?.offsetHeight, screenSize]);
+  }, [pref.current?.offsetHeight, screenSize, showFullComment]);
 
   function getCorrectResponseToID() {
     return replyId ?? (Reply ? commentId : PostId);
@@ -102,7 +104,31 @@ const CommentModal = ({
                 className="text-white text-[1rem] mb-1 break-words whitespace-normal"
                 ref={pref}
               >
-                {Posttext}
+                {Posttext.length > 350 && showFullComment ? (
+                  <TruncateText
+                    maxLength={350}
+                    widthToShowFull={Infinity}
+                    text={Posttext}
+                  />
+                ) : (
+                  Posttext
+                )}
+
+                {Posttext.length > 350 && (
+                  <button className="py-2 block"
+                    onClick={() => setShowFullComment((prev) => !prev)}
+                  >
+                    {showFullComment ? (
+                      <span className="text-sm text-gray-600 hover:text-gray-500">
+                        Show Full Text
+                      </span>
+                    ) : (
+                      <span className="text-sm text-gray-600 hover:text-gray-500">
+                        Hide Text
+                      </span>
+                    )}
+                  </button>
+                )}
               </p>
               <p className="text-gray-400 text-xs">
                 <span className="text-gray-500 mr-0.5">Replying to </span>

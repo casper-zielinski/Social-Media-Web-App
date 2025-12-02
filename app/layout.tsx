@@ -5,8 +5,8 @@ import RightAside from "./components/layout/RightAside";
 import Footer from "./components/layout/Footer";
 import PopUpModals from "./components/PopUpModals/PopUpModals";
 import { ThemeProvider } from "next-themes";
-import AuthProvider from "./components/AuthProvider";
-import ToasterProvider from "./components/Toaster";
+import AuthProvider from "./components/providers/AuthProvider";
+import ToasterProvider from "./components/providers/Toaster";
 
 export const viewport: Viewport = {
   width: "device-width",

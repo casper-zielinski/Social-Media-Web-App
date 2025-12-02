@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Profile from "../Profile";
+import Profile from "../ui/Profile";
 import FollowButton from "../MainComponents/FollowButton";
 import MainButtons from "../MainComponents/MainButtons";
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingFinished } from "@/redux/slices/loadingSlice";
 import CommentShower from "./CommentShower";
-import TruncateText from "../TruncateText";
+import TruncateText from "../ui/TruncateText";
 
 const PostFeed = () => {
   const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
