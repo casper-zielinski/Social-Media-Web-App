@@ -53,10 +53,9 @@ const MainButtons = ({
     <>
       <div className="flex justify-evenly items-center mb-5">
         <motion.div
-          className="tooltip tooltip-info flex flex-row items-center space-x-1"
+          className="tooltip tooltip-info flex flex-row items-center space-x-1 cursor-pointer"
           data-tip="Like"
-          whileHover={{ scale: 1.2 }}
-          whileTap={{ scale: 1.2, rotate: -10 }}
+          whileTap={{ scale: 1.2 }}
           onClick={(e) => {
             e.stopPropagation();
             logedIn.loggedIn && !logedIn.asGuest
@@ -67,13 +66,15 @@ const MainButtons = ({
           {Likes !== undefined && Likes !== null && (
             <span className="text-black dark:text-white">{Likes.length}</span>
           )}
-          <AiFillLike
-            className={
-              likeColor
-                ? "text-blue-600 cursor-pointer"
-                : "text-black dark:text-white cursor-pointer"
-            }
-          />
+          <motion.div whileTap={{ rotate: -10, translateY: -4.2 }}>
+            <AiFillLike
+              className={
+                likeColor
+                  ? "text-blue-600 cursor-pointer"
+                  : "text-black dark:text-white cursor-pointer"
+              }
+            />
+          </motion.div>
         </motion.div>
         <motion.div
           className="tooltip tooltip-success flex flex-col items-center"

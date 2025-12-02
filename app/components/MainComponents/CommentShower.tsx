@@ -94,7 +94,7 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
           <div className="flex space-x-4 flex-grow justify-end mt-2 items-center">
             <motion.div
               whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 1.2, rotate: -10 }}
+              whileTap={{ scale: 1.2 }}
               className="flex space-x-1 items-center cursor-pointer"
               onClick={() => {
                 logedIn.loggedIn && !logedIn.asGuest
@@ -103,11 +103,13 @@ const CommentShower = ({ post, postId }: CommentShowerProps) => {
               }}
             >
               <span>{comment.data().likes.length}</span>
-              <AiFillLike
-                className={`h-5 w-5 ${
-                  comment.data().likes.includes(user.email) && "text-blue-600"
-                }`}
-              />
+              <motion.div whileTap={{ rotate: -10, translateY: -4.2 }}>
+                <AiFillLike
+                  className={`h-5 w-5 ${
+                    comment.data().likes.includes(user.email) && "text-blue-600"
+                  }`}
+                />
+              </motion.div>
             </motion.div>
             <motion.div className="cursor-pointer" whileHover={{ scale: 1.2 }}>
               <FaCommentAlt

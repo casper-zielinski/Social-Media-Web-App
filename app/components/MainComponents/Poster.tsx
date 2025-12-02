@@ -22,8 +22,44 @@ const Poster = () => {
   const user = useSelector((state: RootState) => state.user);
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
 
+  async function handlePost() {
+    loggedIn.loggedIn && !loggedIn.asGuest
+      ? sendPost(text, user, setText, setError, false)
+      : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
+    if (!error) {
+      toast.custom((t) => (
+        <div
+          role="alert"
+          className={`${
+            t.visible
+              ? `${toastanimation["animation-enter"]}`
+              : "-translate-y-4 opacity-0 scale-90"
+          } alert alert-success transition-all duration-300 ease-in-out`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 shrink-0 stroke-current"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>Your thoughts are now live!</span>
+        </div>
+      ));
+    }
+  }
+
   return (
-    <div className=" border-b-2 border-blue-400 dark:border-blue-950 p-4 space-y-10">
+    <form
+      className=" border-b-2 border-blue-400 dark:border-blue-950 p-4 space-y-10"
+      onSubmit={handlePost}
+    >
       <div className="flex items-start space-x-4">
         <Profile classname="mt-2" />
         <textarea
@@ -32,6 +68,7 @@ const Poster = () => {
           name="Post-Main"
           value={text}
           onChange={(event) => setText(event.target.value)}
+          required
         />
       </div>
       <div className="flex justify-start items-center space-x-4 relative">
@@ -43,44 +80,13 @@ const Poster = () => {
           className={`btn ${
             text.length === 0 ? "border-2 border-error" : "btn-info"
           } btn-sm absolute right-0 sm:w-24`}
-          onClick={() => {
-            loggedIn.loggedIn && !loggedIn.asGuest
-              ? sendPost(text, user, setText, setError, false)
-              : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
-            if (!error) {
-              toast.custom((t) => (
-                <div
-                  role="alert"
-                  className={`${
-                    t.visible
-                      ? `${toastanimation["animation-enter"]}`
-                      : "-translate-y-4 opacity-0 scale-90"
-                  } alert alert-success transition-all duration-300 ease-in-out`}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 shrink-0 stroke-current"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span>Your thoughts are now live!</span>
-                </div>
-              ));
-            }
-          }}
+          type="submit"
           disabled={text.length === 0}
         >
           <MdLocalPostOffice className="w-4 h-4 text-black dark:text-white" />
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
