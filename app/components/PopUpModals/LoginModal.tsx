@@ -34,82 +34,89 @@ const LoginModal = () => {
             ✕
           </button>
         </form>
-        <fieldset className="fieldset rounded-box w-xs flex flex-col items-center">
-          <legend className="fieldset-legend mb-5 text-base md:text-lg">
-            Login
-          </legend>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin(email, password, dispatch);
+          }}
+        >
+          <fieldset className="fieldset rounded-box w-xs flex flex-col items-center">
+            <legend className="fieldset-legend mb-5 text-base md:text-lg">
+              Login
+            </legend>
 
-          <label className="label">Email</label>
-          <div className="w-full flex-wrap">
-            <input
-              className="input validator w-full text-white"
-              type="email"
-              required
-              placeholder="mail@site.com"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <div className="validator-hint hidden">
-              Enter valid email address
+            <label className="label">Email</label>
+            <div className="w-full flex-wrap">
+              <input
+                className="input validator w-full text-white"
+                type="email"
+                required
+                placeholder="mail@site.com"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+              <div className="validator-hint hidden">
+                Enter valid email address
+              </div>
             </div>
-          </div>
 
-          <label className="label">Password</label>
-          <div className="join w-full flex-wrap">
-            <input
-              type={showPassword ? "text" : "password"}
-              className="input validator join-item text-white w-10/12"
-              required
-              placeholder="Password"
-              minLength={8}
-              pattern="(?=.*\d)(?=.*[a-z]).{8,}"
-              title="Must be more than 8 characters, including number, lowercase letter"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <button
-              className="btn btn-info btn-outline rounded-e w-2/12 p-0"
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
-              {showPassword ? <FaEye /> : <FaEyeSlash />}
-            </button>
-            <p className="validator-hint hidden">
-              Must be more than 8 characters, including
-              <br />
-              At least one number
-              <br />
-              At least one lowercase letter
-            </p>
-          </div>
+            <label className="label">Password</label>
+            <div className="join w-full flex-wrap">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="input validator join-item text-white w-10/12"
+                required
+                placeholder="Password"
+                minLength={8}
+                pattern="(?=.*\d)(?=.*[a-z]).{8,}"
+                title="Must be more than 8 characters, including number, lowercase letter"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+              <button
+                className="btn btn-info btn-outline rounded-e w-2/12 p-0"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
+              </button>
+              <p className="validator-hint hidden">
+                Must be more than 8 characters, including
+                <br />
+                At least one number
+                <br />
+                At least one lowercase letter
+              </p>
+            </div>
 
-          <button
-            className="btn btn-info mt-4"
-            onClick={() => handleLogin(email, password, dispatch)}
-            disabled={!isFormValid}
-          >
-            Login
-          </button>
-          <div className="w-1/2">
-            <div className="divider">OR</div>
-          </div>
-          <div className="flex flex-col">
-            <LogInAsGuestButton
-              classname="btn-outline btn-info"
-              closingModal="LoginDialog"
-              modalToClose={true}
-            />
             <button
-              className="btn btn-info btn-soft mt-4"
-              onClick={() => {
-                closeModal(MODAL_IDS.LOGIN);
-                setShowPassword(false);
-                useModal(MODAL_IDS.SIGNUP);
-              }}
+              className="btn btn-info mt-4"
+              type="submit"
+              disabled={!isFormValid}
             >
-              Sign Up
+              Login
             </button>
-          </div>
-        </fieldset>
+            <div className="w-1/2">
+              <div className="divider">OR</div>
+            </div>
+            <div className="flex flex-col">
+              <LogInAsGuestButton
+                classname="btn-outline btn-info"
+                closingModal="LoginDialog"
+                modalToClose={true}
+              />
+              <button
+                className="btn btn-info btn-soft mt-4"
+                onClick={() => {
+                  closeModal(MODAL_IDS.LOGIN);
+                  setShowPassword(false);
+                  useModal(MODAL_IDS.SIGNUP);
+                }}
+              >
+                Sign Up
+              </button>
+            </div>
+          </fieldset>
+        </form>
       </div>
       <form
         method="dialog"

@@ -18,7 +18,6 @@ import { closeModal } from "@/app/hooks/useModal";
 import customToast from "@/lib/toast";
 import { handleFirebaseError } from "./errorHandler";
 import { ERROR_AREA_TYPES } from "@/app/constants/errorAreaTypes";
-import firebase from "firebase/compat/app";
 import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import { COLLECTION_PATH } from "@/app/constants/path";
 import { User, UserReduxState } from "@/app/interfaces/User";
@@ -81,7 +80,7 @@ export async function handleSignUp(
       displayName: username,
     });
 
-    const newUser: User = {
+    const { id } = await addDoc(collection(db, COLLECTION_PATH.USERS), {
       email: email,
       name: username,
       username: email?.split(".")[0],
@@ -89,11 +88,7 @@ export async function handleSignUp(
       Totallikes: 0,
       savedPosts: [],
       UID: userCredentials.user.uid,
-    };
-
-    const { id } = await addDoc(collection(db, COLLECTION_PATH.USERS), {
-      newUser,
-    });
+    } satisfies User);
 
     const newUserRedxuState: UserReduxState = {
       name: username,
@@ -104,6 +99,7 @@ export async function handleSignUp(
     };
 
     dispatch(signInUser(newUserRedxuState));
+    dispatch(logIn())
 
     closeModal(MODAL_IDS.SIGNUP);
     customToast.success(`Profile created - Welcome ${username}`);
