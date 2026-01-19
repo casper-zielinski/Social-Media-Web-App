@@ -15,23 +15,13 @@ import { auth, db } from "./firebase";
 import { AppDispatch } from "@/redux/store";
 import { MODAL_IDS } from "@/app/constants/modal";
 import { closeModal } from "@/app/hooks/useModal";
-import {
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  doc,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-  QueryDocumentSnapshot,
-  DocumentData,
-} from "firebase/firestore";
-import { COLLECTION_PATH } from "@/app/constants/path";
 import customToast from "@/lib/toast";
-import { FirebaseError } from "firebase/app";
 import { handleFirebaseError } from "./errorHandler";
 import { ERROR_AREA_TYPES } from "@/app/constants/errorAreaTypes";
+import firebase from "firebase/compat/app";
+import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import { COLLECTION_PATH } from "@/app/constants/path";
+import { User, UserReduxState } from "@/app/interfaces/User";
 
 // ============================================================================
 // SIGN OUT FUNCTION
@@ -43,9 +33,16 @@ import { ERROR_AREA_TYPES } from "@/app/constants/errorAreaTypes";
  * @param dispatch - Redux dispatch function to update application state
  * @returns Promise that resolves when sign out is complete
  */
-export async function handleSignOut(dispatch: AppDispatch) {
+export async function handleSignOut(
+  dispatch: AppDispatch,
+  userIdFromTable: string,
+) {
   try {
     await signOut(auth);
+    if (userIdFromTable) {
+      await deleteDoc(doc(db, COLLECTION_PATH.USERS, userIdFromTable));
+    }
+
     customToast.success("Signed out successfully");
     dispatch(logOut());
     dispatch(signOutUser());
@@ -71,27 +68,42 @@ export async function handleSignUp(
   username: string,
   email: string,
   password: string,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
 ) {
   try {
     const userCredentials = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
 
     await updateProfile(userCredentials.user, {
       displayName: username,
     });
 
-    dispatch(
-      signInUser({
-        name: userCredentials.user.displayName,
-        username: userCredentials.user.email?.split(".")[0],
-        email: userCredentials.user.email,
-        uid: userCredentials.user.uid,
-      })
-    );
+    const newUser: User = {
+      email: email,
+      name: username,
+      username: email?.split(".")[0],
+      Followers: [],
+      Totallikes: 0,
+      savedPosts: [],
+      UID: userCredentials.user.uid,
+    };
+
+    const { id } = await addDoc(collection(db, COLLECTION_PATH.USERS), {
+      newUser,
+    });
+
+    const newUserRedxuState: UserReduxState = {
+      name: username,
+      username: email?.split(".")[0],
+      email: email,
+      uid: userCredentials.user.uid,
+      userTableId: id,
+    };
+
+    dispatch(signInUser(newUserRedxuState));
 
     closeModal(MODAL_IDS.SIGNUP);
     customToast.success(`Profile created - Welcome ${username}`);
@@ -114,13 +126,15 @@ export async function handleSignUp(
 export async function handleLogin(
   email: string,
   password: string,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
 ) {
   try {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
     closeModal(MODAL_IDS.LOGIN);
     dispatch(logIn());
-    customToast.success(`Logged in successfully - Hello ${email?.split(".")[0].toUpperCase()}`);
+    customToast.success(
+      `Logged in successfully - Hello ${email?.split(".")[0].toUpperCase()}`,
+    );
   } catch (error) {
     handleFirebaseError(error, ERROR_AREA_TYPES.LOGIN);
   }
@@ -141,13 +155,13 @@ export async function handleLogin(
 export async function handleGuestLogin(
   modalToClose: boolean,
   closingModal: string,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
 ) {
   try {
     await signInWithEmailAndPassword(
       auth,
       "guest123@gmail.com",
-      "MeinPasswort1!"
+      "MeinPasswort1!",
     );
     if (modalToClose) closeModal(closingModal);
     customToast.success("Logged in as Guest - Hello Guest!");

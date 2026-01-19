@@ -6,4 +6,4 @@ export const ERROR_AREA_TYPES = {
   POST: "POST",
   SIGN_UP: "SIGN UP",
   LOGIN: "LOGIN",
-};
+} as const;

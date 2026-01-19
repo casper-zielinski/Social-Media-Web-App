@@ -14,16 +14,10 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 import customToast from "@/lib/toast";
-import { FirebaseError } from "firebase/app";
 import { handleFirebaseError } from "./errorHandler";
 import { ERROR_AREA_TYPES } from "@/app/constants/errorAreaTypes";
-
-export interface User {
-  name: string;
-  username: string;
-  email: string;
-  uid: string;
-}
+import { CommentDTO, PostDTO, ReplyDTO } from "@/app/interfaces/Post";
+import { User, UserReduxState } from "@/app/interfaces/User";
 
 // ============================================================================
 // POST OPERATIONS
@@ -41,10 +35,10 @@ export interface User {
  */
 export async function sendPost(
   text: string,
-  user: User,
+  user: UserReduxState,
   setText: React.Dispatch<React.SetStateAction<string>>,
   setError: React.Dispatch<React.SetStateAction<boolean>>,
-  usingPostModal: boolean
+  usingPostModal: boolean,
 ) {
   if (!text.trim()) {
     customToast.error("Post can't be empty!");
@@ -56,15 +50,18 @@ export async function sendPost(
     return;
   }
 
+  const newPost: PostDTO = {
+    text: text,
+    name: user.name,
+    username: user.username,
+    useremail: user.email,
+    timeStamp: serverTimestamp(),
+    likes: [],
+    NumberOfComments: 0,
+  };
+
   try {
-    await addDoc(collection(db, "posts"), {
-      text: text,
-      name: user.name,
-      username: user.username,
-      useremail: user.email,
-      timeStamp: serverTimestamp(),
-      likes: [],
-    });
+    await addDoc(collection(db, "posts"), newPost);
 
     if (usingPostModal) closeModal(MODAL_IDS.POST);
     setError(false);
@@ -104,7 +101,7 @@ export async function sendPost(
  */
 export async function sendCommentOrReply(
   postId: string,
-  user: User,
+  user: UserReduxState,
   text: string,
   isReply: boolean,
   commentId: string | undefined,
@@ -113,27 +110,30 @@ export async function sendCommentOrReply(
   postText: string,
   setText: React.Dispatch<React.SetStateAction<string>>,
   setError: React.Dispatch<React.SetStateAction<boolean>>,
-  getCorrectResponseToID: () => string
+  getCorrectResponseToID: () => string,
 ) {
   try {
     if (isReply && commentId) {
       // Create a reply to a comment
+      const newReplyToComment: ReplyDTO = {
+        name: user.name,
+        username: user.username,
+        useremail: user.email,
+        text: text,
+        timeStamp: serverTimestamp(),
+        likes: [],
+        replyTo: {
+          userId: getCorrectResponseToID(),
+          userName: userdata.name,
+          userUsername: userdata.username,
+          textToReplyTo: postText,
+        },
+        NumberOfReplys: 0,
+      };
+
       await addDoc(
         collection(db, "posts", postId, "comments", commentId, "replys"),
-        {
-          name: user.name,
-          username: user.username,
-          text: text,
-          timeStamp: new Date(),
-          likes: [],
-          replyTo: {
-            userId: getCorrectResponseToID(),
-            userName: userdata.name,
-            userUsername: userdata.username,
-            textToReplyTo: postText,
-          },
-          NumberOfReplys: 0,
-        }
+        newReplyToComment,
       );
 
       // Increment the reply count on the parent comment
@@ -142,14 +142,17 @@ export async function sendCommentOrReply(
       });
     } else {
       // Create a comment on a post
-      await addDoc(collection(db, "posts", postId, "comments"), {
+      const newComment: CommentDTO = {
         name: user.name,
         username: user.username,
+        useremail: user.email,
         text: text,
-        timeStamp: new Date(),
+        timeStamp: serverTimestamp(),
         likes: [],
         NumberOfComments: 0,
-      });
+      };
+
+      await addDoc(collection(db, "posts", postId, "comments"), newComment);
 
       // Increment the comment count on the parent post
       await updateDoc(doc(db, "posts", postId), {

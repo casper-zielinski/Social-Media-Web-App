@@ -6,4 +6,5 @@ export const COLLECTION_PATH = {
   POSTS: "posts",
   COMMENTS: "comments",
   REPLYS: "replys",
-};
+  USERS: "users"
+} as const;

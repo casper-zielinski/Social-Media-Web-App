@@ -11,6 +11,8 @@ import customToast from "@/lib/toast";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import { useModal } from "../hooks/useModal";
+import { MODAL_IDS } from "../constants/modal";
 
 const UserSettings = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -43,7 +45,7 @@ const UserSettings = () => {
           signInUser({
             ...user,
             username: newUsername,
-          })
+          }),
         );
       }
       customToast.success("Username updated successfully!");
@@ -171,7 +173,11 @@ const UserSettings = () => {
 
       <button
         className="btn btn-info md:w-1/2 md:translate-x-[50%]"
-        onClick={() => handleSignOut(dispatch)}
+        onClick={() => {
+          if (logedIn.loggedIn) {
+            handleSignOut(dispatch, user.userTableId);
+          } else useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
+        }}
       >
         Log Out
       </button>

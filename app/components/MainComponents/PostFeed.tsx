@@ -27,7 +27,7 @@ const PostFeed = () => {
     const unsubsribe = subscribeToPostsFeed(
       setPosts,
       setShowComments,
-      setHideFullText
+      setHideFullText,
     );
     dispatch(loadingFinished());
 
@@ -83,7 +83,7 @@ const PostFeed = () => {
                   className="p-2 "
                   onClick={() =>
                     setHideFullText((prev) =>
-                      [...prev].map((p, i) => (i === index ? !p : p))
+                      [...prev].map((p, i) => (i === index ? !p : p)),
                     )
                   }
                 >
@@ -144,15 +144,19 @@ const PostFeed = () => {
                 </div>
               </div>
               <div className="grid grid-cols-10 gap-2 p-3">
-                <div className="col-span-7 animate-pulse bg-gray-500 p-2 "></div>
-                <div className="col-span-3 animate-pulse bg-gray-500 p-2 "></div>
-                <div className="col-span-4 animate-pulse bg-gray-500 p-2 "></div>
-                <div className="col-span-6 animate-pulse bg-gray-500 p-2 "></div>
-                <div className="col-span-2 animate-pulse bg-gray-500 p-2 "></div>
-                <div className="col-span-4 animate-pulse bg-gray-500 p-2 "></div>
-                <div className="col-span-4 animate-pulse bg-gray-500 p-2 "></div>
-                <div className="col-span-8 p-2 "></div>
-                <div className="mt-3 col-span-2 animate-pulse bg-gray-500 p-2"></div>
+                {Array.of(
+                  "col-span-7",
+                  "col-span-3",
+                  "col-span-4",
+                  "col-span-6",
+                  "col-span-2",
+                  "col-span-4",
+                  "col-span-4",
+                ).map((val, index) => {
+                  return (
+                    <div key={index} className={`${val} animate-pulse bg-gray-500 p-2`}></div>
+                  );
+                })}
               </div>
               <div className="divider"></div>
 

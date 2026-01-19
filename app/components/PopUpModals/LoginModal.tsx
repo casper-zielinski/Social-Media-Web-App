@@ -40,21 +40,25 @@ const LoginModal = () => {
           </legend>
 
           <label className="label">Email</label>
-          <input
-            className="input validator w-11/12 md:w-9/12 text-white"
-            type="email"
-            required
-            placeholder="mail@site.com"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-          <div className="validator-hint hidden">Enter valid email address</div>
+          <div className="w-full flex-wrap">
+            <input
+              className="input validator w-full text-white"
+              type="email"
+              required
+              placeholder="mail@site.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <div className="validator-hint hidden">
+              Enter valid email address
+            </div>
+          </div>
 
           <label className="label">Password</label>
-          <div className="join w-full md:w-9/12 flex-wrap">
+          <div className="join w-full flex-wrap">
             <input
               type={showPassword ? "text" : "password"}
-              className="input validator join-item text-white w-9/12"
+              className="input validator join-item text-white w-10/12"
               required
               placeholder="Password"
               minLength={8}
@@ -64,7 +68,7 @@ const LoginModal = () => {
               onChange={(event) => setPassword(event.target.value)}
             />
             <button
-              className="btn btn-info btn-outline rounded-e"
+              className="btn btn-info btn-outline rounded-e w-2/12 p-0"
               onClick={() => setShowPassword((prev) => !prev)}
             >
               {showPassword ? <FaEye /> : <FaEyeSlash />}

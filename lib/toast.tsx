@@ -72,10 +72,10 @@ const icons: Record<ToastType, JSX.Element> = {
 };
 
 const alertClasses: Record<ToastType, string> = {
-  success: "alert-success",
-  info: "alert-info",
-  warning: "alert-warning",
-  error: "alert-error",
+  success: "alert alert-success bg-success text-success-content",
+  info: "alert alert-info bg-info text-info-content",
+  warning: "alert alert-warning bg-warning text-warning-content",
+  error: "alert alert-error bg-error text-error-content",
 };
 
 interface CustomToastOptions {
@@ -95,7 +95,7 @@ export function showToast(
         role="alert"
         className={`${
           t.visible ? animationStyles.enter : animationStyles.exit
-        } alert ${alertClasses[type]} transition-all duration-300 ease-in-out`}
+        } ${alertClasses[type]} transition-all duration-300 ease-in-out shadow-lg`}
       >
         {icons[type]}
         <span className="font-bold">{message}</span>

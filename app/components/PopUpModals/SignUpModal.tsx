@@ -90,10 +90,10 @@ const SignUpModal = () => {
           </div>
 
           <label className="label">Password</label>
-          <div className="join w-11/12 md:w-9/12 flex-wrap">
+          <div className="join w-full flex-wrap">
             <input
               type={showPassword ? "text" : "password"}
-              className="input validator join-item text-white w-[77.7%]"
+              className="input validator join-item text-white w-10/12"
               required
               placeholder="Password"
               minLength={8}
@@ -103,7 +103,7 @@ const SignUpModal = () => {
               onChange={(event) => setPassword(event.target.value)}
             />
             <button
-              className="btn btn-info btn-outline rounded-e"
+              className="btn btn-info btn-outline rounded-e w-2/12 p-0"
               onClick={() => setShowPassword((prev) => !prev)}
             >
               {showPassword ? <FaEye /> : <FaEyeSlash />}
