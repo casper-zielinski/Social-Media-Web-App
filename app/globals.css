@@ -12,3 +12,23 @@
 :root {
   scrollbar-gutter: unset !important;
 }
+
+/* Toast animation */
+@keyframes toast-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-toast-enter {
+  animation: toast-enter 0.5s ease-in-out;
+}

@@ -24,9 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <StoreProvider>
-      <html lang="en">
-        <body className="bg-white dark:bg-gray-950 min-w-[320px] min-h-full p-0 m-0 overflow-hidden">
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-white dark:bg-gray-950 min-w-[320px] min-h-full p-0 m-0 overflow-hidden">
+        <StoreProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -49,8 +49,8 @@ export default function RootLayout({
               <ToasterProvider />
             </AuthProvider>
           </ThemeProvider>
-        </body>
-      </html>
-    </StoreProvider>
+        </StoreProvider>
+      </body>
+    </html>
   );
 }

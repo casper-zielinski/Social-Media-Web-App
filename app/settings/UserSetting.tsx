@@ -1,8 +1,13 @@
 "use client";
 
 import { handleSignOut } from "@/lib/auth";
+import { auth } from "@/lib/firebase";
+import { signInUser } from "@/redux/slices/userSlice";
 import { AppDispatch, RootState } from "@/redux/store";
+import { FirebaseError } from "firebase/app";
+import { updateCurrentUser, updateProfile } from "firebase/auth";
 import React, { useEffect, useState } from "react";
+import customToast from "@/lib/toast";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +31,26 @@ const UserSettings = () => {
       setUsername(user.username || "");
     }
   }, [logedIn, user.name, user.username, user.email]);
+
+  async function updateDisplayname(newUsername: string) {
+    const currentUser = auth.currentUser;
+    if (!user || !currentUser)
+      throw new FirebaseError("Auth Error", "User is not loged in");
+    try {
+      if (newUsername !== user.username) {
+        await updateProfile(currentUser, { displayName: newUsername });
+        dispatch(
+          signInUser({
+            ...user,
+            username: newUsername,
+          })
+        );
+      }
+      customToast.success("Username updated successfully!");
+    } catch (error) {
+      customToast.error("Failed to change Username!");
+    }
+  }
 
   return (
     <>
@@ -62,7 +87,7 @@ const UserSettings = () => {
                   : "btn-success"
               } btn-sm sm:btn-md`}
               onClick={() => {
-                // Handle change action
+                updateDisplayname(username);
               }}
               disabled={!change}
             >

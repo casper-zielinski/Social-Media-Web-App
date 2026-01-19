@@ -13,7 +13,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import toast from "react-hot-toast";
+import customToast from "@/lib/toast";
 import { FirebaseError } from "firebase/app";
 import { handleFirebaseError } from "./errorHandler";
 import { ERROR_AREA_TYPES } from "@/app/constants/errorAreaTypes";
@@ -47,12 +47,12 @@ export async function sendPost(
   usingPostModal: boolean
 ) {
   if (!text.trim()) {
-    toast.error("Post can't be empty!");
+    customToast.error("Post can't be empty!");
     return;
   }
 
   if (text.length > 780) {
-    toast.error("Post is too long! Keep it under 780 characters");
+    customToast.error("Post is too long! Keep it under 780 characters");
     return;
   }
 
@@ -160,14 +160,8 @@ export async function sendCommentOrReply(
     // Close the modal if no error occurred
     closeModal(`CommentModal${getCorrectResponseToID()}`);
     setText("");
-    toast(isReply ? "Reply sent!" : "Comment posted!", {
-      icon: "✉️",
-      style: {
-        borderRadius: "10px",
-        background: "#2424A3",
-        color: "#FFFFFF",
-      },
-      duration: 1000,
+    customToast.success(isReply ? "Reply sent!" : "Comment posted!", {
+      duration: 1500,
     });
   } catch (error) {
     setError(true);

@@ -9,7 +9,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import toast from "react-hot-toast";
+import customToast from "@/lib/toast";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -25,46 +25,26 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         dispatch(received());
         dispatch(loadingFinished());
         if (showonce) {
-          toast(
-            "Welcome to ChatAI \n Login, Sign Up or start as a Guest to experience ChatAI",
-            {
-              icon: "✌️",
-              style: {
-                borderRadius: "10px",
-                background: "#333",
-                color: "#fff",
-              },
-            }
+          customToast.info(
+            "Welcome to ChatAI - Login, Sign Up or start as a Guest to experience ChatAI"
           );
           setShowonce(false);
         }
-        
+
         return;
       }
       if (currentUser.email === "guest123@gmail.com") {
         dispatch(loggedInasGuest());
         if (showonce) {
-          toast("Welcome back Guest!", {
-            icon: "✌️",
-            style: {
-              borderRadius: "10px",
-              background: "#333",
-              color: "#fff",
-            },
-          });
+          customToast.info("Welcome back Guest!");
           setShowonce(false);
         }
       } else if (showonce) {
-        toast(`Welcome back ${currentUser.displayName}`, {
-          icon: "✌️",
-          style: {
-            borderRadius: "10px",
-            background: "#333",
-            color: "#fff",
-          },
-        });
+        customToast.info(`Welcome back ${currentUser.displayName}`);
         setShowonce(false);
       }
+      console.log(currentUser);
+
       dispatch(
         signInUser({
           name: currentUser.displayName,

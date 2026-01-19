@@ -10,8 +10,7 @@ import { useSelector } from "react-redux";
 import { useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
 import { sendPost } from "@/lib/post";
-import toast from "react-hot-toast";
-import toastanimation from "./taost-animation.module.css";
+import customToast from "@/lib/toast";
 
 {
   /* Component to send Post's */
@@ -22,43 +21,20 @@ const Poster = () => {
   const user = useSelector((state: RootState) => state.user);
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
 
-  async function handlePost() {
+  async function handlePost(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     loggedIn.loggedIn && !loggedIn.asGuest
       ? sendPost(text, user, setText, setError, false)
       : useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
     if (!error) {
-      toast.custom((t) => (
-        <div
-          role="alert"
-          className={`${
-            t.visible
-              ? `${toastanimation["animation-enter"]}`
-              : "-translate-y-4 opacity-0 scale-90"
-          } alert alert-success transition-all duration-300 ease-in-out`}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 shrink-0 stroke-current"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span>Your thoughts are now live!</span>
-        </div>
-      ));
+      customToast.success("Your thoughts are now live!");
     }
   }
 
   return (
     <form
       className=" border-b-2 border-blue-400 dark:border-blue-950 p-4 space-y-10"
-      onSubmit={handlePost}
+      onSubmit={(e) => handlePost(e)}
     >
       <div className="flex items-start space-x-4">
         <Profile classname="mt-2" />

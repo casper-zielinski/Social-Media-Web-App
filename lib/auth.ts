@@ -28,7 +28,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { COLLECTION_PATH } from "@/app/constants/path";
-import toast from "react-hot-toast";
+import customToast from "@/lib/toast";
 import { FirebaseError } from "firebase/app";
 import { handleFirebaseError } from "./errorHandler";
 import { ERROR_AREA_TYPES } from "@/app/constants/errorAreaTypes";
@@ -46,11 +46,11 @@ import { ERROR_AREA_TYPES } from "@/app/constants/errorAreaTypes";
 export async function handleSignOut(dispatch: AppDispatch) {
   try {
     await signOut(auth);
-    toast.success("SIGNED OUT");
+    customToast.success("Signed out successfully");
     dispatch(logOut());
     dispatch(signOutUser());
   } catch {
-    toast.error("FAILED SIGNING OUT \n try again");
+    customToast.error("Failed signing out - try again");
   }
 }
 
@@ -94,7 +94,7 @@ export async function handleSignUp(
     );
 
     closeModal(MODAL_IDS.SIGNUP);
-    toast.success(`Profile successfully created \n Welcome ${username}`);
+    customToast.success(`Profile created - Welcome ${username}`);
   } catch (error) {
     handleFirebaseError(error, ERROR_AREA_TYPES.SIGN_UP);
   }
@@ -117,12 +117,10 @@ export async function handleLogin(
   dispatch: AppDispatch
 ) {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const { user } = await signInWithEmailAndPassword(auth, email, password);
     closeModal(MODAL_IDS.LOGIN);
     dispatch(logIn());
-    toast.success(
-      `LOGED IN SUCCESSFUL! \n Hello ${email?.split(".")[0].toUpperCase()}`
-    );
+    customToast.success(`Logged in successfully - Hello ${email?.split(".")[0].toUpperCase()}`);
   } catch (error) {
     handleFirebaseError(error, ERROR_AREA_TYPES.LOGIN);
   }
@@ -152,10 +150,10 @@ export async function handleGuestLogin(
       "MeinPasswort1!"
     );
     if (modalToClose) closeModal(closingModal);
-    toast.success("LOGED IN AS GUEST \n   Hello Guest!");
+    customToast.success("Logged in as Guest - Hello Guest!");
     dispatch(loggedInasGuest());
     dispatch(received());
   } catch {
-    toast.error("FAILED GUEST LOGIN \n Try Again");
+    customToast.error("Failed guest login - Try again");
   }
 }

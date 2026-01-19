@@ -4,7 +4,11 @@ import userSlice from "./slices/userSlice";
 import loadingSlice from "./slices/loadingSlice";
 
 export const store = configureStore({
-  reducer: { loggingIn: loginSlice, user: userSlice, loader: loadingSlice },
+  reducer: {
+    loggingIn: loginSlice,
+    user: userSlice,
+    loader: loadingSlice,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
