@@ -1,4 +1,5 @@
-// Tracking window size
+'use client'
+
 import { useState, useEffect } from "react";
 
 interface ScreenSize {

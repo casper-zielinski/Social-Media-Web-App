@@ -1,7 +1,10 @@
-import Image from "next/image";
-import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import FollowSection from "../LeftAsideComponents/FollowSection";
+import { Suspense } from "react";
+import FollowSectionFallback from "../LeftAsideComponents/FollowSectionFallback";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { COLLECTION_PATH } from "@/app/constants/path";
 
 /* Left Side Bar, only for bigger Phones and bigger, search bar and Subscribtion Tab*/
 
@@ -65,7 +68,9 @@ const LeftAside = () => {
 
       {/* Who to follow Section*/}
       <section className="bg-blue-100 dark:bg-gray-800 p-3.5 rounded-3xl border border-gray-600 space-y-3">
-       <FollowSection />
+        <Suspense fallback={<FollowSectionFallback />}>
+          <FollowSection />
+        </Suspense>
       </section>
     </aside>
   );
