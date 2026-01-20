@@ -5,8 +5,12 @@ import {
   collection,
   orderBy,
   onSnapshot,
+  getDocs,
+  where,
+  doc,
 } from "firebase/firestore";
 import { db } from "./firebase";
+import { COLLECTION_PATH } from "@/app/constants/path";
 
 // ============================================================================
 // GETTING ALL POSTS
@@ -31,17 +35,18 @@ export function subscribeToPostsFeed(
     React.SetStateAction<QueryDocumentSnapshot<DocumentData>[]>
   >,
   setShowComments: React.Dispatch<React.SetStateAction<boolean[]>>,
-  setHideFullText: React.Dispatch<React.SetStateAction<boolean[]>>
+  setHideFullText: React.Dispatch<React.SetStateAction<boolean[]>>,
+  navigationPagerForYou: boolean,
 ) {
   const q = query(collection(db, "posts"), orderBy("timeStamp", "desc"));
   const unsubscribe = onSnapshot(q, (posts) => {
     const { docs } = posts;
     setPosts(docs);
     setShowComments((prev) =>
-      prev.length === docs.length ? prev : docs.map(() => false)
+      prev.length === docs.length ? prev : docs.map(() => false),
     );
     setHideFullText((prev) =>
-      prev.length === docs.length ? prev : docs.map(() => true)
+      prev.length === docs.length ? prev : docs.map(() => true),
     );
   });
 
@@ -90,7 +95,7 @@ export function subscribeToComments(
       const { docs } = snapShot;
       setComments(docs);
       showReplyArray((prev) =>
-        docs.length === prev.length ? prev : docs.map(() => false)
+        docs.length === prev.length ? prev : docs.map(() => false),
       );
       setLoading(true);
     },
@@ -98,7 +103,7 @@ export function subscribeToComments(
       console.error("Error fetching comments:", error);
       setLoading(false);
       if (onError) onError();
-    }
+    },
   );
 
   return unsubscribe;
@@ -130,7 +135,7 @@ export function subscribeToReplies(
   setReplies: React.Dispatch<
     React.SetStateAction<QueryDocumentSnapshot<DocumentData>[]>
   >,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   if (postId === undefined || commentId === undefined) {
     return () => {};
@@ -138,7 +143,7 @@ export function subscribeToReplies(
 
   const q = query(
     collection(db, "posts", postId, "comments", commentId, "replys"),
-    orderBy("timeStamp", "asc")
+    orderBy("timeStamp", "asc"),
   );
   const unsubscribe = onSnapshot(q, (replies) => {
     const { docs } = replies;

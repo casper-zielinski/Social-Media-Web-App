@@ -4,6 +4,7 @@ interface Postable {
   likes: string[];
   text: string;
   name: string;
+  userId: string;
   timeStamp: FieldValue;
   username: string;
   NumberOfComments: number;

@@ -11,8 +11,8 @@ import customToast from "@/lib/toast";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { useModal } from "../hooks/useModal";
-import { MODAL_IDS } from "../constants/modal";
+import { useModal } from "../../hooks/useModal";
+import { MODAL_IDS } from "../../constants/modal";
 
 const UserSettings = () => {
   const dispatch: AppDispatch = useDispatch();

@@ -1,7 +1,7 @@
 import React from "react";
-import UserSettings from "./UserSetting";
-import PrivacySettings from "./PrivacySettings";
-import AppearanceSettings from "./AppearanceSettings";
+import UserSettings from "../components/SettingsComponents/UserSetting";
+import PrivacySettings from "../components/SettingsComponents/PrivacySettings";
+import AppearanceSettings from "../components/SettingsComponents/AppearanceSettings";
 
 function settingsPage() {
   return (

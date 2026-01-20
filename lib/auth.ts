@@ -99,7 +99,7 @@ export async function handleSignUp(
     };
 
     dispatch(signInUser(newUserRedxuState));
-    dispatch(logIn())
+    dispatch(logIn());
 
     closeModal(MODAL_IDS.SIGNUP);
     customToast.success(`Profile created - Welcome ${username}`);
@@ -163,7 +163,8 @@ export async function handleGuestLogin(
     customToast.success("Logged in as Guest - Hello Guest!");
     dispatch(loggedInasGuest());
     dispatch(received());
-  } catch {
+  } catch (error) {
+    console.error(error);
     customToast.error("Failed guest login - Try again");
   }
 }

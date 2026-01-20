@@ -42,7 +42,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             return;
           }
 
-          let userTableId = "";
+          let userTableId = "Guest";
           if (currentUser.email === "guest123@gmail.com") {
             dispatch(loggedInasGuest());
             if (showonce) {
@@ -52,15 +52,16 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
           } else if (showonce) {
             customToast.info(`Welcome back ${currentUser.displayName}`);
             setShowonce(false);
-            const userFromUserTable = await getDocs(
-              query(
-                collection(db, COLLECTION_PATH.USERS),
-                where("UID", "==", currentUser.uid),
-              ),
-            );
-            console.log(userFromUserTable.docs[0].id);
-            userTableId = userFromUserTable.docs[0].id;
           }
+
+          const userFromUserTable = await getDocs(
+            query(
+              collection(db, COLLECTION_PATH.USERS),
+              where("email", "==", currentUser.email),
+            ),
+          );
+
+          userTableId = userFromUserTable?.docs[0]?.id || "Guest";
 
           dispatch(
             signInUser({

@@ -2,8 +2,13 @@
 
 import React, { useState } from "react";
 
-const MainHeader = () => {
-  const [navigationPagerForYou, setNavigationPagerForYou] = useState(true);
+const MainHeader = ({
+  navigationPagerForYou,
+  setNavigationPagerForYou,
+}: {
+  navigationPagerForYou: boolean;
+  setNavigationPagerForYou: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
 
   return (
     <>
@@ -11,7 +16,9 @@ const MainHeader = () => {
         className={`dark:hover:bg-gray-800 hover:bg-gray-400 p-3 cursor-pointer ${
           navigationPagerForYou ? "font-bold" : "text-gray-500"
         }`}
-        onClick={() => setNavigationPagerForYou(true)}
+        onClick={() => {
+          setNavigationPagerForYou(true);
+        }}
       >
         <p className="text-black dark:text-white">For you</p>
       </div>
@@ -19,7 +26,9 @@ const MainHeader = () => {
         className={`dark:hover:bg-gray-800 hover:bg-gray-400 p-3 cursor-pointer ${
           navigationPagerForYou ? "text-gray-500" : "font-bold"
         }`}
-        onClick={() => setNavigationPagerForYou(false)}
+        onClick={() => {
+          setNavigationPagerForYou(false);
+        }}
       >
         <p className="text-black dark:text-white">Following</p>
       </div>

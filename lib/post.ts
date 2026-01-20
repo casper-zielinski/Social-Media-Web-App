@@ -1,14 +1,13 @@
-// ============================================================================
-// TYPE DEFINITIONS
-// ============================================================================
-
 import { MODAL_IDS } from "@/app/constants/modal";
 import { closeModal } from "@/app/hooks/useModal";
 import {
   addDoc,
   collection,
   doc,
+  getDoc,
+  getDocs,
   increment,
+  query,
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
@@ -18,10 +17,8 @@ import { handleFirebaseError } from "./errorHandler";
 import { ERROR_AREA_TYPES } from "@/app/constants/errorAreaTypes";
 import { CommentDTO, PostDTO, ReplyDTO } from "@/app/interfaces/Post";
 import { User, UserReduxState } from "@/app/interfaces/User";
-
-// ============================================================================
-// POST OPERATIONS
-// ============================================================================
+import { COLLECTION_PATH } from "@/app/constants/path";
+import { FirebaseError } from "firebase/app";
 
 /**
  * Create a new post in Firestore
@@ -50,31 +47,47 @@ export async function sendPost(
     return;
   }
 
-  const newPost: PostDTO = {
-    text: text,
-    name: user.name,
-    username: user.username,
-    useremail: user.email,
-    timeStamp: serverTimestamp(),
-    likes: [],
-    NumberOfComments: 0,
-  };
-
   try {
-    await addDoc(collection(db, "posts"), newPost);
+    const newPost: PostDTO = {
+      userId: user.uid,
+      text: text,
+      name: user.name,
+      username: user.username,
+      useremail: user.email,
+      timeStamp: serverTimestamp(),
+      likes: [],
+      NumberOfComments: 0,
+    };
+    await addDoc(collection(db, "posts"), { ...newPost });
+
+    const userDocs = await getDoc(
+      doc(db, COLLECTION_PATH.USERS, user.userTableId),
+    );
+
+    const userdata = userDocs.data();
+
+    if (!userdata) {
+      throw new FirebaseError("no userdata", "Userdata does not exsist");
+    }
+
+    const userFollowers = userdata.Followers as string[];
+
+    userFollowers.forEach((follower) => {
+      addDoc(
+        collection(db, COLLECTION_PATH.USERS, follower, "followingPostFeed"),
+        { ...newPost },
+      );
+    });
 
     if (usingPostModal) closeModal(MODAL_IDS.POST);
     setError(false);
     setText("");
   } catch (error) {
+    console.error(error);
     setError(true);
     handleFirebaseError(error, ERROR_AREA_TYPES.POST);
   }
 }
-
-// ============================================================================
-// REPLY OPERATIONS
-// ============================================================================
 
 /**
  * Create a new comment on a post OR create a reply to a comment
@@ -115,25 +128,24 @@ export async function sendCommentOrReply(
   try {
     if (isReply && commentId) {
       // Create a reply to a comment
-      const newReplyToComment: ReplyDTO = {
-        name: user.name,
-        username: user.username,
-        useremail: user.email,
-        text: text,
-        timeStamp: serverTimestamp(),
-        likes: [],
-        replyTo: {
-          userId: getCorrectResponseToID(),
-          userName: userdata.name,
-          userUsername: userdata.username,
-          textToReplyTo: postText,
-        },
-        NumberOfReplys: 0,
-      };
-
       await addDoc(
         collection(db, "posts", postId, "comments", commentId, "replys"),
-        newReplyToComment,
+        {
+          userId: user.uid,
+          name: user.name,
+          username: user.username,
+          useremail: user.email,
+          text: text,
+          timeStamp: serverTimestamp(),
+          likes: [],
+          replyTo: {
+            userId: getCorrectResponseToID(),
+            userName: userdata.name,
+            userUsername: userdata.username,
+            textToReplyTo: postText,
+          },
+          NumberOfReplys: 0,
+        } satisfies ReplyDTO,
       );
 
       // Increment the reply count on the parent comment
@@ -142,7 +154,8 @@ export async function sendCommentOrReply(
       });
     } else {
       // Create a comment on a post
-      const newComment: CommentDTO = {
+      await addDoc(collection(db, "posts", postId, "comments"), {
+        userId: user.uid,
         name: user.name,
         username: user.username,
         useremail: user.email,
@@ -150,9 +163,7 @@ export async function sendCommentOrReply(
         timeStamp: serverTimestamp(),
         likes: [],
         NumberOfComments: 0,
-      };
-
-      await addDoc(collection(db, "posts", postId, "comments"), newComment);
+      } satisfies CommentDTO);
 
       // Increment the comment count on the parent post
       await updateDoc(doc(db, "posts", postId), {

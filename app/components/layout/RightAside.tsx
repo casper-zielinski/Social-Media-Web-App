@@ -2,6 +2,7 @@ import React from "react";
 import Logo from "../ui/Logo";
 import RightAsideListItems from "../ui/RightAsideListItems";
 import Profile from "../ui/Profile";
+import Link from "next/link";
 
 /* 
       Right Side Bar with Buttons for Navigation like Home, Search, AI-Tools etc. 
@@ -11,7 +12,9 @@ import Profile from "../ui/Profile";
 const RightAside = () => {
   return (
     <aside className="col-span-3 pb-16 sm:pb-0 bg-slate-100 dark:bg-gray-950 border-r-2 border-blue-400 dark:border-blue-950 flex flex-col h-[100vh] overflow-y-auto overflow-x-hidden scrollbar-hide">
-      <Logo />
+      <Link href={"/"}>
+        <Logo />
+      </Link>
       <ul className="list">
         <RightAsideListItems />
       </ul>

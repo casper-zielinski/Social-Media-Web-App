@@ -14,7 +14,11 @@ import { loadingFinished } from "@/redux/slices/loadingSlice";
 import CommentShower from "./CommentShower";
 import TruncateText from "../ui/TruncateText";
 
-const PostFeed = () => {
+const PostFeed = ({
+  navigationPagerForYou,
+}: {
+  navigationPagerForYou: boolean;
+}) => {
   const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
   const [showComments, setShowComments] = useState<boolean[]>([]);
   const [hideFullText, setHideFullText] = useState<boolean[]>([]);
@@ -28,11 +32,12 @@ const PostFeed = () => {
       setPosts,
       setShowComments,
       setHideFullText,
+      navigationPagerForYou
     );
     dispatch(loadingFinished());
 
     return unsubsribe;
-  }, []);
+  }, [navigationPagerForYou]);
 
   return (
     <>
@@ -154,7 +159,10 @@ const PostFeed = () => {
                   "col-span-4",
                 ).map((val, index) => {
                   return (
-                    <div key={index} className={`${val} animate-pulse bg-gray-500 p-2`}></div>
+                    <div
+                      key={index}
+                      className={`${val} animate-pulse bg-gray-500 p-2`}
+                    ></div>
                   );
                 })}
               </div>

@@ -4,7 +4,7 @@ import customToast from "@/lib/toast";
 export const handleFirebaseError = (
   error: unknown,
   context: string,
-  defaultErrorMessage?: string
+  defaultErrorMessage?: string,
 ) => {
   if (error instanceof FirebaseError) {
     switch (context) {
@@ -24,6 +24,11 @@ export const handleFirebaseError = (
             break;
           case "failed-precondition":
             customToast.error("Unable to post. Check your connection");
+            break;
+          case "no userdata":
+            customToast.error(
+              "Failed fetching Userdata, Log in again or try again",
+            );
             break;
           default:
             customToast.error("Failed to create post. Try again");
