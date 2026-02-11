@@ -1,7 +1,3 @@
-"use client";
-
-import React, { useState } from "react";
-
 const MainHeader = ({
   navigationPagerForYou,
   setNavigationPagerForYou,

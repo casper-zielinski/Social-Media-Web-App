@@ -3,9 +3,7 @@
 import { User } from "@/app/interfaces/User";
 import {
   collection,
-  DocumentData,
   getDocs,
-  QuerySnapshot,
 } from "firebase/firestore";
 import FollowSectionBluePrint from "./FollowSectionBluePrint";
 import { db } from "@/lib/firebase";

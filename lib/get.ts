@@ -5,12 +5,12 @@ import {
   collection,
   orderBy,
   onSnapshot,
-  getDocs,
-  where,
-  doc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { COLLECTION_PATH } from "@/app/constants/path";
+import { UserReduxState } from "@/app/interfaces/User";
+import { AppDispatch } from "@/redux/store";
+import { loadingFinished } from "@/redux/slices/loadingSlice";
 
 // ============================================================================
 // GETTING ALL POSTS
@@ -22,6 +22,7 @@ import { COLLECTION_PATH } from "@/app/constants/path";
  *
  * @param setPosts - State setter for the posts array
  * @param setShowComments - State setter for comment visibility array
+ * @param navigationPagerForYou - If the Page is on For You or not - true if the page is on for you, otherwise false (following)
  * @returns Unsubscribe function to clean up the listener when component unmounts
  *
  * @example
@@ -37,8 +38,31 @@ export function subscribeToPostsFeed(
   setShowComments: React.Dispatch<React.SetStateAction<boolean[]>>,
   setHideFullText: React.Dispatch<React.SetStateAction<boolean[]>>,
   navigationPagerForYou: boolean,
+  user: UserReduxState,
+  dispatch: AppDispatch,
 ) {
-  const q = query(collection(db, "posts"), orderBy("timeStamp", "desc"));
+  let q;
+  if (navigationPagerForYou) {
+    q = query(
+      collection(db, COLLECTION_PATH.POSTS),
+      orderBy("timeStamp", "desc"),
+    );
+  } else {
+    if (user.email === "guest123@gmail.com" || user.email === "") {
+      setPosts([]);
+      return;
+    }
+    q = query(
+      collection(
+        db,
+        COLLECTION_PATH.USERS,
+        user.userTableId,
+        COLLECTION_PATH.FOLLOWINGPOSTFEED,
+      ),
+      orderBy("timeStamp", "desc"),
+    );
+  }
+
   const unsubscribe = onSnapshot(q, (posts) => {
     const { docs } = posts;
     setPosts(docs);
@@ -50,6 +74,7 @@ export function subscribeToPostsFeed(
     );
   });
 
+  dispatch(loadingFinished());
   return unsubscribe;
 }
 
@@ -81,13 +106,18 @@ export function subscribeToComments(
   >,
   showReplyArray: React.Dispatch<React.SetStateAction<boolean[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  onError?: () => void
+  onError?: () => void,
 ) {
   if (!postId) {
     return () => {};
   }
 
-  const commentsRef = collection(db, "posts", postId, "comments");
+  const commentsRef = collection(
+    db,
+    COLLECTION_PATH.POSTS,
+    postId,
+    COLLECTION_PATH.COMMENTS,
+  );
   const q = query(commentsRef, orderBy("timeStamp", "desc"));
   const unsubscribe = onSnapshot(
     q,

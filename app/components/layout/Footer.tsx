@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { FaSearch, FaBrain } from "react-icons/fa";
 import { LuMessageSquare } from "react-icons/lu";
 import { MdHome, MdNotificationsActive, MdPostAdd } from "react-icons/md";

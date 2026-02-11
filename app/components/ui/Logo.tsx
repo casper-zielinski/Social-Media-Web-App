@@ -1,5 +1,3 @@
-import React from "react";
-
 const Logo = () => {
   return (
     <div className="flex justify-center md:justify-start md:pl-3 items-center my-2">
