@@ -32,15 +32,9 @@ import { User, UserReduxState } from "@/app/interfaces/User";
  * @param dispatch - Redux dispatch function to update application state
  * @returns Promise that resolves when sign out is complete
  */
-export async function handleSignOut(
-  dispatch: AppDispatch,
-  userIdFromTable: string,
-) {
+export async function handleSignOut(dispatch: AppDispatch) {
   try {
     await signOut(auth);
-    if (userIdFromTable) {
-      await deleteDoc(doc(db, COLLECTION_PATH.USERS, userIdFromTable));
-    }
 
     customToast.success("Signed out successfully");
     dispatch(logOut());
@@ -125,7 +119,7 @@ export async function handleLogin(
   dispatch: AppDispatch,
 ) {
   try {
-    const { user } = await signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password);
     closeModal(MODAL_IDS.LOGIN);
     dispatch(logIn());
     customToast.success(

@@ -5,6 +5,7 @@ interface Postable {
   text: string;
   name: string;
   userId: string;
+  userFromUserTableId: string;
   timeStamp: FieldValue;
   username: string;
   NumberOfComments: number;

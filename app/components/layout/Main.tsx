@@ -9,7 +9,7 @@ const Main = () => {
   const [navigationPagerForYou, setNavigationPagerForYou] = useState(true);
 
   return (
-    <main className="col-span-9 bg-white dark:bg-gray-950 lg:col-span-6 h-[100vh] overflow-y-scroll scrollbar-hide pb-20 sm:pb-4">
+    <main className="col-span-9 bg-white dark:bg-gray-950 lg:col-span-6 h-screen scrollbar-hide pb-20 sm:pb-4">
       {/**
        * Main feed section.
        * Displays either "For you" or "Following" posts depending on navigationPagerForYou.
@@ -23,7 +23,7 @@ const Main = () => {
       {/* To post something in the main section, without needing to open the sending popup*/}
       <Poster />
       {/* All the Posts with the follow Button*/}
-      <PostFeed navigationPagerForYou={navigationPagerForYou}/>
+      <PostFeed navigationPagerForYou={navigationPagerForYou} />
     </main>
   );
 };

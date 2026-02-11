@@ -40,11 +40,12 @@ const Poster = () => {
         <Profile classname="mt-2" />
         <textarea
           placeholder="Whats happening..."
-          className="p-2 focus:ring-1 dark:bg-gray-800 focus:shadow w-full text-black dark:text-white rounded"
+          className="p-2 min-h-16 max-h-[30vh] lg:max-h-[50vh] focus:ring-1 dark:bg-gray-800 focus:shadow w-full text-black dark:text-white rounded"
           name="Post-Main"
           value={text}
           onChange={(event) => setText(event.target.value)}
           required
+          minLength={1}
         />
       </div>
       <div className="flex justify-start items-center space-x-4 relative">

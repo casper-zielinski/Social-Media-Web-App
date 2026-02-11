@@ -5,9 +5,7 @@ import {
   collection,
   doc,
   getDoc,
-  getDocs,
   increment,
-  query,
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
@@ -50,6 +48,7 @@ export async function sendPost(
   try {
     const newPost: PostDTO = {
       userId: user.uid,
+      userFromUserTableId: user.userTableId,
       text: text,
       name: user.name,
       username: user.username,
@@ -132,6 +131,7 @@ export async function sendCommentOrReply(
         collection(db, "posts", postId, "comments", commentId, "replys"),
         {
           userId: user.uid,
+          userFromUserTableId: user.userTableId,
           name: user.name,
           username: user.username,
           useremail: user.email,
@@ -156,6 +156,7 @@ export async function sendCommentOrReply(
       // Create a comment on a post
       await addDoc(collection(db, "posts", postId, "comments"), {
         userId: user.uid,
+        userFromUserTableId: user.userTableId,
         name: user.name,
         username: user.username,
         useremail: user.email,

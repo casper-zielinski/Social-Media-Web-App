@@ -42,7 +42,7 @@ const PostFeed = ({
 
   if (loaded && posts.length > 0)
     return (
-      <>
+      <div className="overflow-y-scroll h-[80vh] pb-5 scrollbar-hide">
         {posts.map((post, index) => (
           <article
             className={`${
@@ -67,8 +67,15 @@ const PostFeed = ({
                   userdata={[post.data().name, post.data().username]}
                 />
               </div>
-              <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">
-                <FollowButton />
+              <div
+                className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3"
+              >
+                <FollowButton
+                  followActionParameters={{
+                    currentuser: user,
+                    toFollowUserId: post.data().userFromUserTableId,
+                  }}
+                />
               </div>
             </div>
             {post.data().text.length > 500 && hideFullText[index] ? (
@@ -129,7 +136,7 @@ const PostFeed = ({
             )}
           </article>
         ))}
-      </>
+      </div>
     );
 
   if (!loaded) {
