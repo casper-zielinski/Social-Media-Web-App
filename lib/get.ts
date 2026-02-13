@@ -5,6 +5,7 @@ import {
   collection,
   orderBy,
   onSnapshot,
+  getDocs,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { COLLECTION_PATH } from "@/app/constants/path";
@@ -35,24 +36,37 @@ export function subscribeToPostsFeed(
   setPosts: React.Dispatch<
     React.SetStateAction<QueryDocumentSnapshot<DocumentData>[]>
   >,
+  setPostsFollowing: React.Dispatch<
+    React.SetStateAction<QueryDocumentSnapshot<DocumentData>[]>
+  >,
   setShowComments: React.Dispatch<React.SetStateAction<boolean[]>>,
   setHideFullText: React.Dispatch<React.SetStateAction<boolean[]>>,
-  navigationPagerForYou: boolean,
   user: UserReduxState,
   dispatch: AppDispatch,
 ) {
-  let q;
-  if (navigationPagerForYou) {
-    q = query(
-      collection(db, COLLECTION_PATH.POSTS),
-      orderBy("timeStamp", "desc"),
+  const hideCommentsAntFulltext = (
+    docs: QueryDocumentSnapshot<DocumentData, DocumentData>[],
+  ) => {
+    setShowComments((prev) =>
+      prev.length === docs.length ? prev : docs.map(() => false),
     );
+    setHideFullText((prev) =>
+      prev.length === docs.length ? prev : docs.map(() => true),
+    );
+  };
+
+  const postQuery = query(
+    collection(db, COLLECTION_PATH.POSTS),
+    orderBy("timeStamp", "desc"),
+  );
+  /**
+   * @todo user is empty
+   */
+  //console.log("user: ", user.userTableId);
+  if (user.email === "guest123@gmail.com" || user.email === "") {
+    setPostsFollowing([]);
   } else {
-    if (user.email === "guest123@gmail.com" || user.email === "") {
-      setPosts([]);
-      return;
-    }
-    q = query(
+    const q = query(
       collection(
         db,
         COLLECTION_PATH.USERS,
@@ -61,17 +75,18 @@ export function subscribeToPostsFeed(
       ),
       orderBy("timeStamp", "desc"),
     );
+
+    onSnapshot(q, (post) => {
+      const { docs } = post;
+      setPostsFollowing(docs);
+      hideCommentsAntFulltext(docs);
+    });
   }
 
-  const unsubscribe = onSnapshot(q, (posts) => {
+  const unsubscribe = onSnapshot(postQuery, (posts) => {
     const { docs } = posts;
     setPosts(docs);
-    setShowComments((prev) =>
-      prev.length === docs.length ? prev : docs.map(() => false),
-    );
-    setHideFullText((prev) =>
-      prev.length === docs.length ? prev : docs.map(() => true),
-    );
+    hideCommentsAntFulltext(docs);
   });
 
   dispatch(loadingFinished());

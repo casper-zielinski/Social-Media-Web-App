@@ -4,7 +4,7 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
+  getDocs,
   increment,
   serverTimestamp,
   updateDoc,
@@ -14,9 +14,8 @@ import customToast from "@/lib/toast";
 import { handleFirebaseError } from "./errorHandler";
 import { ERROR_AREA_TYPES } from "@/app/constants/errorAreaTypes";
 import { CommentDTO, PostDTO, ReplyDTO } from "@/app/interfaces/Post";
-import { User, UserReduxState } from "@/app/interfaces/User";
+import { UserReduxState } from "@/app/interfaces/User";
 import { COLLECTION_PATH } from "@/app/constants/path";
-import { FirebaseError } from "firebase/app";
 
 /**
  * Create a new post in Firestore
@@ -57,24 +56,33 @@ export async function sendPost(
       likes: [],
       NumberOfComments: 0,
     };
-    await addDoc(collection(db, "posts"), { ...newPost });
+    const { id: postId } = await addDoc(collection(db, "posts"), {
+      ...newPost,
+    });
 
-    const userDocs = await getDoc(
-      doc(db, COLLECTION_PATH.USERS, user.userTableId),
+    const userDocs = await getDocs(
+      collection(
+        db,
+        COLLECTION_PATH.USERS,
+        user.userTableId,
+        COLLECTION_PATH.FOLLOWERS,
+      ),
     );
 
-    const userdata = userDocs.data();
+    const userFollowers: string[] = userDocs.docs.map(
+      (val) => val.data().userTableId,
+    );
 
-    if (!userdata) {
-      throw new FirebaseError("no userdata", "Userdata does not exsist");
-    }
-
-    const userFollowers = userdata.Followers as string[];
-
+    // Each user has a Following Post Feed Collection, better for Scalibility
     userFollowers.forEach((follower) => {
       addDoc(
-        collection(db, COLLECTION_PATH.USERS, follower, "followingPostFeed"),
-        { ...newPost },
+        collection(
+          db,
+          COLLECTION_PATH.USERS,
+          follower,
+          COLLECTION_PATH.FOLLOWINGPOSTFEED,
+        ),
+        { ...newPost, originalPostId: postId},
       );
     });
 

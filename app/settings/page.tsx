@@ -1,4 +1,3 @@
-import React from "react";
 import UserSettings from "../components/SettingsComponents/UserSetting";
 import PrivacySettings from "../components/SettingsComponents/PrivacySettings";
 import AppearanceSettings from "../components/SettingsComponents/AppearanceSettings";

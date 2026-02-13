@@ -1,4 +1,14 @@
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  collection,
+  where,
+  query,
+  getDoc,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "./firebase";
 import { COLLECTION_PATH } from "@/app/constants/path";
 
@@ -30,6 +40,35 @@ const toggleLike = async (
   }
 };
 
+const toggleLikeOnFollowFeed = async (
+  postId: string,
+  isLiked: boolean,
+  userEmail: string,
+  ...pathSegments: string[]
+) => {
+  const q = query(
+    collection(db, ...(pathSegments as [string, ...string[]])),
+    where("originalPostId", "==", postId),
+  );
+
+  const shapShot = await getDocs(q);
+
+  if (!shapShot.empty) {
+    const doc = shapShot.docs[0];
+    const docRef = doc.ref;
+
+    if (!isLiked) {
+      await updateDoc(docRef, {
+        likes: arrayUnion(userEmail),
+      });
+    } else {
+      await updateDoc(docRef, {
+        likes: arrayRemove(userEmail),
+      });
+    }
+  }
+};
+
 // ============================================================================
 // LIKE FUNCTIONS
 // ============================================================================
@@ -46,9 +85,18 @@ const toggleLike = async (
 export async function toggleLikeOnPost(
   postId: string,
   userEmail: string,
-  isLiked: boolean
+  isLiked: boolean,
+  userId: string,
 ) {
   toggleLike(isLiked, userEmail, COLLECTION_PATH.POSTS, postId);
+  toggleLikeOnFollowFeed(
+    postId,
+    isLiked,
+    userEmail,
+    COLLECTION_PATH.USERS,
+    userId,
+    COLLECTION_PATH.FOLLOWINGPOSTFEED,
+  );
 }
 
 /**
@@ -65,7 +113,7 @@ export async function toggleLikeOnComment(
   postId: string,
   commentId: string,
   userEmail: string,
-  isLiked: boolean
+  isLiked: boolean,
 ) {
   toggleLike(
     isLiked,
@@ -73,7 +121,7 @@ export async function toggleLikeOnComment(
     COLLECTION_PATH.POSTS,
     postId,
     COLLECTION_PATH.COMMENTS,
-    commentId
+    commentId,
   );
 }
 
@@ -93,7 +141,7 @@ export async function toggleLikeOnReply(
   commentId: string,
   replyId: string,
   userEmail: string,
-  isLiked: boolean
+  isLiked: boolean,
 ) {
   toggleLike(
     isLiked,
@@ -103,6 +151,6 @@ export async function toggleLikeOnReply(
     COLLECTION_PATH.COMMENTS,
     commentId,
     COLLECTION_PATH.REPLYS,
-    replyId
+    replyId,
   );
 }

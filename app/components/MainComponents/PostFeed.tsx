@@ -20,6 +20,9 @@ const PostFeed = ({
   navigationPagerForYou: boolean;
 }) => {
   const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
+  const [postsFollowing, setPostsFollowing] = useState<
+    QueryDocumentSnapshot<DocumentData>[]
+  >([]);
   const [showComments, setShowComments] = useState<boolean[]>([]);
   const [hideFullText, setHideFullText] = useState<boolean[]>([]);
   const dispatch: AppDispatch = useDispatch();
@@ -30,20 +33,22 @@ const PostFeed = ({
   useEffect(() => {
     const unsubsribe = subscribeToPostsFeed(
       setPosts,
+      setPostsFollowing,
       setShowComments,
       setHideFullText,
-      navigationPagerForYou,
       user,
       dispatch,
     );
 
     return unsubsribe;
-  }, [navigationPagerForYou]);
+  }, []);
 
-  if (loaded && posts.length > 0)
+  const showPosts = navigationPagerForYou ? posts : postsFollowing;
+
+  if (loaded && showPosts.length > 0)
     return (
       <div className="overflow-y-scroll h-[80vh] pb-5 scrollbar-hide">
-        {posts.map((post, index) => (
+        {showPosts.map((post, index) => (
           <article
             className={`${
               posts.length === index + 1 ? "mb-16 sm:mb-0" : "border-b-2"
@@ -67,15 +72,15 @@ const PostFeed = ({
                   userdata={[post.data().name, post.data().username]}
                 />
               </div>
-              <div
-                className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3"
-              >
-                <FollowButton
-                  followActionParameters={{
-                    currentuser: user,
-                    toFollowUserId: post.data().userFromUserTableId,
-                  }}
-                />
+              <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">
+                {navigationPagerForYou && (
+                  <FollowButton
+                    followActionParameters={{
+                      currentuser: user,
+                      toFollowUserId: post.data().userFromUserTableId,
+                    }}
+                  />
+                )}
               </div>
             </div>
             {post.data().text.length > 500 && hideFullText[index] ? (
@@ -119,6 +124,7 @@ const PostFeed = ({
             </p>
             <div className="divider"></div>
 
+            {/**DIFFERENT APPROACH ON FOLLOWING SITE AND CHANGE BUTTON WHEN FOLLOWING */}
             <MainButtons
               commentId={post.id}
               ShowCommentObject={{
@@ -191,7 +197,7 @@ const PostFeed = ({
     ));
   }
 
-  if (loaded && posts.length === 0) {
+  if (loaded && showPosts.length === 0) {
     return EmptyPostFeed(navigationPagerForYou);
   }
 };

@@ -42,9 +42,10 @@ const MainButtons = ({
 
   async function LikeorDislike() {
     setLikeColor((prev) => !prev);
-    await toggleLikeOnPost(commentId, user.email, likeColor);
+    await toggleLikeOnPost(commentId, user.email, likeColor, user.userTableId);
   }
-
+  // 11. Februar 2026 um 22:39:51 UTC+1 XpeLjjEnKOSt2nfPJYos
+  // 11. Februar 2026 um 22:39:50 UTC+1
   useEffect(() => {
     isLiked ? setLikeColor(true) : setLikeColor(false);
   }, []);
@@ -171,8 +172,8 @@ const MainButtons = ({
           onClick={() => {
             ShowCommentObject.setShowComments((prev) =>
               [...prev].map((value, i) =>
-                i === ShowCommentObject.index ? !value : value
-              )
+                i === ShowCommentObject.index ? !value : value,
+              ),
             );
           }}
           whileHover={{ scale: 1.1 }}
@@ -200,8 +201,8 @@ const MainButtons = ({
               onClick={() => {
                 ShowCommentObject.setShowComments((prev) =>
                   [...prev].map((value, i) =>
-                    i === ShowCommentObject.index ? !value : value
-                  )
+                    i === ShowCommentObject.index ? !value : value,
+                  ),
                 );
               }}
             />

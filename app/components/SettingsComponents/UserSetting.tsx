@@ -175,9 +175,10 @@ const UserSettings = () => {
         className="btn btn-info md:w-1/2 md:translate-x-[50%]"
         onClick={() => {
           if (logedIn.loggedIn) {
-            handleSignOut(dispatch, user.userTableId);
-          } else useModal(MODAL_IDS.LOGIN_OR_SIGNUP);
+            handleSignOut(dispatch);
+          }
         }}
+        disabled={!logedIn.loggedIn}
       >
         Log Out
       </button>

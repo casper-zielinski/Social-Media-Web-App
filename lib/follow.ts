@@ -42,7 +42,7 @@ export const followUser = async (
         toFollowUserId,
         COLLECTION_PATH.FOLLOWERS,
       ),
-      userDoc.data(),
+      { ...userDoc.data(), userTableId: user.userTableId },
     );
     await addDoc(
       collection(
@@ -51,7 +51,7 @@ export const followUser = async (
         user.userTableId,
         COLLECTION_PATH.FOLLOWING,
       ),
-      followerDoc.data(),
+      { ...followerDoc.data(), userTableId: toFollowUserId },
     );
   } catch (error) {
     console.error(error);

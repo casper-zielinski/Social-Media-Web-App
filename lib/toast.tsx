@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { CgClose } from "react-icons/cg";
 
 // Toast animation styles - inline to avoid CSS module import issues in lib files
 const animationStyles = {
@@ -85,7 +86,7 @@ interface CustomToastOptions {
 export function showToast(
   message: string,
   type: ToastType = "info",
-  options: CustomToastOptions = {}
+  options: CustomToastOptions = {},
 ) {
   const { duration = 2000 } = options;
 
@@ -99,9 +100,12 @@ export function showToast(
       >
         {icons[type]}
         <span className="font-bold">{message}</span>
+        <button onClick={() => toast.dismiss(t.id)} className="font-bold">
+          <CgClose></CgClose>
+        </button>
       </div>
     ),
-    { duration }
+    { duration },
   );
 }
 
