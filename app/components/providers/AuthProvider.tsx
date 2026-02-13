@@ -14,11 +14,11 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { COLLECTION_PATH } from "@/app/constants/path";
 import { UserReduxState } from "@/app/interfaces/User";
 
-interface AuthProviderProps {
+export interface ProviderProps {
   children: React.ReactNode;
 }
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
+const AuthProvider = ({ children }: ProviderProps) => {
   const dispatch: AppDispatch = useDispatch();
   const [showonce, setShowonce] = useState(true);
   const logedIn = useSelector(

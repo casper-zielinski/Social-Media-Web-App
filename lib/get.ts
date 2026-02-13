@@ -12,6 +12,7 @@ import { COLLECTION_PATH } from "@/app/constants/path";
 import { UserReduxState } from "@/app/interfaces/User";
 import { AppDispatch } from "@/redux/store";
 import { loadingFinished } from "@/redux/slices/loadingSlice";
+import { Dispatch, SetStateAction } from "react";
 
 // ============================================================================
 // GETTING ALL POSTS
@@ -42,7 +43,6 @@ export function subscribeToPostsFeed(
   setShowComments: React.Dispatch<React.SetStateAction<boolean[]>>,
   setHideFullText: React.Dispatch<React.SetStateAction<boolean[]>>,
   user: UserReduxState,
-  dispatch: AppDispatch,
 ) {
   const hideCommentsAntFulltext = (
     docs: QueryDocumentSnapshot<DocumentData, DocumentData>[],
@@ -59,10 +59,7 @@ export function subscribeToPostsFeed(
     collection(db, COLLECTION_PATH.POSTS),
     orderBy("timeStamp", "desc"),
   );
-  /**
-   * @todo user is empty
-   */
-  //console.log("user: ", user.userTableId);
+
   if (user.email === "guest123@gmail.com" || user.email === "") {
     setPostsFollowing([]);
   } else {
@@ -89,7 +86,6 @@ export function subscribeToPostsFeed(
     hideCommentsAntFulltext(docs);
   });
 
-  dispatch(loadingFinished());
   return unsubscribe;
 }
 

@@ -8,8 +8,8 @@ import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import { subscribeToPostsFeed } from "@/lib/get";
 import Moment from "react-moment";
 import CommentModal from "../PopUpModals/CommentModal";
-import { AppDispatch, RootState } from "@/redux/store";
-import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 import CommentShower from "./CommentShower";
 import TruncateText from "../ui/TruncateText";
 import EmptyPostFeed from "./EmptyPostFeed";
@@ -25,23 +25,24 @@ const PostFeed = ({
   >([]);
   const [showComments, setShowComments] = useState<boolean[]>([]);
   const [hideFullText, setHideFullText] = useState<boolean[]>([]);
-  const dispatch: AppDispatch = useDispatch();
   const loaded = useSelector((state: RootState) => state.loader.loaded);
+  const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.user);
 
   //Gets all the Posts from the Firestore DB
   useEffect(() => {
-    const unsubsribe = subscribeToPostsFeed(
-      setPosts,
-      setPostsFollowing,
-      setShowComments,
-      setHideFullText,
-      user,
-      dispatch,
-    );
-
-    return unsubsribe;
-  }, []);
+    if (loaded) {
+      const unsubsribe = subscribeToPostsFeed(
+        setPosts,
+        setPostsFollowing,
+        setShowComments,
+        setHideFullText,
+        user,
+      );
+      setLoading(false);
+      return unsubsribe;
+    }
+  }, [loaded]);
 
   const showPosts = navigationPagerForYou ? posts : postsFollowing;
 
@@ -124,9 +125,8 @@ const PostFeed = ({
             </p>
             <div className="divider"></div>
 
-            {/**DIFFERENT APPROACH ON FOLLOWING SITE AND CHANGE BUTTON WHEN FOLLOWING */}
             <MainButtons
-              commentId={post.id}
+              commentId={posts[index].id}
               ShowCommentObject={{
                 showComments: showComments,
                 setShowComments: setShowComments,

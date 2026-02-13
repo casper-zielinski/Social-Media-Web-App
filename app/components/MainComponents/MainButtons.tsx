@@ -44,8 +44,6 @@ const MainButtons = ({
     setLikeColor((prev) => !prev);
     await toggleLikeOnPost(commentId, user.email, likeColor, user.userTableId);
   }
-  // 11. Februar 2026 um 22:39:51 UTC+1 XpeLjjEnKOSt2nfPJYos
-  // 11. Februar 2026 um 22:39:50 UTC+1
   useEffect(() => {
     isLiked ? setLikeColor(true) : setLikeColor(false);
   }, []);
