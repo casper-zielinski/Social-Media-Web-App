@@ -10,8 +10,6 @@ import { useRouter } from "next/navigation";
 import { useModal } from "@/app/hooks/useModal";
 import { MODAL_IDS } from "@/app/constants/modal";
 
-/* The Footer Interface for Smart Phones or, if User not Logged In, Shows Login or Sign Up Prop*/
-
 const Footer = () => {
   const loggedIn = useSelector((state: RootState) => state.loggingIn.loggedIn);
   const router = useRouter();

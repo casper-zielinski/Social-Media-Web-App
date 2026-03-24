@@ -6,6 +6,9 @@ import FollowButton from "../MainComponents/FollowButton";
 import MainButtons from "../MainComponents/MainButtons";
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import { subscribeToPostsFeed } from "@/lib/get";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { COLLECTION_PATH } from "@/app/constants/path";
 import Moment from "react-moment";
 import CommentModal from "../PopUpModals/CommentModal";
 import { RootState } from "@/redux/store";
@@ -13,6 +16,7 @@ import { useSelector } from "react-redux";
 import CommentShower from "./CommentShower";
 import TruncateText from "../ui/TruncateText";
 import EmptyPostFeed from "./EmptyPostFeed";
+import Poster from "./Poster";
 
 const PostFeed = ({
   navigationPagerForYou,
@@ -27,9 +31,18 @@ const PostFeed = ({
   const [hideFullText, setHideFullText] = useState<boolean[]>([]);
   const loaded = useSelector((state: RootState) => state.loader.loaded);
   const [loading, setLoading] = useState(true);
+  const [followingIds, setFollowingIds] = useState<string[]>([]);
   const user = useSelector((state: RootState) => state.user);
 
-  //Gets all the Posts from the Firestore DB
+  useEffect(() => {
+    if (!loaded || !user.userTableId || user.email === "guest123@gmail.com" || user.email === "") return;
+    const unsubscribeFollowing = onSnapshot(
+      collection(db, COLLECTION_PATH.USERS, user.userTableId, COLLECTION_PATH.FOLLOWING),
+      (snap) => setFollowingIds(snap.docs.map((d) => d.data().userTableId as string)),
+    );
+    return unsubscribeFollowing;
+  }, [loaded, user.userTableId, user.email]);
+
   useEffect(() => {
     if (loaded) {
       const unsubsribe = subscribeToPostsFeed(
@@ -48,12 +61,11 @@ const PostFeed = ({
 
   if (loaded && showPosts.length > 0)
     return (
-      <div className="overflow-y-scroll h-[80vh] pb-5 scrollbar-hide">
+      <div className="flex-1 overflow-y-scroll scrollbar-hide">
+        <Poster />
         {showPosts.map((post, index) => (
           <article
-            className={`${
-              posts.length === index + 1 ? "mb-16 sm:mb-0" : "border-b-2"
-            } border-blue-400 dark:border-blue-950 overflow-hidden hover:bg-slate-100 dark:hover:bg-gray-900`}
+            className={`${showPosts.length - 1 !== index ? "border-b-2" : ""} border-blue-400 dark:border-blue-950 overflow-hidden hover:bg-slate-100 dark:hover:bg-gray-900`}
             key={post.id}
           >
             <CommentModal
@@ -80,6 +92,7 @@ const PostFeed = ({
                       currentuser: user,
                       toFollowUserId: post.data().userFromUserTableId,
                     }}
+                    isFollowing={followingIds.includes(post.data().userFromUserTableId)}
                   />
                 )}
               </div>
@@ -146,11 +159,11 @@ const PostFeed = ({
     );
 
   if (!loaded) {
-    return Array.from({ length: 4 }, (_, index) => (
+    return (
+      <div className="flex-1 overflow-y-scroll scrollbar-hide">
+        {Array.from({ length: 4 }, (_, index) => (
       <article
-        className={`${
-          posts.length === index + 1 ? "mb-16 sm:mb-0" : "border-b-2"
-        } border-blue-400 dark:border-blue-950 overflow-hidden hover:bg-slate-100 dark:hover:bg-gray-900`}
+        className="border-b-2 border-blue-400 dark:border-blue-950 overflow-hidden hover:bg-slate-100 dark:hover:bg-gray-900"
         key={index}
       >
         <div className="flex items-center w-full">
@@ -194,7 +207,9 @@ const PostFeed = ({
           }}
         />
       </article>
-    ));
+        ))}
+      </div>
+    );
   }
 
   if (loaded && showPosts.length === 0) {

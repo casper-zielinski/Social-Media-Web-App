@@ -126,7 +126,6 @@ const ReplyShower = ({ CommentId, PostId }: ReplyShowerProps) => {
       ))}
     </div>
   ) : (
-    // Skeleton Loader for Replys
     <article
       className={` border-blue-400 dark:border-blue-950 overflow-hidden mb-5 hover:bg-slate-100 dark:hover:bg-gray-900 p-2`}
     >
