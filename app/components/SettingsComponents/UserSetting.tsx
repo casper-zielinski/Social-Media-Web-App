@@ -199,11 +199,11 @@ const UserSettings = () => {
       <button
         className="btn btn-info md:w-1/2 md:translate-x-[50%]"
         onClick={() => {
-          if (logedIn.loggedIn) {
+          if (logedIn.loggedIn || logedIn.asGuest) {
             handleSignOut(dispatch);
           }
         }}
-        disabled={!logedIn.loggedIn}
+        disabled={!logedIn.loggedIn && !logedIn.asGuest}
       >
         Log Out
       </button>

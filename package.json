@@ -28,6 +28,7 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.3.1",
     "@types/node": "^20",
     "@types/react": "^18",

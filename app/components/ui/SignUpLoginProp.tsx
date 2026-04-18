@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import LogInAsGuestButton from "./LogInAsGuestButton";
 
 const SignUpLoginProp = () => {

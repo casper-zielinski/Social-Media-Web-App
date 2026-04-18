@@ -61,16 +61,17 @@ const AuthProvider = ({ children }: ProviderProps) => {
             ),
           );
 
-          userTableId = userFromUserTable?.docs[0]?.id || "Guest";
+          const userDoc = userFromUserTable?.docs[0];
+          userTableId = userDoc?.id || "Guest";
 
           dispatch(
             signInUser({
               name: currentUser.displayName,
-              username: userFromUserTable.docs[0].data().username,
+              username: userDoc?.data().username ?? "",
               email: currentUser.email,
               uid: currentUser.uid,
               userTableId: userTableId,
-              bio: userFromUserTable.docs[0].data().bio,
+              bio: userDoc?.data().bio ?? "",
             } satisfies UserReduxState),
           );
           dispatch(logIn());
@@ -82,6 +83,8 @@ const AuthProvider = ({ children }: ProviderProps) => {
         customToast.error(
           "Authentication Failed - try again or try logging in",
         );
+        dispatch(received());
+        dispatch(loadingFinished());
       }
     };
 

@@ -17,10 +17,10 @@ const Footer = () => {
   return (
     <footer
       className={`${
-        loggedIn.loggedIn ? "bg-white dark:bg-gray-950" : "bg-blue-500"
+        loggedIn.loggedIn || loggedIn.asGuest ? "bg-white dark:bg-gray-950" : "bg-blue-500"
       } fixed bottom-0 mt-20 footer footer-horizontal z-10 footer-center border-t-2 border-blue-400 dark:border-blue-950 sm:border-0 col-span-12 text-base-content`}
     >
-      {loggedIn.loggedIn ? (
+      {loggedIn.loggedIn || loggedIn.asGuest ? (
         <div className="flex m-5 space-x-5 sm:hidden">
           {/**
            * Opens the post creation modal dialog for mobile users.
@@ -53,24 +53,11 @@ const Footer = () => {
           >
             <FaSearch className="w-5 h-5 text-info dark:text-white" />
           </div>
-
-          <div
-            className="tooltip tooltip-info flex flex-col items-center"
-            data-tip="Notifications"
-          >
-            <MdNotificationsActive className="w-5 h-5 text-info dark:text-white" />
-          </div>
           <div
             className="tooltip tooltip-info flex flex-col items-center"
             data-tip="Messages"
           >
             <LuMessageSquare className="w-5 h-5 text-info dark:text-white" />
-          </div>
-          <div
-            className="tooltip tooltip-info flex flex-col items-center"
-            data-tip="AI Chatbot"
-          >
-            <FaBrain className="w-5 h-5 text-info dark:text-white" />
           </div>
         </div>
       ) : (
