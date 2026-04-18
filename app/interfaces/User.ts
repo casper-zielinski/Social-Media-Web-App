@@ -15,4 +15,5 @@ export interface UserReduxState {
   email: string;
   uid: string;
   userTableId: string;
+  bio: string;
 }

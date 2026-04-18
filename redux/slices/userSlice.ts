@@ -7,6 +7,7 @@ const initialState: UserReduxState = {
   email: "",
   uid: "",
   userTableId: "",
+  bio: ""
 };
 
 const userInfoSlice = createSlice({
@@ -19,6 +20,7 @@ const userInfoSlice = createSlice({
       state.email = action.payload.email;
       state.uid = action.payload.uid;
       state.userTableId = action.payload.userTableId;
+      state.bio = action.payload.bio ?? "";
     },
     signOutUser: (state) => {
       state.name = "";
@@ -26,6 +28,15 @@ const userInfoSlice = createSlice({
       state.email = "";
       state.uid = "";
       state.userTableId = "";
+      state.bio = "";
+    },
+    changeUsername: (state, action) => {
+      state.name = action.payload.name;
+      state.username = action.payload.username;
+      state.email = action.payload.email;
+      state.uid = action.payload.uid;
+      state.userTableId = action.payload.userTableId;
+      state.bio = action.payload.bio ?? "";
     },
   },
 });

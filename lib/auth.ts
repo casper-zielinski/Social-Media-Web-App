@@ -89,6 +89,7 @@ export async function handleSignUp(
       email: email,
       uid: userCredentials.user.uid,
       userTableId: id,
+      bio: "",
     };
 
     dispatch(signInUser(newUserRedxuState));

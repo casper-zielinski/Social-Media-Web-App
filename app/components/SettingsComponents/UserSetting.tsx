@@ -1,7 +1,7 @@
 "use client";
 
 import { handleSignOut } from "@/lib/auth";
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 import { signInUser } from "@/redux/slices/userSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { FirebaseError } from "firebase/app";
@@ -13,6 +13,8 @@ import { RxAvatar } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../hooks/useModal";
 import { MODAL_IDS } from "../../constants/modal";
+import { doc, updateDoc } from "firebase/firestore";
+import { COLLECTION_PATH } from "@/app/constants/path";
 
 const UserSettings = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -25,22 +27,31 @@ const UserSettings = () => {
   const [bio, setBio] = useState("");
   const change =
     user?.name?.trim() != name.trim() ||
-    user?.username?.trim() != username.trim();
+    user?.username?.trim() != username.trim() ||
+    user?.bio?.trim() != bio.trim();
 
   useEffect(() => {
     if (logedIn) {
       setname(user.name || "");
       setUsername(user.username || "");
+      setBio(user.bio || "");
     }
-  }, [logedIn, user.name, user.username, user.email]);
+  }, [logedIn, user.name, user.username, user.email, user.bio]);
 
-  async function updateDisplayname(newUsername: string) {
+  async function updateUserInfo(
+    newUsername?: string,
+    newName?: string,
+    newBio?: string,
+  ) {
     const currentUser = auth.currentUser;
     if (!user || !currentUser)
       throw new FirebaseError("Auth Error", "User is not loged in");
     try {
-      if (newUsername !== user.username) {
+      if (newUsername !== undefined && newUsername !== user.username) {
         await updateProfile(currentUser, { displayName: newUsername });
+        await updateDoc(doc(db, COLLECTION_PATH.USERS, user.userTableId), {
+          username: newUsername,
+        });
         dispatch(
           signInUser({
             ...user,
@@ -48,7 +59,21 @@ const UserSettings = () => {
           }),
         );
       }
-      customToast.success("Username updated successfully!");
+
+      if (newName !== undefined && newName !== user.name) {
+        await updateDoc(doc(db, COLLECTION_PATH.USERS, user.userTableId), {
+          name: newName,
+        });
+        dispatch(signInUser({ ...user, name: newName }));
+      }
+
+      if (newBio !== undefined && newBio !== user.bio) {
+        await updateDoc(doc(db, COLLECTION_PATH.USERS, user.userTableId), {
+          bio: newBio,
+        });
+        dispatch(signInUser({ ...user, bio: newBio }));
+      }
+      customToast.success("User updated successfully!");
     } catch (error) {
       customToast.error("Failed to change Username!");
     }
@@ -89,7 +114,7 @@ const UserSettings = () => {
                   : "btn-success"
               } btn-sm sm:btn-md`}
               onClick={() => {
-                updateDisplayname(username);
+                updateUserInfo(username, name, bio);
               }}
               disabled={!change}
             >
@@ -104,7 +129,7 @@ const UserSettings = () => {
               onClick={() => {
                 setname(user.name);
                 setUsername(user.username);
-                setBio("");
+                setBio(user.bio);
               }}
               disabled={!change}
             >

@@ -66,12 +66,11 @@ const AuthProvider = ({ children }: ProviderProps) => {
           dispatch(
             signInUser({
               name: currentUser.displayName,
-              username:
-                currentUser.email?.split(".")[0] ||
-                currentUser.email?.split("@")[0],
+              username: userFromUserTable.docs[0].data().username,
               email: currentUser.email,
               uid: currentUser.uid,
               userTableId: userTableId,
+              bio: userFromUserTable.docs[0].data().bio,
             } satisfies UserReduxState),
           );
           dispatch(logIn());
