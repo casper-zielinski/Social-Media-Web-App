@@ -78,7 +78,6 @@ export async function handleSignUp(
       email: email,
       name: username,
       username: email?.split(".")[0],
-      Followers: [],
       Totallikes: 0,
       savedPosts: [],
       UID: userCredentials.user.uid,

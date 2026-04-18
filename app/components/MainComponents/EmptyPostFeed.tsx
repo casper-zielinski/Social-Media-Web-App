@@ -3,12 +3,18 @@ import { AiFillLike } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
 import { FaBrain } from "react-icons/fa";
 import { TbUsersPlus } from "react-icons/tb";
+import Poster from "./Poster";
 
-const EmptyPostFeed = (navigationPagerForYou : boolean) => {
+const EmptyPostFeed = ({
+  navigationPagerForYou,
+}: {
+  navigationPagerForYou: boolean;
+}) => {
   return (
-    <div className="w-full h-[70vh] flex justify-center items-center px-4">
+    <div className="w-full h-full flex flex-col">
+      <Poster />
       {navigationPagerForYou ? (
-        <div className="flex flex-col items-center text-center max-w-sm sm:max-w-md">
+        <div className="flex-1 flex flex-col items-center justify-center text-center max-w-sm sm:max-w-md mx-auto px-4 py-8">
           <div className="relative mb-6">
             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-200 dark:bg-blue-950/50 flex items-center justify-center">
               <FaBrain className="text-3xl sm:text-4xl text-blue-400 dark:text-blue-500" />
@@ -43,7 +49,7 @@ const EmptyPostFeed = (navigationPagerForYou : boolean) => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center text-center max-w-sm sm:max-w-md">
+        <div className="flex-1 flex flex-col items-center justify-center text-center max-w-sm sm:max-w-md mx-auto px-4 py-8">
           <div className="relative mb-6">
             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-200 dark:bg-blue-950/50 flex items-center justify-center">
               <BsPeopleFill className="text-3xl sm:text-4xl text-blue-400 dark:text-blue-500" />

@@ -43,6 +43,7 @@ export function subscribeToPostsFeed(
   setShowComments: React.Dispatch<React.SetStateAction<boolean[]>>,
   setHideFullText: React.Dispatch<React.SetStateAction<boolean[]>>,
   user: UserReduxState,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   const hideCommentsAntFulltext = (
     docs: QueryDocumentSnapshot<DocumentData, DocumentData>[],
@@ -62,6 +63,7 @@ export function subscribeToPostsFeed(
 
   if (user.email === "guest123@gmail.com" || user.email === "") {
     setPostsFollowing([]);
+    setLoading(false);
   } else {
     const q = query(
       collection(
@@ -77,6 +79,7 @@ export function subscribeToPostsFeed(
       const { docs } = post;
       setPostsFollowing(docs);
       hideCommentsAntFulltext(docs);
+      setLoading(false);
     });
   }
 
@@ -84,6 +87,7 @@ export function subscribeToPostsFeed(
     const { docs } = posts;
     setPosts(docs);
     hideCommentsAntFulltext(docs);
+    setLoading(false);
   });
 
   return unsubscribe;

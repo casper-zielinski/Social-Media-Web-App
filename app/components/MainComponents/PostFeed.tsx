@@ -35,10 +35,22 @@ const PostFeed = ({
   const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    if (!loaded || !user.userTableId || user.email === "guest123@gmail.com" || user.email === "") return;
+    if (
+      !loaded ||
+      !user.userTableId ||
+      user.email === "guest123@gmail.com" ||
+      user.email === ""
+    )
+      return;
     const unsubscribeFollowing = onSnapshot(
-      collection(db, COLLECTION_PATH.USERS, user.userTableId, COLLECTION_PATH.FOLLOWING),
-      (snap) => setFollowingIds(snap.docs.map((d) => d.data().userTableId as string)),
+      collection(
+        db,
+        COLLECTION_PATH.USERS,
+        user.userTableId,
+        COLLECTION_PATH.FOLLOWING,
+      ),
+      (snap) =>
+        setFollowingIds(snap.docs.map((d) => d.data().userTableId as string)),
     );
     return unsubscribeFollowing;
   }, [loaded, user.userTableId, user.email]);
@@ -51,15 +63,15 @@ const PostFeed = ({
         setShowComments,
         setHideFullText,
         user,
+        setLoading,
       );
-      setLoading(false);
       return unsubsribe;
     }
   }, [loaded]);
 
   const showPosts = navigationPagerForYou ? posts : postsFollowing;
 
-  if (loaded && showPosts.length > 0)
+  if (showPosts.length > 0 && !loading)
     return (
       <div className="flex-1 overflow-y-scroll scrollbar-hide">
         <Poster />
@@ -86,15 +98,15 @@ const PostFeed = ({
                 />
               </div>
               <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">
-                {navigationPagerForYou && (
-                  <FollowButton
-                    followActionParameters={{
-                      currentuser: user,
-                      toFollowUserId: post.data().userFromUserTableId,
-                    }}
-                    isFollowing={followingIds.includes(post.data().userFromUserTableId)}
-                  />
-                )}
+                <FollowButton
+                  followActionParameters={{
+                    currentuser: user,
+                    toFollowUserId: post.data().userFromUserTableId,
+                  }}
+                  isFollowing={followingIds.includes(
+                    post.data().userFromUserTableId,
+                  )}
+                />
               </div>
             </div>
             {post.data().text.length > 500 && hideFullText[index] ? (
@@ -158,62 +170,67 @@ const PostFeed = ({
       </div>
     );
 
-  if (!loaded) {
+  if (loading) {
     return (
       <div className="flex-1 overflow-y-scroll scrollbar-hide">
+        <Poster />
         {Array.from({ length: 4 }, (_, index) => (
-      <article
-        className="border-b-2 border-blue-400 dark:border-blue-950 overflow-hidden hover:bg-slate-100 dark:hover:bg-gray-900"
-        key={index}
-      >
-        <div className="flex items-center w-full">
-          <div className="m-2 flex-1 min-w-0">
-            <Profile
-              classname="flex flex-row space-x-2 sm:space-x-3 items-center min-w-0 flex-shrink"
-              displayUserInfo={true}
-            />
-          </div>
-          <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">
-            <FollowButton disabled={!loaded} />
-          </div>
-        </div>
-        <div className="grid grid-cols-10 gap-2 p-3">
-          {Array.of(
-            "col-span-7",
-            "col-span-3",
-            "col-span-4",
-            "col-span-6",
-            "col-span-2",
-            "col-span-4",
-            "col-span-4",
-          ).map((val, index) => {
-            return (
-              <div
-                key={index}
-                className={`${val} animate-pulse bg-gray-500 p-2`}
-              ></div>
-            );
-          })}
-        </div>
-        <div className="divider"></div>
+          <article
+            className="border-b-2 border-blue-400 dark:border-blue-950 overflow-hidden hover:bg-slate-100 dark:hover:bg-gray-900"
+            key={index}
+          >
+            <div className="flex items-center w-full">
+              <div className="m-2 flex-1 min-w-0">
+                <Profile
+                  classname="flex flex-row space-x-2 sm:space-x-3 items-center min-w-0 flex-shrink"
+                  displayUserInfo={true}
+                />
+              </div>
+              <div className="flex flex-shrink-0 justify-end ml-auto mr-2 mt-3">
+                <FollowButton disabled={!loaded} />
+              </div>
+            </div>
+            <div className="grid grid-cols-10 gap-2 p-3">
+              {Array.of(
+                "col-span-7",
+                "col-span-3",
+                "col-span-4",
+                "col-span-6",
+                "col-span-2",
+                "col-span-4",
+                "col-span-4",
+              ).map((val, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={`${val} animate-pulse bg-gray-500 p-2`}
+                  ></div>
+                );
+              })}
+            </div>
+            <div className="divider"></div>
 
-        <MainButtons
-          commentId={""}
-          ShowCommentObject={{
-            showComments: [],
-            setShowComments: setShowComments,
-            index: index,
-            commentamout: null,
-          }}
-        />
-      </article>
+            <MainButtons
+              commentId={""}
+              ShowCommentObject={{
+                showComments: [],
+                setShowComments: setShowComments,
+                index: index,
+                commentamout: null,
+              }}
+            />
+          </article>
         ))}
       </div>
     );
   }
 
-  if (loaded && showPosts.length === 0) {
-    return EmptyPostFeed(navigationPagerForYou);
+  if (!loading) {
+    return (
+      <div className="flex-1 overflow-y-scroll scrollbar-hide">
+        <EmptyPostFeed navigationPagerForYou={navigationPagerForYou} />
+      </div>
+    );
   }
 };
 

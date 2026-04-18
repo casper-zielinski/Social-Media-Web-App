@@ -1,7 +1,6 @@
 import { DocumentReference } from "firebase/firestore";
 
 export interface User {
-  Followers: string[];
   Totallikes: number;
   UID: string;
   email: string;
